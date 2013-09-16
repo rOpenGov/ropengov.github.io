@@ -1,0 +1,459 @@
+/*
+ * Louhos
+ * Modifications 3/18/2012
+ * Author: Joona Lehtomäki <joona.lehtomaki@gmail.com>
+ *
+ * Adapted from following sources:
+ * 
+ * Jekyll-Bootstrap framework V0.2.9
+ * Copyright 2011, Jade Dominguez
+ * http://jekyllbootstrap.com/
+ * Free to use under the CC Attribution-NonCommercial-ShareAlike 3.0 License
+ * http://creativecommons.org/licenses/by-nc-sa/3.0/
+ *
+ */
+
+/* Table of Content
+ ==================================================
+ #Reset & Basics
+ #Basic Styles
+ #Site Styles
+ #Typography
+ #Links
+ #Lists
+ #Images
+ #Misc*/
+
+/* #Reset & Basics (Inspired by E. Meyers)
+ ================================================== */
+
+html, body {
+	height: 100%;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+ol, ul {
+	list-style: disc;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* #Basic Styles
+ ================================================== */
+
+body {
+	background: #fff;
+	font: 15px/21px "Droid sans", Helvetica, Arial, sans-serif;
+	color: #444;
+	-webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
+	-webkit-text-size-adjust: 100%;
+}
+
+/* #Site Styles
+ ================================================== */
+
+/* #Typography
+ ================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+	color: #181818;
+	font-family: "Droid Serif", "Helvetive Neue", Helvetica, Arial, sans-serif;
+	font-weight: normal;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	font-weight: inherit;
+}
+
+h1 {
+	font-size: 46px;
+	line-height: 50px;
+	margin-bottom: 14px;
+}
+
+h2 {
+	font-size: 35px;
+	line-height: 40px;
+	margin-bottom: 10px;
+}
+
+h3 {
+	font-size: 28px;
+	line-height: 34px;
+	margin-bottom: 8px;
+}
+
+h4 {
+	font-size: 21px;
+	line-height: 30px;
+	margin-bottom: 8px;
+}
+
+h5 {
+	font-size: 17px;
+	line-height: 24px;
+	margin-bottom: 8px;
+}
+
+h6 {
+	font-size: 14px;
+	line-height: 21px;
+}
+
+h4.tagline {
+	color: #999999;
+	font-family: "Droid sans", Helvetica, Arial, sans-serif;
+}
+
+h4.tagline > a {
+	color: #999999;
+	text-decoration: none;
+}
+
+h5.tagline-main {
+	font-family: "Droid sans", Helvetica, Arial, sans-serif;
+}
+
+.subheader {
+	color: #777;
+}
+
+.contrast {
+	background-color: #222;
+	color: #FFFFFF;
+	padding: 2px 0 2px 5px;
+	margin-bottom: 14px;
+}
+
+p {
+	margin: 0 0 20px 0;
+}
+
+p img {
+	margin: 0;
+}
+
+p.lead {
+	font-size: 21px;
+	line-height: 27px;
+	color: #777;
+}
+
+em {
+	font-style: italic;
+}
+
+strong {
+	font-weight: bold;
+	color: #333;
+}
+
+small {
+	font-size: 80%;
+}
+
+/*	Blockquotes  */
+
+blockquote, blockquote p {
+	font-size: 17px;
+	line-height: 24px;
+	color: #777;
+	font-style: italic;
+}
+
+blockquote {
+	margin: 0 0 20px;
+	padding: 9px 20px 0 19px;
+	border-left: 1px solid #ddd;
+}
+
+blockquote cite {
+	display: block;
+	font-size: 12px;
+	color: #555;
+}
+
+blockquote cite:before {
+	content: "\2014 \0020";
+}
+
+blockquote cite a, blockquote cite a:visited, blockquote cite a:visited {
+	color: #555;
+}
+
+hr {
+	border: solid #ddd;
+	border-width: 1px 0 0;
+	clear: both;
+	margin: 10px 0 30px;
+	height: 0;
+}
+
+/* #Links
+ ================================================== */
+
+a, a:visited {
+	color: #333;
+	text-decoration: underline;
+	outline: 0;
+}
+
+a:hover, a:focus {
+	color: #000;
+}
+
+p a, p a:visited {
+	line-height: inherit;
+}
+
+ul.news a {
+	text-decoration: none;
+}
+
+
+/* #Lists
+ ================================================== */
+
+ul, ol {
+	margin-bottom: 20px;
+}
+
+ul {
+	list-style: disc inside;
+}
+
+ol {
+	list-style: decimal;
+}
+
+ol, ul.square, ul.circle, ul.disc {
+	margin-left: 30px;
+}
+
+ul.square {
+	list-style: square outside;
+}
+
+ul.circle {
+	list-style: circle outside;
+}
+
+ul.disc {
+	list-style: disc outside;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+	margin: 4px 0 5px 30px;
+	font-size: 90%;
+}
+
+ul ul li, ul ol li, ol ol li, ol ul li {
+	margin-bottom: 6px;
+}
+
+li {
+	line-height: 18px;
+	margin-bottom: 12px;
+}
+
+ul.large li {
+	line-height: 21px;
+}
+
+li p {
+	line-height: 21px;
+}
+
+ul.news {
+	list-style: none;
+	text-align: right;
+}
+
+li.next, li.prev {
+	display: inline;
+	padding: 0 5px 0 5px;
+}
+
+li.next.disabled a, li.prev.disabled a {
+	color: #b9b9b9;
+	text-decoration: none;
+}
+
+li.tag {
+	display: inline;
+}
+
+h5.tagline-main > li{
+	margin: 25px 0 25px 0;
+}
+
+
+
+/* #Images
+ ================================================== */
+
+img.scale-with-grid {
+	max-width: 100%;
+	height: auto;
+}
+
+
+/* #Misc
+ ================================================== */
+
+.remove-bottom {
+	margin-bottom: 0 !important;
+}
+
+.half-bottom {
+	margin-bottom: 10px !important;
+}
+
+.add-bottom {
+	margin-bottom: 20px !important;
+}
+
+span.newsdate {
+	font-size: 16px;
+	color: #7f7f7f;
+}
+
+span.newstitle {
+	font-size: 18px;
+	color: #181818;
+	font-family: "Droid sans", Helvetica, Arial, sans-serif;
+	font-weight: bold;
+}
+
+div.newscontent {
+	margin: 50px 0 50px 0;
+}
+
+div.info {
+	position: relative;
+    float: left;
+	text-align: center;
+	margin: 50px 0 50px 0;
+}
+
+div.info ul {
+	text-align: left;
+}
+
+div.info ul li {
+	font-size: 16px;
+	padding-left: 40px;
+}
+
+div.info h4 {
+	color: #797979;
+	text-shadow: rgba(255, 254, 255, 0.73) 0 1px 1px;
+	font-family: "Droid sans", Helvetica, Arial, sans-serif;
+	margin-bottom: 30px;
+}
+
+ /* Shared styles */
+        
+.drop-shadow {
+    position:relative;
+    float:left;
+    width:95%;
+    padding: 3em 0 3em 0;    
+    margin: 3em 0 3em 20px; 
+    background: #fff;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.drop-shadow:before,
+.drop-shadow:after {
+    content:"";
+    position:absolute; 
+    z-index:-2;
+}
+
+
+ /* Lifted corners */
+
+.lifted {
+    -moz-border-radius:4px; 
+         border-radius:4px;
+}
+
+.lifted:before,
+.lifted:after { 
+    bottom:15px;
+    left:10px;
+    width:50%;
+    height:20%;
+    max-width:300px;
+    -webkit-box-shadow:0 15px 10px rgba(0, 0, 0, 0.7);   
+       -moz-box-shadow:0 15px 10px rgba(0, 0, 0, 0.7);
+            box-shadow:0 15px 10px rgba(0, 0, 0, 0.7);
+    -webkit-transform:rotate(-3deg);    
+       -moz-transform:rotate(-3deg);   
+        -ms-transform:rotate(-3deg);   
+         -o-transform:rotate(-3deg);
+            transform:rotate(-3deg);
+}
+
+.lifted:after {
+    right:10px; 
+    left:auto;
+    -webkit-transform:rotate(3deg);   
+       -moz-transform:rotate(3deg);  
+        -ms-transform:rotate(3deg);  
+         -o-transform:rotate(3deg);
+            transform:rotate(3deg);
+}
+
+ /* Raised shadow - no pseudo-elements needed */
+        
+.raised {
+    -moz-border-radius: 8px; 
+     border-radius: 8px;
+    -webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+
+.section-icon {
+	float: right;
+	font-size: 28px;
+	padding: 10px 0 10px 0;
+}
+
+
+.section-text {
+	padding: 8px 0 10px 0;
+}
+
+a.em-link {
+	font-size: 16px;
+	text-decoration: none;
+}
+
+a.em-link:hover {
+	color: #E9322D;
+}

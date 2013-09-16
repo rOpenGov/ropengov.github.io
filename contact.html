@@ -1,0 +1,144 @@
+---
+layout: page
+root: false
+title: Louhos
+tagline: Contact information
+language: en
+ss-social: true
+translation: contact.html
+---
+
+{% include JB/setup %}
+
+<div class="span12">
+	
+	<p>
+		Louhos is a community-driven collection of open source code and
+		tools for open data in Finland.  Contributions to
+		facilitate the downloading, preprocessing, analysis, and
+		visualization, written in any language, are welcome.
+	</p>
+	
+	
+	<div class="contact-links">
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">email</i>
+			</div>
+			<div class="span10 contact-link">
+				<strong>Email </strong> louhos - at - googlegroups.com
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">like</i>
+			</div>
+			
+			<div class="span10 contact-link">
+				<strong>IRC: </strong><a href="http://webchat.xs4all.nl">!louhos@IRCnet</a>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">twitter</i>
+			</div>
+			<div class="span10 contact-link">
+				<strong>Twitter: </strong><a href="https://twitter.com/#!/search/%23louhos">hashtag <i>#louhos</i></a>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">octocat</i>
+			</div>
+			<div class="span10 contact-link">
+				<strong>GitHub: </strong><a href="https://github.com/louhos">https://github.com/louhos</a>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">wordpress</i>
+			</div>
+			<div class="span10 contact-link">
+				<strong>Blog: </strong><a href="https://louhos.wordpress.com">https://louhos.wordpress.com</a>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span1">
+				<i class="ss-icon section-icon" style="font-weight: bold;">youtube</i>
+			</div>
+			<div class="span10 contact-link">
+				<strong>SlideShare: </strong><a href="http://www.slideshare.net/Louhos/">Presentation material at SlideShare</a>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<hr>
+
+<div class="span12">
+	<h4>Administrators</h4>
+	<div class="row info">
+		<!-- NOTE! one-third column is hard coded!-->
+		{% for user_hash in site.users %}
+		{% for user in user_hash %}
+		{% if user.role == "admin" %}
+		<div class="span3">
+			<div class="personinfo">
+				<h5 class="tagline-main">{{ user.name }}</h5>
+				<img src="{{ ASSET_PATH }}/skeleton/images/{{ user.picture }}" alt="{{ user.name }}" class="personinfo-img"/>
+				<div class="links">
+					{% if user.homepage %}
+					<a href="{{ user.homepage }}" title="Kotisivu" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/web24.png" /> </a>
+					{% endif %}
+					{% if user.twitter %}
+					<a href="https://www.twitter.com/{{ user.twitter }}" title="Twitter" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/twitter24.png" /> </a>
+					{% endif %}
+					{% if user.googleplus %}
+					<a href="{{ user.googleplus }}" title="Google+" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/googleplus24.png" /> </a>
+					{% endif %}
+					{% if user.github %}
+					<a href="https://www.github.com/{{ user.github }}" title="GitHub" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/github24.png" /> </a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endfor %}
+		{% endfor %}
+	</div>
+</div>
+<div class="span12">	
+	
+	<div class="row">
+		<div class="span3 offset3">
+			<h4>Contributions</h4>
+			<ul>
+				<li>
+					Juuso Haapanen
+				</li>
+				<li>
+					Ari Hyvönen
+				</li>
+				<li>
+					Jussi Paananen
+				</li>
+                <li>
+					Juha Kontio
+				</li>
+			</ul>
+		</div>
+		<div class="span3">
+			<div class="personinfo">
+				<a href="https://github.com/louhos/sorvi/wiki/Osallistu" title="GitHub" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/mystery.png" alt="Sinä" class="personinfo-img"/> </a>
+				<h5 class="tagline-main">You?</h5>
+			</div>
+		</div>
+	</div>
+</div>

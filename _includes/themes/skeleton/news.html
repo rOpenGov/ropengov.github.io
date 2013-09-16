@@ -1,0 +1,43 @@
+<div class="sixteen columns">
+	<h2 style="margin-top: 60px"> {{ page.title }} </h2>
+	<hr />
+	{% if page.info.when %}
+		<h4 class="tagline">Milloin: <span style="color: #000">{{ page.info.when }}</span></h4>
+	{% endif %}
+	{% if page.info.when %}
+		<h4 class="tagline">Missä: <a href="{{ page.info.where_link }}" style="color: #000;">{{ page.info.where_title }}</a></h4>
+	{% endif %}
+	<div class="newscontent">
+    	{{ content }}
+    </div>
+    
+</div>
+<hr>
+<div class="one-third column">
+	Julkaistu: {{ page.date | date_to_long_string }}
+</div>
+
+<div class="one-third column">
+  <ul>
+	  {% if page.previous %}
+	    <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">Edellinen</a></li>
+	  {% else %}
+	    <li class="prev disabled"><a>Edellinen</a></li>
+	  {% endif %}
+	    <li class="prev"><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">Arkisto</a></li>
+	  {% if page.next %}
+	    <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">Seuraava</a></li>
+	  {% else %}
+	    <li class="next disabled"><a>Seuraava</a>
+	  {% endif %}
+  </ul>
+</div>
+<div class="one-third column">
+	{% unless page.tags == empty %}		
+		<ul>
+			<li class="tag">Tagit: </li>
+		{% assign tags_list = page.tags %}
+		{% include JB/tags_list %}
+		</ul>
+  	{% endunless %}  
+</div>

@@ -1,0 +1,32 @@
+<div class="sixteen columns">
+	<h1 class="remove-bottom" style="margin-top: 60px"> {{ page.title }} </h1>
+	<h3 class="tagline">{{ page.tagline }}</h3>
+	{% if page.version %}
+		{% case page.language %}
+					
+				{% when 'fi' %}
+					{% assign version_string = 'Versio' %}
+				{% when 'en' %}
+					{% assign version_string = 'Version' %}
+					
+			{% endcase %}
+			
+			<h5>{{ version_string }} {{ site.version }}</h5>
+	{% else %}
+		{% if page.root %}
+			
+			{% case page.language %}
+					
+				{% when 'fi' %}
+					{% assign version_string = 'Versio' %}
+				{% when 'en' %}
+					{% assign version_string = 'Version' %}
+					
+			{% endcase %}
+			
+			<h5>{{ version_string }} {{ site.version }}</h5>
+		{% endif %}
+	{% endif %}
+	<hr />
+</div>
+{{ content }} 

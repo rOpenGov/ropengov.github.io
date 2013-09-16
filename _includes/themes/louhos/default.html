@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<head>
+		<!-- Basic Page Needs
+		================================================== -->
+		<meta charset="utf-8">
+		<title>{{ page.title }}</title>
+		{% if page.description %}
+		<meta name="description" content="{{ page.description }}">
+		{% endif %}
+		<meta name="author" content="{{ site.author.name }}">
+		<!-- Mobile Specific Metas
+		================================================== -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- CSS
+		================================================== -->
+
+		<link href="{{ ASSET_PATH }}/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+
+		<link href="{{ ASSET_PATH }}/css/layout.css?body=1" rel="stylesheet" type="text/css" media="all">
+		<link href="{{ ASSET_PATH }}/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+		<link href="{{ ASSET_PATH }}/css/code.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+		{% if page.ss-standard %}
+		<link href="{{ ASSET_PATH }}/fonts/ss-standard/ss-standard.css" rel="stylesheet" />
+		{% endif %}
+
+		{% if page.ss-social %}
+		<link href="{{ ASSET_PATH }}/fonts/ss-social/ss-social.css" rel="stylesheet" />
+		{% endif %}
+
+		<link href="{{ ASSET_PATH }}/js/fancybox-2.0.5/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ ASSET_PATH }}/js/fancybox-2.0.5/helpers/jquery.fancybox-thumbs.css?v=2.0.4" rel="stylesheet" type="text/css"  />
+
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif' rel='stylesheet' type='text/css'>
+		v
+
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Favicons
+		================================================== -->
+		<link rel="shortcut icon" href="{{ ASSET_PATH }}/images/favicon.ico">
+		<link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png">
+
+		<link href="/atom.xml" rel="alternate" title="News Feed" type="application/atom+xml">
+
+		<!-- JS libraries
+		================================================== -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ ASSET_PATH }}/js/bootstrap.js"></script>
+		<script type="text/javascript" src="{{ ASSET_PATH }}/js/fancybox-2.0.5/jquery.fancybox.pack.js"></script>
+		<script type="text/javascript" src="{{ ASSET_PATH }}/js/fancybox-2.0.5/helpers/jquery.fancybox-thumbs.js?v=2.0.4"></script>
+
+		{% include louhos/jsfancybox %}
+
+		{% include JB/analytics %}
+
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="topbar">
+				<div class="fill">
+					<div class="header-container">
+						<div id="project-nav">
+
+							{% case page.language %}
+
+							{% when 'fi' %}
+							{% assign title_events = 'Tapahtumat' %}
+							{% assign link_events = 'archive.html' %}
+							{% assign title_blog = 'Blogi' %}
+							{% assign title_contact = 'Ota yhteyttä' %}
+							{% assign link_contact = 'contact.html' %}
+							{% assign title_other_lang = 'In English' %}
+							{% when 'en' %}
+							{% assign title_events = 'Events' %}
+							{% assign link_events = 'archive.html' %}
+							{% assign title_blog = 'Blog' %}
+							{% assign title_contact = 'Contact' %}
+							{% assign link_contact = 'en/contact.html' %}
+							{% assign title_other_lang = 'Suomeksi' %}
+							{% endcase %}
+
+							<a class="brand" href="{{ HOME_PATH }}">{{ site.title }}</a>
+
+							<ul class="nav">
+								{% assign pages_list = site.pages %}
+								{% assign group = 'project' %}
+
+								<li class="dropdown">
+									<a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Projektit <b class="caret"></b></a>
+
+									<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+										{% for project_hash in site.projects %}
+										{% for project in project_hash %}
+										{% if project.title %}
+										<li>
+											<a href="{{ project.url }}" class="dropdown-items"> {{ project.title }} </a>
+										</li>
+										{% endif %}
+										{% endfor %}
+										{% endfor %}
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<div id="site-nav">
+							<a class="brand" href="{{ HOME_PATH }}{{ link_events }}">{{ title_events }}</a>
+							<a class="brand" href="https://louhos.wordpress.com/">{{ title_blog }}</a>
+							<a class="brand" href="{{ HOME_PATH }}{{ link_contact }}">{{ title_contact }}</a>
+							<!--<a class="brand" href="{{ HOME_PATH }}faq.html">FAQ</a>-->
+							{% if page.translation %}
+							<a class="brand" href="{{ HOME_PATH }}{{ page.translation }}">{{ title_other_lang }}</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container">
+				{{ content }}
+			</div>
+
+		</div>
+		<!-- end wrapper -->
+
+		<div id="footer">
+
+<!-- Facebook like button start --> 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://louhos.github.com" data-send="true" data-layout="button_count" data-width="400" data-show-faces="false" data-font="arial"></div>		
+<br/>
+<!-- Facebook like button stop --> 
+
+
+				<small> Created by Louhos Team 2012 using <a href="http://jekyllbootstrap.com/">Jekyll-Bootstrap</a>. For complete attribution, see <a href="https://github.com/louhos/louhos.github.com/blob/master/README.md">here.</a>
+					<br />
+					This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+					<br />
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png" /></a> </small>
+			</p>
+
+		</div>
+		{% if page.ghurl %}
+		<a href={{page.ghurl}}><img style="position: absolute; top: 40px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+		{% endif %}
+	</body>
+</html>
