@@ -59,6 +59,9 @@ projects:
   osmar :
     title : OpenStreetMap
     url: http://osmar.r-forge.r-project.org/
+  R packages :
+    title : R packages
+    url: packages.html
 
 
 version: 0.1
