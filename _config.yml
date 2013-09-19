@@ -10,8 +10,8 @@ safe: false
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Louhos
-tagline: Open Source Code Repository for Open Data in Finland
+title : rOpenGov
+tagline: R ecosystem for open government data
 author :
   name : Joona Lehtomäki
   email : joona.lehtomaki@gmail.com
@@ -23,7 +23,7 @@ users :
     name : Leo Lahti
     picture : LeoLahti.jpg
     email : leo.lahti@iki.fi
-    homepage : http://antagomir.github.com/
+    homepage : http://www.iki.fi/Leo.Lahti
     github : antagomir
     twitter : antagomir
     googleplus : https://plus.google.com/101894517788603274082/
@@ -48,16 +48,14 @@ users :
 
 projects:
   sorvi : 
-    title : sorvi
+    title : Finland
     url : http://louhos.github.com/sorvi/index.html
-  datavaalit :
-    title : Datavaalit
-    url: http://www.datavaalit.fi
-  datawiki :
-    title : Datawiki
-    url: http://louhos.github.com/datawiki/index.html
+  rustfare :
+    title : Russia
+    url: http://markuskainu.fi/rustfare/index.html
 
-version: 0.3
+
+version: 0.1
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 

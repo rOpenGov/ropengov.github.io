@@ -1,6 +1,6 @@
-# Louhos home 
+# rOpenGov home 
 
-Louhos is a community-driven collection of open source code and algorithmic tools for Open Data in Finland. For details, see the project home page at [louhos.github.com](louhos.github.com).  
+rOpenGov is a community-driven ecosystem of R packages around open government data and computational social science;  see the project home page at [ropengov.github.com](ropengov.github.com).  
 
 The site is based on [Jekyll-Bootstrap](http://jekyllbootstrap.com/) and 
 [Skeleton](http://www.getskeleton.com/)

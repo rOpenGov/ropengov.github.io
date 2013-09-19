@@ -58,25 +58,15 @@
 			<div class="fill">
 				<div class="header-container">
 					<div id="project-nav">
-		
-					
-						{% case page.language %}
-					
-							{% when 'fi' %}
-								{% assign title_events = 'Tapahtumat' %}
-								{% assign link_events = 'archive.html' %}
-								{% assign title_blog = 'Blogi' %}
-								{% assign title_wiki = 'Wiki' %}
-								{% assign title_contact = 'Ota yhteyttä' %}
-								{% assign link_contact = 'contact.html' %}
-								{% assign title_other_lang = 'In English' %}
+						
+						{% case page.language %}					
 							{% when 'en' %}
 								{% assign title_events = 'Events' %}
 								{% assign link_events = 'archive.html' %}
 								{% assign title_blog = 'Blog' %}
 								{% assign title_wiki = 'Wiki' %}
 								{% assign title_contact = 'Contact' %}
-								{% assign link_contact = 'en/contact.html' %}
+								{% assign link_contact = 'contact.html' %}
 								{% assign title_other_lang = 'Suomeksi' %}
 						{% endcase %}
 						
