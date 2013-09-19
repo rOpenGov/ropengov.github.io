@@ -62,6 +62,9 @@ projects:
   R packages :
     title : R packages
     url: packages.html
+  Related projects :
+    title : Related projects
+    url: packages.html
 
 
 version: 0.1
