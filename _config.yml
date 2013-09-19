@@ -53,6 +53,12 @@ projects:
   rustfare :
     title : Russia
     url: http://markuskainu.fi/rustfare/index.html
+  Grazwahl2012 :
+    title : Austria
+    url: https://github.com/skasberger/grazwahl2012
+  osmar :
+    title : OpenStreetMap
+    url: http://osmar.r-forge.r-project.org/
 
 
 version: 0.1
@@ -65,7 +71,7 @@ version: 0.1
 # Else if you are pushing to username.github.com, replace with your username.
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
-production_url : http://louhos.github.com/
+production_url : http://ropengov.github.com/
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
