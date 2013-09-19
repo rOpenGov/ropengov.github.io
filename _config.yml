@@ -47,18 +47,6 @@ users :
     googleplus : https://plus.google.com/112885751907512172261/
 
 projects:
-  sorvi : 
-    title : Finland
-    url : http://louhos.github.com/sorvi/index.html
-  rustfare :
-    title : Russia
-    url: http://markuskainu.fi/rustfare/index.html
-  Grazwahl2012 :
-    title : Austria
-    url: https://github.com/skasberger/grazwahl2012
-  osmar :
-    title : OpenStreetMap
-    url: http://osmar.r-forge.r-project.org/
   R packages :
     title : R packages
     url: packages.html
