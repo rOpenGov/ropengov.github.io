@@ -86,23 +86,23 @@ ss-social: true
 		<div class="span3">
 			<div class="personinfo">
 				<h5 class="tagline-main">{{ user.name }}</h5>
-				<img src="{{ ASSET_PATH }}/skeleton/images/{{ user.picture }}" alt="{{ user.name }}" class="personinfo-img"/>
+				<img src="{{ ASSET_PATH }}/louhos/images/{{ user.picture }}" alt="{{ user.name }}" class="personinfo-img"/>
 				<div class="links">
 
 					{% if user.homepage %}
-					<a href="{{ user.homepage }}" title="Kotisivu" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/web24.png" /> </a>
+					<a href="{{ user.homepage }}" title="Homepage" target="_blank"> <img src="{{ ASSET_PATH }}/louhos/images/web24.png" /> </a>
 					{% endif %}
 
 					{% if user.twitter %}
-					<a href="https://www.twitter.com/{{ user.twitter }}" title="Twitter" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/twitter24.png" /> </a>
+					<a href="https://www.twitter.com/{{ user.twitter }}" title="Twitter" target="_blank"> <img src="{{ ASSET_PATH }}/louhos/images/twitter24.png" /> </a>
 					{% endif %}
 
 					{% if user.googleplus %}
-					<a href="{{ user.googleplus }}" title="Google+" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/googleplus24.png" /> </a>
+					<a href="{{ user.googleplus }}" title="Google+" target="_blank"> <img src="{{ ASSET_PATH }}/louhos/images/googleplus24.png" /> </a>
 					{% endif %}
 
 					{% if user.github %}
-					<a href="https://www.github.com/{{ user.github }}" title="GitHub" target="_blank"> <img src="{{ ASSET_PATH }}/skeleton/images/github24.png" /> </a>
+					<a href="https://www.github.com/{{ user.github }}" title="GitHub" target="_blank"> <img src="{{ ASSET_PATH }}/louhos/images/github24.png" /> </a>
 					{% endif %}
 				</div>
 			</div>
