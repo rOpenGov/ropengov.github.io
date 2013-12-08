@@ -34,11 +34,12 @@
     <header>
         <nav id="navigation">
             <a class="brand" href="/">
-                <img src="/images/{{ site.inc.logo }}" alt="Inc">
+                <img src="/images/{{ site.inc.logo }}" alt="rOpenGov">
             </a>
             <a href="/" class="home">Blog</a>
             {% if site.inc.product_link %}<a href="{{ site.inc.product_link }}">Product</a>{% endif %}
-            {% if site.inc.about_link %}<a href="{{ site.inc.about_link }}">About</a>{% endif %}
+            {% if site.inc.projects %}<a href="{{ site.inc.projects }}">Projects</a>{% endif %}
+            {% if site.inc.about_link %}<a href="{{ site.inc.about }}">About</a>{% endif %}
         </nav>
         {% if site.inc.tagline or site.inc.product_url %}<nav class="tagline">
             {% if site.inc.tagline %}<span>{{ site.inc.tagline }}</span>{% endif %}
