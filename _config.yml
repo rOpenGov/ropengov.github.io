@@ -11,8 +11,8 @@ inc:
   facebook:     
   twitter:      ropengov
   gplus:        '101183822199340201470'
-  about:        about.html
-  projects:     projects
+  about:        
+  projects:     
 
   # Product Information
   product_link: 
