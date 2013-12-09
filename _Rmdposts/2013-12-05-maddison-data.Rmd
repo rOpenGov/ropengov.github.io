@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Maddison prject in R "
+title:  "Maddison project in R "
 date:   2013-12-05 18:53:45
 categories: general
 
