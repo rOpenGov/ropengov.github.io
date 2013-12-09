@@ -1,8 +1,8 @@
 ---
 layout: post
-
 title:  "Maddison prject in R "
 date:   2013-12-05 18:53:45
+categories: general
 
 excerpt: "There is a growing trend of new methods for assessing economic data in R"
 
