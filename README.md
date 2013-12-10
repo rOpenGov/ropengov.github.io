@@ -25,12 +25,12 @@ _Note: when editing _config.yml, you need to restart jekyll to see the changes._
 1. Add your domain to _CNAME_
 2. Edit your repo address at _Rakefile_
     
-Run rake task. **NOTE: It will deploy the generated site to _gh-pages_ branch overwriting it**    
+Run rake task. **NOTE: It will deploy the generated site to _master_ branch overwriting it**    
 ``` 
 rake site:publish
 ```
 
-## Authors
+## Original authors
 
 Originally build for [sendtoinc.com](https://sendtoinc.com), your workspace for sharing and organizing knowledge
 
@@ -44,11 +44,6 @@ Originally build for [sendtoinc.com](https://sendtoinc.com), your workspace for 
 + [http://twitter.com/jorilallo](http://twitter.com/jorilallo)
 + [http://github.com/jorde](http://github.com/jorilallo)
 
-## Todo:
-
-+ Documentation
-+ Less config files
-+ Better deploy scripts
 
 ## Copyright and license
 
