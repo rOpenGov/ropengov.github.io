@@ -47,10 +47,10 @@ module Jekyll
       base = File.join(site.source, dir)
       return unless File.exists?(base)
 
-      entries  = Dir.chdir(base) { site.filter_entries(Dir['**/*']) }
+      entries  = Dir.chdir(base) { Dir.glob("*.md").sort }
 
       # Reverse chronological order
-      entries = entries.reverse
+      entries = entries.sort
       entries.each do |f|
           project = Project.new(site, site.source, dir, f)
           @@projects << project.projectdata if project.publish?
@@ -77,7 +77,18 @@ module Jekyll
   class ProjectlistTag < Liquid::Tag
     def initialize(tag_name, markup, tokens)
       @projects = ProjectList.projects
-      @template_file = markup.strip
+      args = markup.split(' ')
+      @template_file = args[0]
+      category = args[1]
+      
+      # Take only the projects that match provided category
+      @selected_projects = []
+      @projects.each do |project|
+        if project['category'] == category
+          @selected_projects << project
+        end
+      end
+
       super
     end
 
@@ -107,7 +118,7 @@ module Jekyll
       output = super
       template = load_teplate(@template_file, context)
 
-      Liquid::Template.parse(template).render('projects' => @projects).gsub(/\t/, '')
+      Liquid::Template.parse(template).render('projects' => @selected_projects).gsub(/\t/, '')
     end
   end
 
