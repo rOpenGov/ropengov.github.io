@@ -3,6 +3,7 @@ layout: post
 title:  "rQog in action"
 date:   2013-12-06 18:53:45
 categories: general
+draft: true
 
 excerpt: "This post will demostrate the use of rQog-package"
 
