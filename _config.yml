@@ -3,6 +3,7 @@ inc:
   title:        "rOpenGov"
   subtitle:     "R Ecosystem for Open Government Data and Computational Social Science"
   cover_image:  open-gov-cover.jpg
+  about_image:  
   logo:         logo.png
 
   # Company information
