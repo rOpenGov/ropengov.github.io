@@ -1,0 +1,66 @@
+---
+layout: base
+---
+
+    <section>
+
+      <h4>Community</h4>
+
+      The <a href="http://ropengov.github.io">rOpenGov</a> is a
+      community of independent R package developers for open
+      government data and computational social sciences. If you are
+      working on related projects, don't hesitate to get in touch!
+
+      You can join us here:
+
+      <ul>
+        <li><a href="https://plus.google.com/u/0/communities/108289259916380218460">Google+</a></li>
+	<li>IRC: ropengov@Freenode</li>
+	<li><a href="https://twitter.com/ropengov">Twitter</a></li>
+	<li><a href="http://ropengov.github.io/">rOpenGov blog</a></li>
+      </ul>
+
+      The site admins can also be contacted via email:
+      ropengov@googlegroups.com
+
+
+      <h4>Contributors</h4>
+
+      We are grateful to all contributors. For a full list, see the individual <a href="http://ropengov.github.io/about/projects">projects</a>
+
+    </section>
+
+
+
+
+<article class="container">
+{% for post in paginator.posts %}
+  {% unless post.draft %}
+    <section class="index">
+        <!-- {% if post.author.image %}<img src="/images/{{ post.author.image }}" class="avatar">{% endif %}-->
+        <div>
+            <h2 class="title"><a href="{{ post.url }}" rel="prefetch">{{ post.title }}</a></h2>
+            <p>{{ post.excerpt }}</p>
+            <div class="meta">
+                Written By <address>{{ post.author.name }}</address> &mdash;
+                <time pubdate datetime="{{ post.date | date: "%Y-%d-%B" }}" title="{{ post.date | date: "%B %d, %Y" }}">{{ post.date | date: "%B %d, %Y" }}</time>
+            </div>
+        </div>
+        <hr>
+    </section>
+    {% endunless %}
+    {% endfor %}
+    <section class="pagination" style="text-align:center">
+      {% if paginator.previous_page %}
+        {% if paginator.previous_page == 1 %}
+        <a href="/" class="btn btn-outline">‹ Newer</a>
+        {% else %}
+        <a href="/page{{ paginator.previous_page }}" class="btn btn-outline">‹ Newer</a>
+        {% endif %}
+      {% endif %}
+      {% if paginator.next_page %}
+        <a href="/page{{ paginator.next_page }}" class="btn btn-outline">Older ›</a>
+      {% endif %}
+    </section>
+</article>
+
