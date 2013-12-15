@@ -21,72 +21,44 @@ layout: base
     </section>
 </div>
 
-    <section>
-
-      The <a href="http://ropengov.github.io">rOpenGov</a> is a
-      community-driven ecosystem of R packages for open government
-      data and computational social sciences.
-
-      A community of independent package developers around open
-      goverment data analytics is now emerging at
-      rOpenGov. Independent
-      <a href="http://ropengov.github.io/projects/">projects</a>
-      dedicated to US, Russia, Finland, Poland, Austria, and
-      OpenStreetMap have already joined in. We encourage new
-      contributions.
-
-      The rapidly emerging governmental and other open data streams
-      provide novel opportunities for social sciences, data
-      journalism, and citizen participation across the globe while
-      computational tools to utilize these resources are lacking.  A
-      community-driven software ecosystem provides a scalable solution
-      and a potential to revolutionize the field, taking advantage of
-      the lessons learned in
-      <a href="http://www.bioconductor.org">Bioconductor</a>
-      <a href="http://ropensci.org">rOpenSci</a>, and related
-      projects. This umbrella site focusing on open government data R
-      tools will give added visibility and recognition for independent
-      package developers, an opportunity to attract contributors, and
-      a forum for exchanging ideas and information.
-
-      The project is in beta, and more information will be added soon.
-      You can follow us on <a href="http://ropengov.github.io/">rOpenGov blog</a>,
-      <a href="https://twitter.com/ropengov">Twitter</a>,
-      <a href="https://plus.google.com/u/0/communities/108289259916380218460">Google+</a>
-      and IRC (ropengov@Freenode). If you are working on related
-      projects, don't hesitate to get in touch!
-
-    </section>
-
-
-<article class="container">
-{% for post in paginator.posts %}
-  {% unless post.draft %}
+<div class="container">
     <section class="index">
-        <!-- {% if post.author.image %}<img src="/images/{{ post.author.image }}" class="avatar">{% endif %}-->
-        <div>
-            <h2 class="title"><a href="{{ post.url }}" rel="prefetch">{{ post.title }}</a></h2>
-            <p>{{ post.excerpt }}</p>
-            <div class="meta">
-                Written By <address>{{ post.author.name }}</address> &mdash;
-                <time pubdate datetime="{{ post.date | date: "%Y-%d-%B" }}" title="{{ post.date | date: "%B %d, %Y" }}">{{ post.date | date: "%B %d, %Y" }}</time>
-            </div>
-        </div>
-        <hr>
-    </section>
-    {% endunless %}
-    {% endfor %}
-    <section class="pagination" style="text-align:center">
-      {% if paginator.previous_page %}
-        {% if paginator.previous_page == 1 %}
-        <a href="/" class="btn btn-outline">‹ Newer</a>
-        {% else %}
-        <a href="/page{{ paginator.previous_page }}" class="btn btn-outline">‹ Newer</a>
-        {% endif %}
-      {% endif %}
-      {% if paginator.next_page %}
-        <a href="/page{{ paginator.next_page }}" class="btn btn-outline">Older ›</a>
-      {% endif %}
-    </section>
-</article>
+        
+        <h1>About rOpenGov</h1>
 
+        <p>The <a href="http://ropengov.github.io">rOpenGov</a> is a
+        community-driven ecosystem of R packages for open government
+        data and computational social sciences.</p>
+
+        <p>A community of independent package developers around open
+        goverment data analytics is now emerging at
+        rOpenGov. Independent
+        <a href="http://ropengov.github.io/projects/">projects</a>
+        dedicated to US, Russia, Finland, Poland, Austria, and
+        OpenStreetMap have already joined in. We encourage new
+        contributions.</p>
+
+        <p>The rapidly emerging governmental and other open data streams
+        provide novel opportunities for social sciences, data
+        journalism, and citizen participation across the globe while
+        computational tools to utilize these resources are lacking.  A
+        community-driven software ecosystem provides a scalable solution
+        and a potential to revolutionize the field, taking advantage of
+        the lessons learned in
+        <a href="http://www.bioconductor.org">Bioconductor</a>
+        <a href="http://ropensci.org">rOpenSci</a>, and related
+        projects. This umbrella site focusing on open government data R
+        tools will give added visibility and recognition for independent
+        package developers, an opportunity to attract contributors, and
+        a forum for exchanging ideas and information.</p>
+
+        <p>The project is in beta, and more information will be added soon.
+        You can follow us on <a href="http://ropengov.github.io/">rOpenGov blog</a>,
+        <a href="https://twitter.com/ropengov">Twitter</a>,
+        <a href="https://plus.google.com/u/0/communities/108289259916380218460">Google+</a>
+        and IRC (ropengov@Freenode). If you are working on related
+        projects, don't hesitate to get in touch!</p>
+
+    </section>
+
+</div>
