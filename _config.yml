@@ -50,7 +50,7 @@ destination: ./_site
 plugins:     ./_plugins
 layouts:     ./_layouts
 include:     ['.htaccess']
-exclude:     ['Rakefile', 'Gemfile', 'CNAME', 'README.md']
+exclude:     ['Rakefile', 'Gemfile', 'Gemfile.lock','CNAME']
 timezone:    nil
 
 # Show future posts
