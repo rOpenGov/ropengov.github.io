@@ -6,7 +6,7 @@ package_name_show: sotkanet
 author: Leo Lahti
 meta_description: Sotkanet API R tools
 github_user: ropengov
-packge_version: 0.9.01
+pacakge_version: 0.9.01
 header_descripton: Sotkanet API R tools
 ---
 
