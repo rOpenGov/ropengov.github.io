@@ -160,11 +160,15 @@ namespace :tutorial do
       end
 
       # Install the actual package
+      cran_mirror = "http://cran.rstudio.com"
       puts "Installing R-package #{args.repo}"
-      cmd_status = system "R --vanilla --silent -e 'library(devtools); install(#{pkg_folder.inspect}, dependencies=TRUE)'"
+      cmd_string = ["R --vanilla --silent -e 'options(repos = c(CRAN=#{cran_mirror.inspect}))", 
+                    "library(devtools)",
+                    "install(#{pkg_folder.inspect}, dependencies=TRUE)'"].join("; ")
+
+      cmd_status = system cmd_string
       if !cmd_status
-        puts "R-package installation failed, exiting"
-        exit
+        fail "R-package installation failed, exiting"
       end
 
       # Move back to the site dir
@@ -175,8 +179,7 @@ namespace :tutorial do
     puts "Knitting Rmd-files in folder 'tutorials'"
     cmd_status = system "./_knittutorials.R --force"
     if !cmd_status
-      puts "Rmd file knitting failed, exiting"
-      exit 1
+      fail "Rmd file knitting failed, exiting"
     end
 
     # Regenerate the site
