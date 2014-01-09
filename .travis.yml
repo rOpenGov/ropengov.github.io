@@ -13,6 +13,7 @@ before_script:
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
   - ./travis-tool.sh github_package devtools
+  - ./travis-tool.sh install_r knitr
 notifications:
   email:
     - joona.lehtomaki@gmail.com
