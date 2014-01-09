@@ -49,7 +49,7 @@ source:      .
 destination: ./_site
 plugins:     ./_plugins
 layouts:     ./_layouts
-include:     ['.htaccess']
+include:     ['.htaccess', '.travis.yml']
 exclude:     ['Rakefile', 'Gemfile', 'Gemfile.lock','CNAME', '*.sublime-workspace',
               '*.sublime-project']
 timezone:    nil
