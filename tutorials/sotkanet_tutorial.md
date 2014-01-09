@@ -3,15 +3,17 @@ title: sotkanet vignette
 layout: package_page
 package_name: sotkanet
 package_name_show: sotkanet
-author: Leo Lahti
-meta_description: Sotkanet API R tools
+author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
+meta_description: Sotkanet API R Tools
 github_user: ropengov
-packge_version: 0.9.01
-header_descripton: Sotkanet API R tools
+package_version: 0.9.01
+header_descripton: Sotkanet API R Tools
 ---
 
 
 
+Sotkanet API R tools
+===========
 
 This is the [sotkanet](http://ropengov.github.com/sotkanet) R package to access data from the [Sotkanet portal](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu) that provides over 2000 demographic indicators across Finland and Europe, maintained by the National Institute for Health and Welfare (THL). For more information, see [Sotkanet indicator database](http://uusi.sotkanet.fi/portal/page/portal/etusivu/tietoa_palvelusta) and [API description](http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF). This package is part of [rOpenGov](http://ropengov.github.com/).
 
@@ -166,7 +168,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetData](../_assets/img/vignettes/alm/sotkanetData.png) 
+![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData.png) 
 
 
 
@@ -192,7 +194,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetVisu3](../_assets/img/vignettes/alm/sotkanetVisu3.png) 
+![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3.png) 
 
 
 
@@ -268,35 +270,28 @@ sessionInfo()
 
 {% highlight text %}
 ## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## Platform: x86_64-unknown-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_CA.UTF-8/en_CA.UTF-8/en_CA.UTF-8/C/en_CA.UTF-8/en_CA.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-## [1] ggplot2_0.9.3.1      knitr_1.5            sotkanet_0.9.01     
-## [4] rjson_0.2.13         Rdocumentation_0.1   slidifyLibraries_0.1
-## [7] slidify_0.3.52       sacbox_0.0.0         devtools_1.4.1.99   
+## [1] ggplot2_0.9.3.1 sotkanet_0.9.01 rjson_0.2.13    knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] animation_2.2        ape_3.0-11           colorspace_1.2-4    
-##  [4] dichromat_2.0-0      digest_0.6.4         evaluate_0.5.1      
-##  [7] extrafont_0.15       extrafontdb_1.0      formatR_0.10        
-## [10] grid_3.0.2           gridExtra_0.9.1      gtable_0.1.2        
-## [13] httr_0.2             igraph_0.6.6         labeling_0.2        
-## [16] lattice_0.20-23      maps_2.3-6           markdown_0.6.3      
-## [19] MASS_7.3-29          Matrix_1.0-14        memoise_0.1         
-## [22] mnormt_1.4-7         msm_1.2              munsell_0.4.2       
-## [25] mvtnorm_0.9-9996     nlme_3.1-111         numDeriv_2012.9-1   
-## [28] parallel_3.0.2       phangorn_1.99-1      phytools_0.3-72     
-## [31] plotrix_3.5-2        plyr_1.8             proto_0.3-10        
-## [34] RColorBrewer_1.0-5   RCurl_1.95-4.1       reshape_0.8.4       
-## [37] reshape2_1.2.2       rgl_0.93.963         Rttf2pt1_1.2        
-## [40] scales_0.2.3         scatterplot3d_0.3-34 splines_3.0.2       
-## [43] stringr_0.6.2        survival_2.37-4      tools_3.0.2         
-## [46] whisker_0.3-2        XML_3.95-0.2         yaml_2.1.8
+##  [1] colorspace_1.2-4   dichromat_2.0-0    digest_0.6.4      
+##  [4] evaluate_0.5.1     formatR_0.10       grid_3.0.2        
+##  [7] gtable_0.1.2       labeling_0.2       MASS_7.3-29       
+## [10] munsell_0.4.2      plyr_1.8           proto_0.3-10      
+## [13] RColorBrewer_1.0-5 reshape2_1.2.2     scales_0.2.3      
+## [16] stringr_0.6.2      tools_3.0.2
 {% endhighlight %}
 
