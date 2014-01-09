@@ -15,4 +15,4 @@ before_script:
   - ./travis-tool.sh github_package devtools
 notifications:
   email:
-    - one@example.com
+    - joona.lehtomaki@gmail.com
