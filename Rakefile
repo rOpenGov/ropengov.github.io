@@ -109,7 +109,7 @@ namespace :tutorial do
       # Stop execution if DESCRIPTION could not be found
       if description.nil?
         puts 'Could not find a DESCRIPTION file, exiting'
-        exit
+        exit 1
       end
 
       # YAML Front Matter template
@@ -176,7 +176,7 @@ namespace :tutorial do
     cmd_status = system "./_knittutorials.R --force"
     if !cmd_status
       puts "Rmd file knitting failed, exiting"
-      exit
+      exit 1
     end
 
     # Regenerate the site
