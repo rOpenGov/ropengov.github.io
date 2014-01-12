@@ -45,9 +45,9 @@ namespace :site do
   end
 end
 
-namespace :tutorial do
+namespace :projects do
   desc "Convert package vignettes to Jekyll pages"
-  task :add, [:username, :repo] do |t, args| 
+  task :convert_tutorials, [:username, :repo] do |t, args| 
 
     require 'open-uri'
     require 'zip'
@@ -192,6 +192,18 @@ namespace :tutorial do
 
   end
 
+  desc "List site projects"
+  task :list do
+    
+    require 'table_print'
+
+    projects = parse_projects()
+    puts "\n"
+    tp projects, :title, {:description => {:width => 60}}, :tutorial
+    
+
+  end
+
   def parse_description(desc_content)
     # If a newline is followed by whitespace, replace with ', '. 
     desc_content = desc_content.gsub(/\n\s+/, ', ')
@@ -213,6 +225,49 @@ namespace :tutorial do
     end
     
     return(desc_hash)
+  end
+
+  def parse_projects(all=false)
+    require 'yaml'
+
+    # Parse all the project files
+    project_files = Dir.glob('_projects/*.md')
+    projects = []
+
+    puts "Looking for package tutorials in GitHub..."
+
+    project_files.each do |project_file|
+      content = YAML.load_file(project_file)
+      if all
+        projects << content
+      else
+        if content['category'] == 'ropengov'
+          tutorial_found = probe_tutorial(content['title'])
+          content['tutorial'] = tutorial_found ? "Yes" : "No"
+          projects << content
+        end
+      end
+    end
+
+    return(projects)
+  end
+
+  def probe_tutorial(package, vignette_file="vignette.Rmd")
+
+    require 'open-uri'
+    tutorial_found = false
+
+    url_path = "https://github.com/rOpenGov/#{package}/blob/master/vignettes/#{vignette_file}"
+    
+    begin
+      open(url_path) do |f|
+        puts "  Tutorial found for #{package}"
+        tutorial_found = true
+      end
+    rescue OpenURI::HTTPError => e
+      puts "  No tutorial found for #{package}"
+    end
+    return(tutorial_found)
   end
 
   def unzip_file (file, destination)
