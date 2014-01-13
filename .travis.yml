@@ -6,7 +6,7 @@ rvm:
 branches:
   only:
   - jekyll-inc-tut
-script: rake tutorial:add[ropengov,sotkanet]
+script: rake tutorial:convert_tutorials[ropengov,sotkanet]
 before_script:
   - sudo apt-get update
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
