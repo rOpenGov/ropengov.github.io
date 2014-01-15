@@ -17,6 +17,9 @@
 			<th>
 				CRAN
 			</th>
+			<th>
+				Tutorial
+			</th>
 		</tr>
 		{% for project in projects %}
 			<tr>
@@ -34,6 +37,11 @@
 				</td>
 				<td class="iconlink">
 					{% if project.cran %}<a href="{{ project.cran }}" class="fa fa-cog" title="The Comprehensive R Archive Network"></a>{% endif %}
+				</td>
+				<td class="iconlink">
+				 {% if project.tutorial %}
+				 	<a href="{{ site.url }}/tutorials/{{ project.title }}_tutorial" class="fa fa-question-circle" title="Tutorial"></a>				 	
+				 {% endif %}
 				</td>
 			</tr>
 		{% endfor %}
