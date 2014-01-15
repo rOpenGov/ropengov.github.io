@@ -236,10 +236,13 @@ namespace :projects do
     require 'table_print'
 
     projects = parse_projects()
+    # Convert from hash to array
+    content = []
+    projects.each do |project_file, project|
+      content << project
+    end
     puts "\n"
-    tp projects, :title, {:description => {:width => 60}}, :tutorial
-    
-
+    tp content, :title, {:description => {:width => 60}}, :tutorial
   end
 
   def parse_description(desc_content)
