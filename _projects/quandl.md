@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "quandl"
 description: "Financial, economic, and social datasets from various countries"
 github: https://github.com/quandl/R-package

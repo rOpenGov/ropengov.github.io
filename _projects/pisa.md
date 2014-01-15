@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "pisa"
 description: "PISA Student Assessment"
 github: https://github.com/jbryer/pisa

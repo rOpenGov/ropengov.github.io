@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "countrycode"
 description: "Convert country names and codes"
 github: https://github.com/vincentarelbundock/countrycode

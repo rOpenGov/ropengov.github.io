@@ -1,5 +1,4 @@
 ---
-layout: post
 title: sorvi
 description: Finnish open government data
 link: http://louhos.github.io/sorvi/

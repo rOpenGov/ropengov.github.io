@@ -1,5 +1,4 @@
 ---
-layout: post
 title: SmarterPoland
 description: Poland state data
 link: http://smarterpoland.pl/

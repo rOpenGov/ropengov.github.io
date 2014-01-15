@@ -1,5 +1,4 @@
 ---
-layout: post
 title: rustfare
 description: Russian open welfare data
 link: http://markuskainu.fi/rustfare/index.html
