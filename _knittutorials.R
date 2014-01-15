@@ -3,13 +3,13 @@
 # compiles all .Rmd files in _R directory into .md files in Pages directory,
 # if the input file is older than the output file.
 
-# run ./knitpages.R to update all knitr files that need to be updated.
+# run ./knittutorials.R to update all knitr files that need to be updated.
 
 KnitPost <- function(input, outfile) {
     # this function is a modified version of an example here:
     # http://jfisher-usgs.github.com/r/2012/07/03/knitr-jekyll/
     require(knitr);
-    opts_chunk$set(fig.path=fig.path <- paste0("../../figs/", sub(".Rmd$", "", basename(input)), "/"))
+    opts_chunk$set(fig.path=fig.path <- paste0("figs/", sub(".Rmd$", "", basename(input)), "/"))
     knit_hooks$set(render_jekyll(highlight = "pygments"))
     knit(input, outfile, envir = parent.frame())
 }
