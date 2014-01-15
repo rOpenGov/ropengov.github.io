@@ -47,7 +47,7 @@ end
 
 namespace :projects do
   desc "Convert package vignettes to Jekyll pages"
-  task :convert_tutorials, [:username, :repo] do |t, args| 
+  task :convert_tutorials do 
 
     require 'open-uri'
     require 'zip'
@@ -55,131 +55,169 @@ namespace :projects do
     # Current dir
     site_dir = Dir.pwd
 
+    # # Check if there are tutorials available in the packaged
+    # # listed in _projects dir 
+    projects = parse_projects()
+
     # Download the repo zip to a tempdir
     Dir.mktmpdir do |tmp|
       Dir.chdir tmp
 
-      begin
-        # Construct a HTTPS URL to the package description file
-        zip_path = "/#{args.username}/#{args.repo}/archive/master.zip"
-        # Get the URI object
-        zip_uri = URI::HTTPS.build({:host => 'github.com', 
-                                    :path => zip_path})
-        puts "Dowloading #{zip_uri}"
-        zip_content = zip_uri.read
-        zip_file = "#{args.repo}.zip"
-        open(zip_file, 'wb') do |fo|
-          fo.print zip_content
-        end
+      projects.each do |project_file, project|
+        
+        if (project.key?('github') && project.key?('tutorial') && project['tutorial'] == 'Yes')
 
-      rescue OpenURI::HTTPError => e
-        puts "Reading #{zip_uri} failed"
-        puts "Error message: #{e}"  
-      end
+          begin
+            # Construct a HTTPS URL to the package description file
+            zip_path = "#{project['github']}".gsub("https://github.com", "") + "/archive/master.zip"
 
-      # Unzip the zip file
-      unzip_file(zip_file, tmp)
-      
-      # FIXME: hardcoding '-master' not a good idea
-      pkg_folder = File.join(tmp, args.repo + "-master")
-      # zip might have a 'pkg' subfolder structure
-      subdirs = Dir.glob(pkg_folder + "**/*/")
-      unless subdirs.empty?
-        subdirs.each do |dir|
-          if dir.include? "pkg"
-            pkg_folder = File.join(pkg_folder, "pkg")
+            # Get the URI object
+            zip_uri = URI::HTTPS.build({:host => 'github.com', 
+                                        :path => zip_path})
+            puts "Dowloading #{zip_uri}"
+            zip_content = zip_uri.read
+            zip_file = "#{project['title']}.zip"
+            open(zip_file, 'wb') do |fo|
+              fo.print zip_content
+            end
+
+          rescue OpenURI::HTTPError => e
+            puts "Reading #{zip_uri} failed"
+            puts "Error message: #{e}"  
+          end
+
+          # Unzip the zip file
+          unzip_file(zip_file, tmp)
+          
+          # FIXME: hardcoding '-master' not a good idea
+          pkg_folder = File.join(tmp, project['title'] + "-master")
+          # zip might have a 'pkg' subfolder structure
+          subdirs = Dir.glob(pkg_folder + "**/*/")
+          unless subdirs.empty?
+            subdirs.each do |dir|
+              if dir.include? "pkg"
+                pkg_folder = File.join(pkg_folder, "pkg")
+              end
+            end
+          end
+
+          pkg_files = Dir.glob(pkg_folder + "/**/*")
+          
+          # First, we need the content of the Description file
+          description = nil
+          
+          pkg_files.each do |file|
+            # Only get *.Rmd-files in vignettes directory
+            if file.match(/.*DESCRIPTION$/) 
+              puts "Parsing the content of package DESCRIPTION file"
+              # Get the content of the DESCRIPTION-file as a String
+              description = parse_description(File.open(file, "rb").read)
+            end
+          end
+
+          # Stop execution if DESCRIPTION could not be found
+          if description.nil?
+            puts 'Could not find a DESCRIPTION file, exiting'
+            exit 1
+          end
+
+          # YAML Front Matter template
+          # ---
+          # title: sotkanet vignette
+          # layout: package_page
+          # package_name: sotkanet
+          # package_name_show: sotkanet
+          # author: Leo Lahti
+          # meta_description: Sotkanet API R tools
+          # github_user: ropengov
+          # package_version: 0.9.01
+          # header_descripton: Sotkanet API R tools
+          # ---
+
+          # [fixme] - GitHub username parsing assumes a GH URL is present
+          # Construct a hash to hold the Front Matter data
+          fm_hash = {
+            "title" => "#{project['title']} vignette",
+            "layout" => "tutorial_page",
+            "package_name" => project['title'],
+            "package_name_show" => project['title'],
+            "author" => description["Author"].join(', '),
+            "meta_description" => description["Description"],
+            "github_user" => parse_github_user(project['github']),
+            "package_version" => description["Version"],
+            "header_descripton" => description["Description"]
+          }
+          
+          fm_string = generate_front_matter(fm_hash)
+
+          # [fixme] - has not been tested with multiple files. Currently
+          # the work logic assumes only one vignette per package.
+          pkg_files.each do |file|
+            # Only get *.Rmd-files in vignettes directory
+            if file.match(/vignettes\/.*\.Rmd/) 
+              puts "Parsing the content of #{file}"
+              # Get the content of the Rmd-file as a String
+              rmd_content = File.open(file, "rb").read
+              # Remove the knitr vignette chunk for regular packages
+              rmd_content = rmd_content.gsub(/<!--(.|\s|\n)*?-->/, '')
+              tutorial_content = fm_string + rmd_content
+              # Write the Front Matter + the vignette Rmd-file content to 
+              # a new Rmd file
+              tutorial_filename = File.join(site_dir, "tutorials", "#{project['title']}_tutorial.Rmd")
+              puts "Writing tutorial file #{tutorial_filename}"
+              File.open(tutorial_filename, 'w') {|f| f.write(tutorial_content) }
+            end
+          end
+
+          # Install the actual package
+          cran_mirror = "http://cran.rstudio.com"
+          puts "Installing R-package #{project['title']}"
+          cmd_string = ["R --vanilla --silent -e 'options(repos = c(CRAN=#{cran_mirror.inspect}))", 
+                        "library(devtools)",
+                        "install(#{pkg_folder.inspect}, dependencies=TRUE, build_vignettes=FALSE)'"].join("; ")
+
+          cmd_status = system cmd_string
+          if !cmd_status
+            fail "R-package installation failed, exiting"
           end
         end
       end
-
-      pkg_files = Dir.glob(pkg_folder + "/**/*")
-      
-      # First, we need the content of the Description file
-      description = nil
-      
-      pkg_files.each do |file|
-        # Only get *.Rmd-files in vignettes directory
-        if file.match(/.*DESCRIPTION$/) 
-          puts "Parsing the content of package DESCRIPTION file"
-          # Get the content of the DESCRIPTION-file as a String
-          description = parse_description(File.open(file, "rb").read)
-        end
-      end
-
-      # Stop execution if DESCRIPTION could not be found
-      if description.nil?
-        puts 'Could not find a DESCRIPTION file, exiting'
-        exit 1
-      end
-
-      # YAML Front Matter template
-      # ---
-      # title: sotkanet vignette
-      # layout: package_page
-      # package_name: sotkanet
-      # package_name_show: sotkanet
-      # author: Leo Lahti
-      # meta_description: Sotkanet API R tools
-      # github_user: ropengov
-      # package_version: 0.9.01
-      # header_descripton: Sotkanet API R tools
-      # ---
-
-      # Construct a hah to hold the Front Matter data
-      fm_hash = {
-        "title" => "#{args.repo} vignette",
-        "layout" => "package_page",
-        "package_name" => "#{args.repo}",
-        "package_name_show" => "#{args.repo}",
-        "author" => description["Author"].join(', '),
-        "meta_description" => description["Description"],
-        "github_user" => "#{args.username}",
-        "package_version" => description["Version"],
-        "header_descripton" => description["Description"]
-      }
-      
-      fm_string = "---\n#{fm_hash.map{|k,v| "#{k}: #{v}"}.join("\n")}\n---\n\n"
-
-      # FIXME: has not been tested with multiple files. Currently
-      # the work logic assumes only one vignette per package.
-      pkg_files.each do |file|
-        # Only get *.Rmd-files in vignettes directory
-        if file.match(/vignettes\/.*\.Rmd/) 
-          puts "Parsing the content of #{file}"
-          # Get the content of the Rmd-file as a String
-          rmd_content = File.open(file, "rb").read
-          # Remove the knitr vignette chunk for regular packages
-          rmd_content = rmd_content.gsub(/<!--(.|\s|\n)*?-->/, '')
-          tutorial_content = fm_string + rmd_content
-          # Write the Front Matter + the vignette Rmd-file content to 
-          # a new Rmd file
-          tutorial_filename = File.join(site_dir, "tutorials", "#{args.repo}_tutorial.Rmd")
-          puts "Writing tutorial file #{tutorial_filename}"
-          File.open(tutorial_filename, 'w') {|f| f.write(tutorial_content) }
-        end
-      end
-
-      # Install the actual package
-      cran_mirror = "http://cran.rstudio.com"
-      puts "Installing R-package #{args.repo}"
-      cmd_string = ["R --vanilla --silent -e 'options(repos = c(CRAN=#{cran_mirror.inspect}))", 
-                    "library(devtools)",
-                    "install(#{pkg_folder.inspect}, dependencies=TRUE)'"].join("; ")
-
-      cmd_status = system cmd_string
-      if !cmd_status
-        fail "R-package installation failed, exiting"
-      end
-
       # Move back to the site dir
       Dir.chdir site_dir
+      # Regenerate project mds
+      projects.each do |project_file, project|
+        puts "Updating project md-files"
+        File.open("#{project_file}", 'w') {|f| f.write project.to_yaml + '---'}
+      end
     end
 
     # knit the Rmd-tutorial files
-    puts "Knitting Rmd-files in folder 'tutorials'"
+    puts "Knitting all Rmd-files in folder 'tutorials'"
     cmd_status = system "./_knittutorials.R --force"
     if !cmd_status
       fail "Rmd file knitting failed, exiting"
+    end
+
+    # fig.options in _knittutorials.R is set relative to the site root folder, i.e.
+    # images created by knitr will be placed in 'figs' folder in the site root.
+    # Jekyll will, however, run the tutorial in URL
+    # {{ BASE_URL }}/tutorial/{{ package_name }}_tutorial/
+    # and will not find the 'figs' folder which relative path is now
+    # {{ BASE_URL }}/tutorial/{{ package_name }}_tutorial/../../figs/
+    # Manually correct for this
+    #
+    # WARNING! Awful hack! Repent! 
+    Dir.chdir("tutorials") do
+      md_files = Dir.glob('*.md')
+      
+      md_files.each do |md_file|
+        puts "Fixing image paths in tutorials/#{md_file}"
+        outdata = File.read(md_file).gsub(/\(figs\//, "(../../figs/")
+
+        File.open(md_file, 'w') do |out|
+          out << outdata
+        end  
+      end
     end
 
     # Regenerate the site
@@ -227,35 +265,48 @@ namespace :projects do
     return(desc_hash)
   end
 
+  def generate_front_matter(data)
+    return("---\n#{data.map{|k,v| "#{k}: #{v}"}.join("\n")}\n---\n\n")
+  end
+
+  def parse_github_user(url)
+    return(url.split("/")[3].downcase)
+  end
+
   def parse_projects(all=false)
     require 'yaml'
 
     # Parse all the project files
     project_files = Dir.glob('_projects/*.md')
-    projects = []
+    projects = {}
 
     puts "Looking for package tutorials in GitHub..."
 
     project_files.each do |project_file|
       content = YAML.load_file(project_file)
       if all
-        projects << content
+        projects[project_file] = content
       else
         if content['category'] == 'ropengov'
           tutorial_found = probe_tutorial(content['title'])
-          content['tutorial'] = tutorial_found ? "Yes" : "No"
-          projects << content
+          content['tutorial'] = tutorial_found ? true : false
+          projects[project_file] = content
         end
       end
     end
 
-    return(projects)
+    if projects.length == 0
+      fail "No projects found in " + File.join(Dir.pwd, '_projects')
+    else
+      return(projects)
+    end
   end
 
-  def probe_tutorial(package, vignette_file="vignette.Rmd")
+  def probe_tutorial(package)
 
     require 'open-uri'
     tutorial_found = false
+    vignette_file = "#{package}_tutorial.Rmd"
 
     url_path = "https://github.com/rOpenGov/#{package}/blob/master/vignettes/#{vignette_file}"
     
