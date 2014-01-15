@@ -1,6 +1,6 @@
 ---
 title: sotkanet vignette
-layout: package_page
+layout: tutorial_page
 package_name: sotkanet
 package_name_show: sotkanet
 author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
