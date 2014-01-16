@@ -168,7 +168,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData.png) 
+![plot of chunk sotkanetData](figs/sotkanet_tutorial/sotkanetData.png) 
 
 
 
@@ -194,7 +194,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3.png) 
+![plot of chunk sotkanetVisu3](figs/sotkanet_tutorial/sotkanetVisu3.png) 
 
 
 

@@ -413,7 +413,7 @@ p <- vwReg(Sepal.Length ~ Sepal.Width, iris)
 print(p)
 {% endhighlight %}
 
-![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline.png) 
+![plot of chunk regressionline](figs/sorvi_tutorial/regressionline.png) 
 
 
 Plot matrix:
@@ -424,7 +424,7 @@ mat <- rbind(c(1, 2, 3), c(1, 3, 1), c(4, 2, 2))
 pm <- PlotMatrix(mat, "twoway", midpoint = 2)
 {% endhighlight %}
 
-![plot of chunk unnamed-chunk-1](../../figs/sorvi_tutorial/unnamed-chunk-1.png) 
+![plot of chunk unnamed-chunk-1](figs/sorvi_tutorial/unnamed-chunk-1.png) 
 
 {% highlight r %}
 
