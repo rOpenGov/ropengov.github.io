@@ -1,36 +1,36 @@
-# Jekyll Incorporated
-Modern Jekyll based blog. Great for companies, products or anything. See live at [blog.sendtoinc.com](http://blog.sendtoinc.com)
+# rOpenGov.github.io
+
+A Jekyll-powered website of [rOpenGov-project](http://ropengov.github.io/) based on [Jekyll-incorporated](https://github.com/kippt/jekyll-incorporated). 
+
+### Warning
+
+Do all the editing on `jekyll-incorporated`-branch. **Never edit anything in `master`-branch.** All the changes done to `master` will be overwritten and lost when the next deployment is done.
 
 ## Installation & Usage
-    bundle install
-    jekyll serve --watch
 
-_Note: Requires Ruby version 1.9.3 =>. For example use [rbenv](https://github.com/sstephenson/rbenv)_   
-    
-## Configuration
-Edit: _config.yml (general options), main.css (theme colors &amp; fonts)
+See the [project wiki](https://github.com/rOpenGov/ropengov.github.io/wiki) for details. 
 
-```
-jekyll-incorporated/
-├── _config.yml
-├── _assets/
-    ├── stylesheets/
-        ├── main.scss
-```
+## Authors
 
-_Note: when editing _config.yml, you need to restart jekyll to see the changes.__
+### Contributors
 
-    
-## Publish to Github Pages
-1. Add your domain to _CNAME_
-2. Edit your repo address at _Rakefile_
-    
-Run rake task. **NOTE: It will deploy the generated site to _master_ branch overwriting it**    
-``` 
-rake site:publish
-```
+**Joona Lehtomäki**
 
-## Original authors
++ [http://twitter.com/jlehtoma](http://twitter.com/jlehtoma)
++ [http://github.com/jlehtoma](http://github.com/jlehtoma)
+
+**Leo Lahti**
+
++ [http://twitter.com/antagomir](http://twitter.com/antagomir)
++ [http://github.com/antagomir](http://github.com/antagomir)
+
+**Markus Kainu**
+
++ [http://twitter.com/muuankarski](http://twitter.com/muuankarski)
++ [http://github.com/muuankarski](http://github.com/muuankarski)
+
+
+### Original authors 
 
 Originally build for [sendtoinc.com](https://sendtoinc.com), your workspace for sharing and organizing knowledge
 
