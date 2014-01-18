@@ -65,7 +65,7 @@ namespace :projects do
 
       projects.each do |project_file, project|
         
-        if (project.key?('github') && project.key?('tutorial') && project['tutorial'] == 'Yes')
+        if (project.key?('github') && project.key?('tutorial') && project['tutorial'] == true)
 
           begin
             # Construct a HTTPS URL to the package description file
@@ -186,7 +186,7 @@ namespace :projects do
       Dir.chdir site_dir
       # Regenerate project mds
       projects.each do |project_file, project|
-        puts "Updating project md-files"
+        puts "Updating project md-file #{project_file}"
         File.open("#{project_file}", 'w') {|f| f.write project.to_yaml + '---'}
       end
     end

@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.22
+package_version: 0.4.23
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 

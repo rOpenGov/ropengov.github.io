@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.22
+package_version: 0.4.23
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -413,7 +413,7 @@ p <- vwReg(Sepal.Length ~ Sepal.Width, iris)
 print(p)
 {% endhighlight %}
 
-![plot of chunk regressionline](figs/sorvi_tutorial/regressionline.png) 
+![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline.png) 
 
 
 Plot matrix:
@@ -424,7 +424,7 @@ mat <- rbind(c(1, 2, 3), c(1, 3, 1), c(4, 2, 2))
 pm <- PlotMatrix(mat, "twoway", midpoint = 2)
 {% endhighlight %}
 
-![plot of chunk unnamed-chunk-1](figs/sorvi_tutorial/unnamed-chunk-1.png) 
+![plot of chunk unnamed-chunk-1](../../figs/sorvi_tutorial/unnamed-chunk-1.png) 
 
 {% highlight r %}
 
@@ -473,7 +473,7 @@ sessionInfo()
 ## other attached packages:
 ##  [1] RColorBrewer_1.0-5 ggplot2_0.9.3.1    XML_3.98-1.1      
 ##  [4] pxR_0.29           stringr_0.6.2      reshape_0.8.4     
-##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.22      
+##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.23      
 ## [10] rjson_0.2.13       RCurl_1.95-4.1     bitops_1.0-6      
 ## [13] knitr_1.5         
 ## 
