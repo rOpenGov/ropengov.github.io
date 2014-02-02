@@ -5,3 +5,4 @@ _site/
 .directory
 cache/
 .Rhistory
+.tags*
