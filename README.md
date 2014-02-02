@@ -4,7 +4,7 @@ A Jekyll-powered website of [rOpenGov-project](http://ropengov.github.io/) based
 
 ### Warning
 
-Do all the editing on `jekyll-incorporated`-branch. **Never edit anything in `master`-branch.** All the changes done to `master` will be overwritten and lost when the next deployment is done.
+Do all the editing on `site-development`-branch. **Never edit anything in `master`-branch.** All the changes done to `master` will be overwritten and lost when the next deployment is done.
 
 ## Installation & Usage
 
