@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.23
+package_version: 0.4.24
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -111,7 +111,13 @@ municipality.info.statfi[1:2,]
 
 List the province for each municipality in Finland:
 ```{r province2, message=FALSE, warning=FALSE}
+
+# Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
+head(m2p)
+
+# All municipalities
+m2p <- FindProvince(municipality.info.statfi$Kunta) 
 
 # Speeding up with predefined municipality info table:
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
@@ -120,8 +126,8 @@ head(m2p)
 
 Convert municipality codes and names:
 ```{r province3, message=FALSE}
-conversion.table <- ConvertMunicipalityCodes()
-head(conversion.table)
+municipality_ids <- ConvertMunicipalityCodes()
+head(municipality_ids)
 ```
 
 Translate municipality names Finnish/English:
@@ -147,6 +153,15 @@ Get information of Finnish provinces from Wikipedia:
 ```{r municipality, message=FALSE}
 tab <- GetProvinceInfoWikipedia()
 head(tab)
+```
+
+### Company subsidies from the Finnish government
+
+Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
+
+```{r yritystuet-1, warning=FALSE, message=FALSE}
+tuet <- GetMOTYritystuet()
+head(tuet)
 ```
 
 

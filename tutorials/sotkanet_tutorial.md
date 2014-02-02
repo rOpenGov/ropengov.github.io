@@ -287,7 +287,7 @@ sessionInfo()
 ##  [1] sotkanet_0.9.01    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
 ##  [4] XML_3.98-1.1       pxR_0.29           stringr_0.6.2     
 ##  [7] reshape_0.8.4      sp_1.0-14          plyr_1.8          
-## [10] sorvi_0.4.23       rjson_0.2.13       RCurl_1.95-4.1    
+## [10] sorvi_0.4.24       rjson_0.2.13       RCurl_1.95-4.1    
 ## [13] bitops_1.0-6       knitr_1.5         
 ## 
 ## loaded via a namespace (and not attached):

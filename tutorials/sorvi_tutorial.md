@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.23
+package_version: 0.4.24
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -301,7 +301,25 @@ municipality.info.statfi[1:2, ]
 List the province for each municipality in Finland:
 
 {% highlight r %}
+
+# Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"))
+head(m2p)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##          Helsinki           Tampere             Turku 
+##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
+{% endhighlight %}
+
+
+
+{% highlight r %}
+
+# All municipalities
+m2p <- FindProvince(municipality.info.statfi$Kunta)
 
 # Speeding up with predefined municipality info table:
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
@@ -319,8 +337,8 @@ head(m2p)
 Convert municipality codes and names:
 
 {% highlight r %}
-conversion.table <- ConvertMunicipalityCodes()
-head(conversion.table)
+municipality_ids <- ConvertMunicipalityCodes()
+head(municipality_ids)
 {% endhighlight %}
 
 
@@ -400,6 +418,50 @@ head(tab)
 {% endhighlight %}
 
 
+### Company subsidies from the Finnish government
+
+Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
+
+
+{% highlight r %}
+tuet <- GetMOTYritystuet()
+head(tuet)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##                         yritys   Y.tunnus vuosi maksettu.summa
+## 1        Aker Yards Oy (Turku)  0772017-4  2008       18000000
+## 2       STX Finland Oy (Rauma)  0772017-4  2010        3975000
+## 3    Uudenkaupungin Työvene Oy 1614238-8   2010         539210
+## 4       STX Finland Oy (Turku)  0772017-4  2011       11330550
+## 5 Arctech Helsinki Shipyard Oy  2366464-3  2011        1688000
+## 6       STX Finland Oy (Turku)  0772017-4  2011         731700
+##                                   tukimuoto       myöntäjä        maakunta
+## 1 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
+## 2 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM       Satakunta
+## 3 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
+## 4 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
+## 5 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM         Uusimaa
+## 6 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
+##   lainat  TOL1                                            TOL2 TOL.versio
+## 1     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+## 2     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+## 3     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+## 4     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+## 5     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+## 6     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
+##                                     Kommentti
+## 1 Sulautunut STX Finlandiin -> y-tunnus = STX
+## 2                                            
+## 3                                            
+## 4                                            
+## 5                                            
+## 6
+{% endhighlight %}
+
+
 
 ### Visualization routines
 
@@ -473,7 +535,7 @@ sessionInfo()
 ## other attached packages:
 ##  [1] RColorBrewer_1.0-5 ggplot2_0.9.3.1    XML_3.98-1.1      
 ##  [4] pxR_0.29           stringr_0.6.2      reshape_0.8.4     
-##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.23      
+##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.24      
 ## [10] rjson_0.2.13       RCurl_1.95-4.1     bitops_1.0-6      
 ## [13] knitr_1.5         
 ## 
