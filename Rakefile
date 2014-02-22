@@ -102,7 +102,11 @@ namespace :projects do
           end
 
           pkg_files = Dir.glob(pkg_folder + "/**/*")
-          
+
+          if pkg_files.length == 0
+            abort "ERROR: no files found in #{pkg_folder}"
+          end
+
           # First, we need the content of the Description file
           description = nil
           
