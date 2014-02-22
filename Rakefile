@@ -291,9 +291,19 @@ namespace :projects do
         projects[project_file] = content
       else
         if content['category'] == 'ropengov'
-          tutorial_found = probe_tutorial(content['title'])
-          content['tutorial'] = tutorial_found ? true : false
-          projects[project_file] = content
+          if content['github']
+            gh_user = parse_github_user(content['github'])
+            if find_tutorial(content['title'], gh_user)
+              puts "  Tutorial found for #{content['title']}"
+              content['tutorial'] = true
+            else
+              puts "  No tutorial found for #{content['title']}"
+              content['tutorial'] = false
+            end
+            projects[project_file] = content
+          else
+            puts "  No GitHub URL defined for #{content['title']}"
+          end
         end
       end
     end
@@ -305,21 +315,18 @@ namespace :projects do
     end
   end
 
-  def probe_tutorial(package)
+  def find_tutorial(package, gh_user)
 
     require 'open-uri'
-    tutorial_found = false
     vignette_file = "#{package}_tutorial.Rmd"
+    tutorial_found = false
 
-    url_path = "https://github.com/rOpenGov/#{package}/blob/master/vignettes/#{vignette_file}"
-    
+    url_path = "https://github.com/#{gh_user}/#{package}/blob/master/vignettes/#{vignette_file}"
     begin
       open(url_path) do |f|
-        puts "  Tutorial found for #{package}"
         tutorial_found = true
       end
     rescue OpenURI::HTTPError => e
-      puts "  No tutorial found for #{package}"
     end
     return(tutorial_found)
   end
