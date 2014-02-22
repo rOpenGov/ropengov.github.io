@@ -140,6 +140,7 @@ namespace :projects do
 
           # [fixme] - GitHub username parsing assumes a GH URL is present
           # Construct a hash to hold the Front Matter data
+          description["Author"] = [description["Author"]]
           fm_hash = {
             "title" => "#{project['title']} vignette",
             "layout" => "tutorial_page",
