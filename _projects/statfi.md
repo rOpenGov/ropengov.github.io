@@ -1,8 +1,8 @@
 ---
 title: statfi
 description: Statistics Finland (StatFi) database R tools
-link: http://ropengov.github.io/statfi/
-github: http://ropengov.github.io/statfi/
+link: https://github.com/ropengov/sotkanet
+github: https://github.com/ropengov/sotkanet
 category: ropengov
 tutorial: false
 ---

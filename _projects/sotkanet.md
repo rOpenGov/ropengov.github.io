@@ -1,8 +1,8 @@
 ---
 title: sotkanet
 description: Sotkanet Finland demographic indicator R tools
-link: http://ropengov.github.io/sotkanet/
-github: https://github.com/rOpenGov/sotkanet
+link: https://github.com/ropengov/sotkanet
+github: https://github.com/ropengov/sotkanet
 category: ropengov
 tutorial: true
 ---

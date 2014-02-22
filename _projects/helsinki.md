@@ -1,8 +1,9 @@
 ---
 title: helsinki
 description: Helsinki open data R tools
-link: http://ropengov.github.io/helsinki/
-github: http://ropengov.github.io/helsinki/
+link: https://github.com/ropengov/helsinki
+github: https://github.com/ropengov/helsinki
 category: ropengov
 tutorial: false
 ---
+
