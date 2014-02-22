@@ -4,7 +4,7 @@ title: "rOpenGov projects"
 date: 2011-08-31 13:37
 ---
 
-The following projects have joined rOpenGov - your contributions are welcome!
+The following projects have joined rOpenGov - <a href="{{ site.url }}/contribute">your contributions are welcome!</a>
 
 {% projectlist _projects.html ropengov %}
 
