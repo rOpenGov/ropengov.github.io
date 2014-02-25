@@ -6,10 +6,11 @@ rvm:
 branches:
   only:
   - site-development
+jdk:
+  - openjdk7
 script: rake projects:convert_tutorials
 before_script:
   - sudo apt-get update
-  - sudo apt-get install openjdk-7-jdk
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
