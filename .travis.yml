@@ -5,7 +5,7 @@ rvm:
 - 1.9.3
 branches:
   only:
-  - jekyll-inc-tut
+  - site-development
 script: rake projects:convert_tutorials
 before_script:
   - sudo apt-get update
