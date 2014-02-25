@@ -16,7 +16,7 @@ before_script:
   - ./travis-tool.sh bootstrap
   - ./travis-tool.sh install_r knitr
   - ./travis-tool.sh github_package devtools
-  - R CMD javareconf -e
+  - sudo R CMD javareconf
 notifications:
   email:
     - joona.lehtomaki@gmail.com
