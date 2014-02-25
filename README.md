@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/rOpenGov/ropengov.github.io.png?branch=site-development)]
+![Build Status](https://travis-ci.org/rOpenGov/ropengov.github.io.png?branch=site-development)
 
 # rOpenGov.github.io
 
