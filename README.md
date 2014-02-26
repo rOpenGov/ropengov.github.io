@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/rOpenGov/ropengov.github.io.png?branch=site-development)
+
 # rOpenGov.github.io
 
 A Jekyll-powered website of [rOpenGov-project](http://ropengov.github.io/) based on [Jekyll-incorporated](https://github.com/kippt/jekyll-incorporated). 

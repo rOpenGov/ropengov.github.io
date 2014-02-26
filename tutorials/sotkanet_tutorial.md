@@ -6,7 +6,7 @@ package_name_show: sotkanet
 author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
 meta_description: Sotkanet API R Tools
 github_user: ropengov
-package_version: 0.9.01
+package_version: 0.9.02
 header_descripton: Sotkanet API R Tools
 ---
 
@@ -63,7 +63,7 @@ head(sotkanet.indicators)
 ## 6       127
 ##                                                                            indicator.title.fi
 ## 1  Mielenterveyden häiriöihin sairaalahoitoa saaneet 0 - 17-vuotiaat / 1 000 vastaavanikäistä
-## 2                     Toimeentulotukea saaneet 25-64-vuotiaat, % vastaavanikäisestä väestöstä
+## 2                   Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavanikäisestä väestöstä
 ## 3 Somaattisen erikoissairaanhoidon hoitopäivät 75 vuotta täyttäneillä / 1000 vastaavanikäistä
 ## 4                                                                 0 - 6-vuotiaat, % väestöstä
 ## 5                                                      Yksinhuoltajaperheet, % lapsiperheistä
@@ -178,8 +178,7 @@ Smaller municipalities have more random variation.
 
 
 {% highlight r %}
-selected.indicators <- c("Väestö 31.12.", "Kuntien välinen nettomuutto / 1 000 asukasta")
-selected.inds <- sotkanet.indicators$indicator[match(selected.indicators, sotkanet.indicators$indicator.title.fi)]
+selected.inds <- c(127, 178)
 dat <- GetDataSotkanet(indicators = selected.inds, years = 2011, genders = c("total"))
 datf <- dat[, c("region.title.fi", "indicator.title.fi", "primary.value")]
 dw <- reshape(datf, idvar = "region.title.fi", timevar = "indicator.title.fi", 
@@ -202,7 +201,7 @@ print(p)
 ### Fetch all SOTKAnet indicators
 
 This takes for a long time and is not recommended for regular
-use. Save the data on your local dissk for further work.
+use. Save the data on your local disk for further work.
 
 
 
@@ -252,8 +251,8 @@ This work can be freely used, modified and distributed under the
 [Two-clause FreeBSD
 license](http://en.wikipedia.org/wiki/BSD\_licenses). Kindly cite the
 R package as 'Leo Lahti, Einari Happonen, Juuso Parkkinen ja Joona
-Lehtomäki (2013). sotkanet R package. URL:
-http://ropengov.github.io/sotkanet'.
+Lehtomaki (2013). sotkanet R package. URL:
+http://www.github.com/ropengov/sotkanet'.
 
 
 ### Session info
@@ -284,7 +283,7 @@ sessionInfo()
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sotkanet_0.9.01    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
+##  [1] sotkanet_0.9.02    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
 ##  [4] XML_3.98-1.1       pxR_0.29           stringr_0.6.2     
 ##  [7] reshape_0.8.4      sp_1.0-14          plyr_1.8          
 ## [10] sorvi_0.4.24       rjson_0.2.13       RCurl_1.95-4.1    
