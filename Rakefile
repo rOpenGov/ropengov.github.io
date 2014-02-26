@@ -9,6 +9,123 @@ require "jekyll"
 GITHUB_REPONAME = "rOpenGov/ropengov.github.io"
 
 namespace :site do
+  desc "Generate project table"
+  task :projecttable do
+    puts "Generating project table"
+
+    require 'open-uri'
+    require 'zip'
+
+    # Current dir
+    site_dir = Dir.pwd
+
+    # # Check if there are DESCRIPTION files available in the packages
+    # # listed in _projects dir 
+    projects = update_projects()
+    
+    # Download the repo zip to a tempdir
+    Dir.mktmpdir do |tmp|
+      Dir.chdir tmp
+
+      projects.each do |project_file, project|
+        
+        if (project.key?('github') && project.key?('description') && project['description'] == true)
+
+          begin
+            # Construct a HTTPS URL to the package description file
+            zip_path = "#{project['github']}".gsub("https://github.com", "") + "/archive/master.zip"
+
+            # Get the URI object
+            zip_uri = URI::HTTPS.build({:host => 'github.com', 
+                                        :path => zip_path})
+            puts "Dowloading #{zip_uri}"
+            zip_content = zip_uri.read
+            zip_file = "#{project['title']}.zip"
+            open(zip_file, 'wb') do |fo|
+              fo.print zip_content
+            end
+
+          rescue OpenURI::HTTPError => e
+            puts "Reading #{zip_uri} failed"
+            puts "Error message: #{e}"  
+          end
+
+          # Unzip the zip file
+          unzip_file(zip_file, tmp)
+          
+          # FIXME: hardcoding '-master' not a good idea
+          pkg_folder = File.join(tmp, project['title'] + "-master")
+          pkg_files = Dir.glob(pkg_folder + "/**/*")
+
+          if pkg_files.length == 0
+            abort "ERROR: no files found in #{pkg_folder}"
+          end
+
+          # First, we need the content of the Description file
+          description = nil
+          
+          pkg_files.each do |file|
+            if file.match(/.*DESCRIPTION$/) 
+              # Get the content of the DESCRIPTION-file as a String
+              puts "Parsing the content of package DESCRIPTION file"
+              description = parse_description(File.open(file, "rb").read)
+            end
+          end
+
+          # Stop execution if DESCRIPTION could not be found
+          if description.nil?
+            puts 'Could not find a DESCRIPTION file, exiting'
+            exit 1
+          end
+
+          # YAML Front Matter template
+          # ---
+          # title: sotkanet vignette
+          # layout: package_page
+          # package_name: sotkanet
+          # package_name_show: sotkanet
+          # author: Leo Lahti
+          # meta_description: Sotkanet API R tools
+          # github_user: ropengov
+          # package_version: 0.9.01
+          # header_descripton: Sotkanet API R tools
+          # ---
+
+          # [fixme] - GitHub username parsing assumes a GH URL is present
+          # Construct a hash to hold the Front Matter data
+          description["Author"] = [description["Author"]]
+          fm_hash = {
+            "title" => "#{project['title']} info",
+            "layout" => "info_page",
+            "package_name" => project['title'],
+            "package_name_show" => project['title'],
+            "author" => description["Author"].join(', '),
+            "meta_description" => description["Description"],
+            "github_user" => parse_github_user(project['github']),
+            "package_version" => description["Version"],
+            "header_descripton" => description["Description"]
+          }
+          
+          fm_string = generate_front_matter(fm_hash)
+
+        end
+      end
+
+      # Move back to the site dir
+      #Dir.chdir site_dir
+      ## Regenerate project mds
+      #projects.each do |project_file, project|
+      #  puts "Updating project md-file #{project_file}"
+      #  File.open("#{project_file}", 'w') {|f| f.write project.to_yaml + '---'}
+      #end
+
+    end
+
+    puts "All through"
+
+  end
+
+
   desc "Generate blog files"
   task :generate do
     Jekyll::Site.new(Jekyll.configuration({
@@ -43,6 +160,63 @@ namespace :site do
       system "git push origin master:refs/heads/master --force"
     end
   end
+
+
+  def update_projects(all=false)
+    require 'yaml'
+
+    # Parse all the project files
+    project_files = Dir.glob('_projects/*.md')
+    projects = {}
+
+    puts "Scanning package DESCRIPTION files in GitHub..."
+
+    project_files.each do |project_file|
+      content = YAML.load_file(project_file)
+      if all
+        projects[project_file] = content
+      else
+        if content['category'] == 'ropengov'
+          if content['github']
+            gh_user = parse_github_user(content['github'])
+            if find_description(content['title'], gh_user)
+              puts "  DESCRIPTION file found for #{content['title']}"
+              content['description'] = true
+            else
+              puts "  No DESCRIPTION file found for #{content['title']}"
+              content['description'] = false
+            end
+            projects[project_file] = content
+          else
+            puts "  No GitHub URL defined for #{content['title']}"
+          end
+        end
+      end
+    end
+
+    if projects.length == 0
+      fail "No projects found in " + File.join(Dir.pwd, '_projects')
+    else
+      return(projects)
+    end
+  end
+
+  def find_description(package, gh_user)
+
+    require 'open-uri'
+    description_file = "DESCRIPTION" # "#{package}_tutorial.Rmd"
+    description_found = false
+
+    url_path = "https://github.com/#{gh_user}/#{package}/blob/master/#{description_file}"
+    begin
+      open(url_path) do |f|
+        description_found = true
+      end
+    rescue OpenURI::HTTPError => e
+    end
+    return(description_found)
+  end
+
 end
 
 namespace :projects do
@@ -55,7 +229,7 @@ namespace :projects do
     # Current dir
     site_dir = Dir.pwd
 
-    # # Check if there are tutorials available in the packaged
+    # # Check if there are tutorials available in the packages
     # # listed in _projects dir 
     projects = parse_projects()
 
