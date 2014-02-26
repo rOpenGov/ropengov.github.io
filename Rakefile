@@ -11,6 +11,7 @@ GITHUB_REPONAME = "rOpenGov/ropengov.github.io"
 namespace :site do
   desc "Generate project table"
   task :projecttable do
+
     puts "Extracting information for the project table"
 
     require 'open-uri'
@@ -25,13 +26,13 @@ namespace :site do
 
     # Read URLs for all projects
     urls = read_projects()
-    
-    # Download the repo zip to a tempdir
-    Dir.mktmpdir do |tmp|
-      Dir.chdir tmp
 
-      urls.each do |title, url|
+    urls.each do |title, url|
         
+      # Download the repo zip to a tempdir
+      Dir.mktmpdir do |tmp|
+        Dir.chdir tmp
+
           begin
             # Construct a HTTPS URL to the package description file
             zip_path = url.gsub("https://github.com", "") + "/archive/master.zip"
@@ -85,11 +86,10 @@ namespace :site do
         # Move back to the site dir
         Dir.chdir site_dir
 
-	# TODO
         # Regenerate project mds
-        puts "Creating project md-file for #{title}"
-	project = update_description(description)
-        File.open("#{title}" + 'check', 'w') {|f| f.write project.to_yaml + '---'}
+        puts "Creating project file for #{title}"
+        project = update_description(description)
+        File.open("_projects/" + "#{title}" + 'check', 'w') {|f| f.write project.to_yaml + '---'}
 
       end
     end
