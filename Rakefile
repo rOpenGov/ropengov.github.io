@@ -30,20 +30,21 @@ namespace :site do
     Dir.mktmpdir do |tmp|
       Dir.chdir tmp
 
-      projects.each do |project_file, project|
+      urls.each do |title, url|
         
-        if (project.key?('github') && project.key?('description') && project['description'] == true)
-
           begin
             # Construct a HTTPS URL to the package description file
-            zip_path = "#{project['github']}".gsub("https://github.com", "") + "/archive/master.zip"
+            zip_path = url.gsub("https://github.com", "") + "/archive/master.zip"
 
             # Get the URI object
             zip_uri = URI::HTTPS.build({:host => 'github.com', 
                                         :path => zip_path})
+
             puts "Dowloading #{zip_uri}"
+
             zip_content = zip_uri.read
-            zip_file = "#{project['title']}.zip"
+            zip_file = File.join(title + ".zip")
+
             open(zip_file, 'wb') do |fo|
               fo.print zip_content
             end
@@ -57,7 +58,7 @@ namespace :site do
           unzip_file(zip_file, tmp)
           
           # FIXME: hardcoding '-master' not a good idea
-          pkg_folder = File.join(tmp, project['title'] + "-master")
+          pkg_folder = File.join(tmp, title + "-master")
           pkg_files = Dir.glob(pkg_folder + "/**/*")
 
           if pkg_files.length == 0
@@ -81,45 +82,14 @@ namespace :site do
             exit 1
           end
 
-          # YAML Front Matter template
-          # ---
-          # title: sotkanet vignette
-          # layout: package_page
-          # package_name: sotkanet
-          # package_name_show: sotkanet
-          # author: Leo Lahti
-          # meta_description: Sotkanet API R tools
-          # github_user: ropengov
-          # package_version: 0.9.01
-          # header_descripton: Sotkanet API R tools
-          # ---
-
-          # [fixme] - GitHub username parsing assumes a GH URL is present
-          # Construct a hash to hold the Front Matter data
-          description["Author"] = [description["Author"]]
-          fm_hash = {
-            "title" => "#{project['title']} info",
-            "package_name" => project['title'],
-            "package_name_show" => project['title'],
-            "author" => description["Author"].join(', '),
-            "meta_description" => description["Description"],
-            "github_user" => parse_github_user(project['github']),
-            "package_version" => description["Version"],
-            "header_descripton" => description["Description"]
-          }
-
-          fm_string = generate_front_matter(fm_hash)
-
-        end
-
         # Move back to the site dir
         Dir.chdir site_dir
 
+	# TODO
         # Regenerate project mds
-        puts "Updating project md-file #{project_file}"
-	project = update_description(description, project)
-	puts project
-        File.open("#{project_file}" + 'test', 'w') {|f| f.write project.to_yaml + '---'}
+        puts "Creating project md-file for #{title}"
+	project = update_description(description)
+        File.open("#{title}" + 'check', 'w') {|f| f.write project.to_yaml + '---'}
 
       end
     end
@@ -165,11 +135,13 @@ namespace :site do
   end
 
 
-  def update_description(description, project)
+  def update_description(description)
 
     if description.nil?
       puts 'Could not find DESCRIPTION file, passing'
     else 
+
+      project = {}
 
       if not(description["Package"].nil?)
         project["Title"] = description["Package"].inspect
