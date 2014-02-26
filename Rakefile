@@ -19,9 +19,12 @@ namespace :site do
     # Current dir
     site_dir = Dir.pwd
 
-    # # Check if there are DESCRIPTION files available in the packages
-    # # listed in _projects dir 
+    # Check if there are DESCRIPTION files available in the packages
+    # listed in _projects dir 
     projects = update_projects()
+
+    # Read URLs for all projects
+    urls = read_projects()
     
     # Download the repo zip to a tempdir
     Dir.mktmpdir do |tmp|
@@ -168,17 +171,29 @@ namespace :site do
       puts 'Could not find DESCRIPTION file, passing'
     else 
 
-      project["title"] = description["Package"].inspect
-      project["title2"] = description["Title"].inspect
-      #project["version"] = description["Version"].inspect
-      project["author"] = description["Author"].inspect
-      project["maintainer"] = description["Maintainer"].inspect
-      project["description"] = description["Description"].inspect
-      #project["license"] = description["License"].inspect
-      project["link"] = description["URL"].inspect
-      project["bugreports"] = description["BugReports"].inspect
-      #project["github"] = description[""].inspect
-      project["cran"] = description["URL.CRAN"].inspect
+      if not(description["Package"].nil?)
+        project["Title"] = description["Package"].inspect
+      end
+
+      if not(description["Title"].nil?)
+        project["description"] = description["Title"].inspect
+      end
+
+      if not(description["Maintainer"].nil?)
+        project["maintainer"] = description["Maintainer"].inspect
+      end
+
+      if not(description["URL"].nil?)
+        project["link"] = description["URL"].inspect
+      end
+
+      if not(description["BugReports"].nil?)
+        project["bugreports"] = description["BugReports"].inspect
+      end
+
+      if not(description["URL.CRAN"].nil?)
+        project["cran"] = description["URL.CRAN"].inspect
+      end
 
     end
 
@@ -225,6 +240,17 @@ namespace :site do
       return(projects)
     end
   end
+
+
+  def read_projects()
+
+    require 'yaml'
+    puts "Scanning package URLs..."
+    urls = YAML.load_file('_projects/master.list')
+    return(urls)
+
+  end
+
 
   def find_description(package, gh_user)
 
