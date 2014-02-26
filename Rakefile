@@ -11,7 +11,7 @@ GITHUB_REPONAME = "rOpenGov/ropengov.github.io"
 namespace :site do
   desc "Generate project table"
   task :projecttable do
-    puts "Generating project table"
+    puts "Extracting information for the project table"
 
     require 'open-uri'
     require 'zip'
@@ -96,7 +96,6 @@ namespace :site do
           description["Author"] = [description["Author"]]
           fm_hash = {
             "title" => "#{project['title']} info",
-            "layout" => "info_page",
             "package_name" => project['title'],
             "package_name_show" => project['title'],
             "author" => description["Author"].join(', '),
@@ -105,23 +104,24 @@ namespace :site do
             "package_version" => description["Version"],
             "header_descripton" => description["Description"]
           }
-          
+
           fm_string = generate_front_matter(fm_hash)
 
         end
+
+        # Move back to the site dir
+        Dir.chdir site_dir
+
+        # Regenerate project mds
+        puts "Updating project md-file #{project_file}"
+	project = update_description(description, project)
+	puts project
+        File.open("#{project_file}" + 'test', 'w') {|f| f.write project.to_yaml + '---'}
+
       end
-
-      # Move back to the site dir
-      #Dir.chdir site_dir
-      ## Regenerate project mds
-      #projects.each do |project_file, project|
-      #  puts "Updating project md-file #{project_file}"
-      #  File.open("#{project_file}", 'w') {|f| f.write project.to_yaml + '---'}
-      #end
-
     end
 
-    puts "All through"
+    puts "DESCRIPTION files scanned."
 
   end
 
@@ -159,6 +159,31 @@ namespace :site do
       system "git remote add origin git@github.com:#{GITHUB_REPONAME}.git"
       system "git push origin master:refs/heads/master --force"
     end
+  end
+
+
+  def update_description(description, project)
+
+    if description.nil?
+      puts 'Could not find DESCRIPTION file, passing'
+    else 
+
+      project["title"] = description["Package"].inspect
+      project["title2"] = description["Title"].inspect
+      #project["version"] = description["Version"].inspect
+      project["author"] = description["Author"].inspect
+      project["maintainer"] = description["Maintainer"].inspect
+      project["description"] = description["Description"].inspect
+      #project["license"] = description["License"].inspect
+      project["link"] = description["URL"].inspect
+      project["bugreports"] = description["BugReports"].inspect
+      #project["github"] = description[""].inspect
+      project["cran"] = description["URL.CRAN"].inspect
+
+    end
+
+    return(project)
+
   end
 
 
