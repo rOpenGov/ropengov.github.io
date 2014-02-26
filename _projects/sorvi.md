@@ -1,5 +1,6 @@
 ---
-Title: ! '"sorvi"'
+Title: !binary |-
+  c29ydmk=
 description: ! '"Finnish Open Government Data Toolkit"'
 maintainer: ! '"Leo Lahti <louhos@googlegroups.com>"'
 link: ! '"http://louhos.github.com/sorvi"'

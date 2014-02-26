@@ -1,5 +1,6 @@
 ---
-Title: ! '"statfi"'
+Title: !binary |-
+  c3RhdGZp
 description: ! '"statfi R tools"'
 maintainer: ! '"Leo Lahti <louhos@googlegroups.com>"'
 link: ! '"http://ropengov.github.com/statfi"'

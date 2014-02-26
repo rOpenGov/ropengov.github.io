@@ -1,5 +1,6 @@
 ---
-Title: ! '"sotkanet"'
+Title: !binary |-
+  c290a2FuZXQ=
 description: ! '"Sotkanet R Tools"'
 maintainer: ! '"Leo Lahti <louhos@googlegroups.com>"'
 link: ! '"https://github.com/ropengov/sotkanet"'

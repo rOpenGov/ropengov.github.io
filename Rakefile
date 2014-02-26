@@ -149,7 +149,7 @@ namespace :site do
       project = {}
 
       if not(description["Package"].nil?)
-        project["Title"] = description["Package"].inspect
+        project["Title"] = description["Package"]#.inspect
       end
 
       if not(description["Title"].nil?)
