@@ -1,8 +1,9 @@
 ---
-title: sotkanet
-description: Sotkanet Finland demographic indicator R tools
-link: https://github.com/ropengov/sotkanet
-github: https://github.com/ropengov/sotkanet
+Title: ! '"sotkanet"'
+description: ! '"Sotkanet R Tools"'
+maintainer: ! '"Leo Lahti <louhos@googlegroups.com>"'
+link: ! '"https://github.com/ropengov/sotkanet"'
+github: https://github.com/rOpenGov/sotkanet
+bugreports: ! '"https://github.com/ropengov/sotkanet/issues"'
 category: ropengov
-tutorial: true
 ---

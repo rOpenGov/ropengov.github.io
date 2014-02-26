@@ -1,8 +1,9 @@
 ---
-title: statfi
-description: Statistics Finland (StatFi) database R tools
-link: https://github.com/ropengov/statfi
-github: https://github.com/ropengov/statfi
+Title: ! '"statfi"'
+description: ! '"statfi R tools"'
+maintainer: ! '"Leo Lahti <louhos@googlegroups.com>"'
+link: ! '"http://ropengov.github.com/statfi"'
+github: https://github.com/rOpenGov/statfi
+cran: ! '"http://ropengov.github.com/statfiTODO"'
 category: ropengov
-tutorial: false
 ---

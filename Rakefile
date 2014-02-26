@@ -89,7 +89,7 @@ namespace :site do
         # Regenerate project mds
         puts "Creating project file for #{title}"
         project = update_description(description, url)
-        File.open("_projects/" + "#{title}" + 'check', 'w') {|f| f.write project.to_yaml + '---'}
+        File.open("_projects/" + "#{title}" + '.md', 'w') {|f| f.write project.to_yaml + '---'}
 
       end
     end
