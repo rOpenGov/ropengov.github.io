@@ -88,7 +88,7 @@ namespace :site do
 
         # Regenerate project mds
         puts "Creating project file for #{title}"
-        project = update_description(description)
+        project = update_description(description, url)
         File.open("_projects/" + "#{title}" + 'check', 'w') {|f| f.write project.to_yaml + '---'}
 
       end
@@ -135,7 +135,7 @@ namespace :site do
   end
 
 
-  def update_description(description)
+  def update_description(description, url)
 
     if description.nil?
       puts 'Could not find DESCRIPTION file, passing'
@@ -159,13 +159,17 @@ namespace :site do
         project["link"] = description["URL"].inspect
       end
 
-      if not(description["BugReports"].nil?)
-        project["bugreports"] = description["BugReports"].inspect
-      end
+      project["github"] = url
 
       if not(description["URL.CRAN"].nil?)
         project["cran"] = description["URL.CRAN"].inspect
       end
+
+      if not(description["BugReports"].nil?)
+        project["bugreports"] = description["BugReports"].inspect
+      end
+
+      project["category"] = "ropengov"
 
     end
 
