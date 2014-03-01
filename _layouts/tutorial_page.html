@@ -39,8 +39,9 @@
           </a>
           <a href="/" class="home">Blog</a>
           {% if site.inc.product_link %}<a href="{{ site.url }}/{{ site.inc.product_link }}">Product</a>{% endif %}
-          {% if site.inc.about %}<a href="{{ site.url }}/{{ site.inc.about }}">About</a>{% endif %}
           {% if site.inc.projects %}<a href="{{ site.url }}/{{ site.inc.projects }}">Projects</a>{% endif %}
+          {% if site.inc.about %}<a href="{{ site.url }}/{{ site.inc.about }}">About</a>{% endif %}
+          {% if site.inc.contribute %}<a href="{{ site.url }}/{{ site.inc.contribute }}">Contribute</a>{% endif %}          
       </nav>
       {% if site.inc.tagline or site.inc.product_url %}<nav class="tagline">
           {% if site.inc.tagline %}<span>{{ site.inc.tagline }}</span>{% endif %}

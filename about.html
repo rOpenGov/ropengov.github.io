@@ -1,26 +1,6 @@
 ---
 layout: base
 ---
-<div class="blog-cover" style="background-image:url(/images/{{ site.inc.about_image }});">
-    
-    <section>
-        <div class="container">
-            <h1>{{ site.inc.title }}</h1>
-            {% if site.inc.subtitle %}<h3>{{ site.inc.subtitle }}</h3>{% endif %}
-        
-            {% if site.inc.twitter %}
-            <a href="https://twitter.com/{{ site.inc.twitter }}" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter"></i></a>
-            {% endif %}
-            {% if site.inc.facebook %}
-            <a href="http://facebook.com/{{ site.inc.facebook }}" title="Like on Facebook" target="_blank"><i class="icon icon-facebook"></i></a>
-            {% endif %}
-            <a href="/feed.xml" title="RSS Feed">
-                <i class="icon icon-rss"></i>
-            </a>
-        </div>
-    </section>
-</div>
-
 <div class="container">
     <section class="index">
 
@@ -36,10 +16,11 @@ layout: base
       A community of independent package developers around open
       goverment data analytics is now emerging at
       rOpenGov. Independent
-      <a href="{{ site.url }}/projects">projects</a> dedicated to US,
-      Russia, Finland, Poland, Austria, and OpenStreetMap have already
-      joined in, providing dedicated R tools to access, analyze, and
-      visualize open government data. We are actively
+      <a href="{{ site.url }}/projects">projects</a> dedicated to open
+      data streams relevant to computational social sciences have
+      already joined in, providing dedicated R tools to access and
+      analyze these information sources. We are now setting up the
+      project and its infrastructure, and actively
       encouraging <a href="{{ site.url }}/contribute">new
       contributions</a>.
       </p>
@@ -61,9 +42,37 @@ layout: base
       This umbrella site focusing on open government data R tools will
       give additional visibility for the participating projects,
       automated tools, an opportunity to attract contributors, and a
-      forum for the developer community.  If you are
-      working on related projects, don't hesitate to <a href="{{ site.url }}/contribute">get in touch!</a>
+      forum for the developer community.  
       </p>
+
+
+      <h3>Community</h3>
+
+      This a community project. A number of independent package
+      authors have
+      <a href="{{ site.url }}/projects">contributed projects</a> that
+      ease programmatic access to data sources relevant to
+      computational social sciences. These packages are actively
+      maintained by their developers.  We encourage new
+      contributions. If you are working on related projects, don't
+      hesitate to <a href="{{ site.url }}/contribute"> get in
+      touch!</a>
+
+      <p></p> 
+
+      The core team serves the developer and user community by
+      maintaining the infrastructure and reviewing new packages. The
+      core team members are
+      <a href="http://www.iki.fi/Leo.Lahti">Leo Lahti</a>,
+      <a href="http://ouzor.github.io/">Juuso Parkkinen</a> and
+      <a href="https://github.com/jlehtoma">Joona Lehtomäki</a>.
+
+      <p></p> 
+
+      For general support regarding the development, maintenance, and
+      usage of individual packages, 
+      <a href="{{ site.url }}/contribute">get in touch with the
+      community</a>.
 
     </section>
 
