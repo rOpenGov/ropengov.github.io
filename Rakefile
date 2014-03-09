@@ -17,11 +17,6 @@ namespace :site do
     require 'open-uri'
     require 'zip'
 
-    #puts "Github test"
-    #github = Github.new login:'antagomir', password:'---'
-    #puts github.repos.list user: 'antagomir'
-    #puts "Github test OK"
-
     # Current dir
     site_dir = Dir.pwd
 
@@ -153,25 +148,25 @@ namespace :site do
       end
 
       if not(description["Title"].nil?)
-        project["description"] = description["Title"].inspect
+        project["description"] = description["Title"]
       end
 
       if not(description["Maintainer"].nil?)
-        project["maintainer"] = description["Maintainer"].inspect
+        project["maintainer"] = description["Maintainer"]
       end
 
       if not(description["URL"].nil?)
-        project["link"] = description["URL"].inspect
+        project["link"] = description["URL"]
       end
 
       project["github"] = url
 
       if not(description["URL.CRAN"].nil?)
-        project["cran"] = description["URL.CRAN"].inspect
+        project["cran"] = description["URL.CRAN"]
       end
 
       if not(description["BugReports"].nil?)
-        project["bugreports"] = description["BugReports"].inspect
+        project["bugreports"] = description["BugReports"]
       end
 
       project["category"] = "ropengov"
