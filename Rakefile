@@ -17,11 +17,6 @@ namespace :site do
     require 'open-uri'
     require 'zip'
 
-    #puts "Github test"
-    #github = Github.new login:'antagomir', password:'---'
-    #puts github.repos.list user: 'antagomir'
-    #puts "Github test OK"
-
     # Current dir
     site_dir = Dir.pwd
 
