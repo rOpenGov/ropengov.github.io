@@ -149,29 +149,29 @@ namespace :site do
       project = {}
 
       if not(description["Package"].nil?)
-        project["Title"] = description["Package"]#.inspect
+        project["Title"] = description["Package"]
       end
 
       if not(description["Title"].nil?)
-        project["description"] = description["Title"].inspect
+        project["description"] = description["Title"]
       end
 
       if not(description["Maintainer"].nil?)
-        project["maintainer"] = description["Maintainer"].inspect
+        project["maintainer"] = description["Maintainer"]
       end
 
       if not(description["URL"].nil?)
-        project["link"] = description["URL"].inspect
+        project["link"] = description["URL"]
       end
 
       project["github"] = url
 
       if not(description["URL.CRAN"].nil?)
-        project["cran"] = description["URL.CRAN"].inspect
+        project["cran"] = description["URL.CRAN"]
       end
 
       if not(description["BugReports"].nil?)
-        project["bugreports"] = description["BugReports"].inspect
+        project["bugreports"] = description["BugReports"]
       end
 
       project["category"] = "ropengov"
