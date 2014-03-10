@@ -144,7 +144,7 @@ namespace :site do
       project = {}
 
       if not(description["Package"].nil?)
-        project["Title"] = description["Package"]
+        project["title"] = description["Package"]
       end
 
       if not(description["Title"].nil?)
