@@ -89,7 +89,7 @@ head(df)
 Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011. 
 
 ```{r hsy-exampleramava, message=FALSE}
-sp <- get_HSY_data("seutuRAMAVA_kosa")  
+sp <- get_HSY_data("SeutuRAMAVA_kosa")  
 df <- as.data.frame(sp)   
 head(df)
 ```
@@ -114,6 +114,21 @@ head(dat)
 ```{r hkk-addressS, message=FALSE}
 dat <- get_HKK_address_data("Seudullinen osoiteluettelo")
 head(dat)
+```
+
+### Helsinki Service Map data
+
+Retrieve data from [Helsinki Service Map](http://www.hel.fi/palvelukartta/?lang=en) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
+
+```{r servicemap, message=FALSE}
+# Get servicetree
+pk.servicetree <- get_ServiceMap_data("servicetree")
+# Get id for parks
+str(pk.servicetree[[1]]$children[[7]]$children[[2]])
+# Get parks data
+parks.data <- get_ServiceMap_data("unit", service=25664)
+# Check what data is given for the first park
+str(parks.data[[1]])
 ```
 
 
