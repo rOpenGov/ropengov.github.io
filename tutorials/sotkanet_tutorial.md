@@ -269,7 +269,7 @@ sessionInfo()
 
 {% highlight text %}
 ## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-unknown-linux-gnu (64-bit)
+## Platform: x86_64-suse-linux-gnu (64-bit)
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -285,14 +285,16 @@ sessionInfo()
 ## other attached packages:
 ##  [1] sotkanet_0.9.02    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
 ##  [4] XML_3.98-1.1       pxR_0.29           stringr_0.6.2     
-##  [7] reshape_0.8.4      sp_1.0-14          plyr_1.8          
-## [10] sorvi_0.4.24       rjson_0.2.13       RCurl_1.95-4.1    
-## [13] bitops_1.0-6       knitr_1.5         
+##  [7] reshape_0.8.4      plyr_1.8.1         sorvi_0.4.24      
+## [10] helsinki_0.9.09    maptools_0.8-29    sp_1.0-14         
+## [13] RCurl_1.95-4.1     bitops_1.0-6       rjson_0.2.13      
+## [16] knitr_1.5         
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] formatR_0.10     grid_3.0.2       gtable_0.1.2     labeling_0.2    
-##  [9] lattice_0.20-24  MASS_7.3-29      munsell_0.4.2    proto_0.3-10    
-## [13] reshape2_1.2.2   scales_0.2.3     tools_3.0.2
+##  [5] foreign_0.8-55   formatR_0.10     grid_3.0.2       gtable_0.1.2    
+##  [9] labeling_0.2     lattice_0.20-27  MASS_7.3-29      munsell_0.4.2   
+## [13] proto_0.3-10     Rcpp_0.11.0      reshape2_1.2.2   scales_0.2.3    
+## [17] tools_3.0.2
 {% endhighlight %}
 

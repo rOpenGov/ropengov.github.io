@@ -425,40 +425,24 @@ Finnish broadcasting company YLE published a large data set on Finnish company s
 
 {% highlight r %}
 tuet <- GetMOTYritystuet()
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error: cannot open the connection
+{% endhighlight %}
+
+
+
+{% highlight r %}
 head(tuet)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-##                         yritys   Y.tunnus vuosi maksettu.summa
-## 1        Aker Yards Oy (Turku)  0772017-4  2008       18000000
-## 2       STX Finland Oy (Rauma)  0772017-4  2010        3975000
-## 3    Uudenkaupungin Työvene Oy 1614238-8   2010         539210
-## 4       STX Finland Oy (Turku)  0772017-4  2011       11330550
-## 5 Arctech Helsinki Shipyard Oy  2366464-3  2011        1688000
-## 6       STX Finland Oy (Turku)  0772017-4  2011         731700
-##                                   tukimuoto       myöntäjä        maakunta
-## 1 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 2 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM       Satakunta
-## 3 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 4 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 5 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM         Uusimaa
-## 6 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-##   lainat  TOL1                                            TOL2 TOL.versio
-## 1     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 2     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 3     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 4     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 5     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 6     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-##                                     Kommentti
-## 1 Sulautunut STX Finlandiin -> y-tunnus = STX
-## 2                                            
-## 3                                            
-## 4                                            
-## 5                                            
-## 6
+## Error: object 'tuet' not found
 {% endhighlight %}
 
 
@@ -519,7 +503,7 @@ sessionInfo()
 
 {% highlight text %}
 ## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-unknown-linux-gnu (64-bit)
+## Platform: x86_64-suse-linux-gnu (64-bit)
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -535,15 +519,16 @@ sessionInfo()
 ## other attached packages:
 ##  [1] RColorBrewer_1.0-5 ggplot2_0.9.3.1    XML_3.98-1.1      
 ##  [4] pxR_0.29           stringr_0.6.2      reshape_0.8.4     
-##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.24      
-## [10] rjson_0.2.13       RCurl_1.95-4.1     bitops_1.0-6      
-## [13] knitr_1.5         
+##  [7] plyr_1.8.1         sorvi_0.4.24       helsinki_0.9.09   
+## [10] maptools_0.8-29    sp_1.0-14          RCurl_1.95-4.1    
+## [13] bitops_1.0-6       rjson_0.2.13       knitr_1.5         
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] formatR_0.10     grid_3.0.2       gtable_0.1.2     labeling_0.2    
-##  [9] lattice_0.20-24  MASS_7.3-29      munsell_0.4.2    proto_0.3-10    
-## [13] reshape2_1.2.2   scales_0.2.3     tools_3.0.2
+##  [5] foreign_0.8-55   formatR_0.10     grid_3.0.2       gtable_0.1.2    
+##  [9] labeling_0.2     lattice_0.20-27  MASS_7.3-29      munsell_0.4.2   
+## [13] proto_0.3-10     Rcpp_0.11.0      reshape2_1.2.2   scales_0.2.3    
+## [17] tools_3.0.2
 {% endhighlight %}
 
 

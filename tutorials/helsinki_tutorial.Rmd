@@ -1,0 +1,143 @@
+---
+title: helsinki vignette
+layout: tutorial_page
+package_name: helsinki
+package_name_show: helsinki
+author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki
+meta_description: Helsinki R Tools
+github_user: ropengov
+package_version: 0.9.09
+header_descripton: Helsinki R Tools
+---
+
+
+
+Helsinki  R tools
+===========
+
+The helsinki R package is part of the
+[rOpenGov](http://ropengov.github.com/helsinki) project.
+
+
+### Installation
+
+Release version for general users (NOT AVAILABLE YET!)
+
+```{r install, eval=FALSE}
+# install.packages("helsinki")
+# library(helsinki)
+```
+
+Development version for developers:
+
+```{r install2, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("helsinki", "ropengov")
+library(helsinki)
+```
+
+Further installation and development instructions at the [home
+page](http://ropengov.github.com/helsinki).
+
+
+## Helsinki region environmental services (Helsingin seudun ympäristöpalvelut HSY)
+
+
+
+### Population grid
+
+Download population information from [HSY database](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) ((C) 2011 HSY) and visualize on the Helsinki map. For data documentation, see [HSY website](http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf). Population size, density, and age structure per grid.
+
+```{r hsy-example, fig.width=8, fig.height=8, message=FALSE}
+# http://ropengov.github.com/helsinki
+library(helsinki)
+
+# Get population grid (Vaestotietoruudukko) 
+sp <- get_HSY_data("Vaestotietoruudukko")  
+
+# Visualize population grid
+#library(gisfi)
+# Define limits of the color scale
+#at <- c(seq(0, 2000, 250), Inf) 
+#q <- PlotShape(sp, "ASUKKAITA", type = "oneway", at = at, ncol = length(at)) 
+```
+
+Inspect data manually. Some rarely populated grids are censored with
+'99' to guarantee privacy.
+
+```{r hsy-example2, message=FALSE}
+df <- as.data.frame(sp)   
+head(df)
+```
+
+### Helsinki building information
+
+Information of buildings in Helsinki region. Data obtained from (C)
+HSY 2011. Grid-level (500mx500m) information on building counts
+(lukumaara), built area (kerrosala), usage (kayttotarkoitus), region
+efficiency (aluetehokkuus).
+
+```{r hsy-examplerak, message=FALSE}
+sp <- get_HSY_data("Rakennustietoruudukko")  
+df <- as.data.frame(sp)   
+head(df)
+```
+
+### Helsinki building area capacity
+
+Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011. 
+
+```{r hsy-exampleramava, message=FALSE}
+sp <- get_HSY_data("seutuRAMAVA_kosa")  
+df <- as.data.frame(sp)   
+head(df)
+```
+
+
+### Further HSY data
+
+[HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has data for 2010-2011. More is coming, add later and allow temporal analysis.
+
+
+## Helsinki Real Estate Department (Helsingin kaupungin kiinteistövirasto, HKK)
+
+Retrieve [HKK](http://kartta.hel.fi/avoindata/index.html) data sets.
+
+### Helsinki address information
+
+```{r hkk-addressH, message=FALSE}
+dat <- get_HKK_address_data("Helsingin osoiteluettelo")
+head(dat)
+```
+
+```{r hkk-addressS, message=FALSE}
+dat <- get_HKK_address_data("Seudullinen osoiteluettelo")
+head(dat)
+```
+
+
+### Licensing and Citations
+
+This work can be freely used, modified and distributed under the
+[Two-clause FreeBSD
+license](http://en.wikipedia.org/wiki/BSD\_licenses). Cite Helsinki R
+package and and the appropriate data provider, including a url
+link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
+Joona Lehtomäki (2013-2014). helsinki R package. URL:
+http://ropengov.github.io/helsinki'.
+
+For further usage examples, see
+[Louhos-blog](http://louhos.wordpress.com) and
+[takomo](https://github.com/louhos/takomo/tree/master/Helsinki).
+
+
+### Session info
+
+
+This vignette was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+

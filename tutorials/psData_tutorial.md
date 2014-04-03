@@ -6,7 +6,7 @@ package_name_show: psData
 author: Christopher Gandrud
 meta_description: ["This R package includes functions for gathering commonly used and", "regularly maintained data set in political science. It also includes", "functions for combining components from these data sets into variables that", "have been suggested in the literature", "but are not regularly maintained."]
 github_user: ropengov
-package_version: 0.1.2
+package_version: 0.1.4
 header_descripton: ["This R package includes functions for gathering commonly used and", "regularly maintained data set in political science. It also includes", "functions for combining components from these data sets into variables that", "have been suggested in the literature", "but are not regularly maintained."]
 ---
 
