@@ -356,11 +356,9 @@ namespace :projects do
           
           fm_string = generate_front_matter(fm_hash)
 
-          # [fixme] - has not been tested with multiple files. Currently
-          # the work logic assumes only one vignette per package.
           pkg_files.each do |file|
-            # Only get *.Rmd-files in vignettes directory
-            if file.match(/vignettes\/.*\.Rmd/) 
+            # Only get a single *_tutorial.Rmd-file in vignettes directory
+            if file.match(/vignettes\/.*_tutorial\.Rmd/) 
               puts "Parsing the content of #{file}"
               # Get the content of the Rmd-file as a String
               rmd_content = File.open(file, "rb").read
