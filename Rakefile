@@ -17,11 +17,6 @@ namespace :site do
     require 'open-uri'
     require 'zip'
 
-    #puts "Github test"
-    #github = Github.new login:'antagomir', password:'---'
-    #puts github.repos.list user: 'antagomir'
-    #puts "Github test OK"
-
     # Current dir
     site_dir = Dir.pwd
 
@@ -149,29 +144,29 @@ namespace :site do
       project = {}
 
       if not(description["Package"].nil?)
-        project["Title"] = description["Package"]#.inspect
+        project["title"] = description["Package"]
       end
 
       if not(description["Title"].nil?)
-        project["description"] = description["Title"].inspect
+        project["description"] = description["Title"]
       end
 
       if not(description["Maintainer"].nil?)
-        project["maintainer"] = description["Maintainer"].inspect
+        project["maintainer"] = description["Maintainer"]
       end
 
       if not(description["URL"].nil?)
-        project["link"] = description["URL"].inspect
+        project["link"] = description["URL"]
       end
 
       project["github"] = url
 
       if not(description["URL.CRAN"].nil?)
-        project["cran"] = description["URL.CRAN"].inspect
+        project["cran"] = description["URL.CRAN"]
       end
 
       if not(description["BugReports"].nil?)
-        project["bugreports"] = description["BugReports"].inspect
+        project["bugreports"] = description["BugReports"]
       end
 
       project["category"] = "ropengov"
@@ -361,11 +356,9 @@ namespace :projects do
           
           fm_string = generate_front_matter(fm_hash)
 
-          # [fixme] - has not been tested with multiple files. Currently
-          # the work logic assumes only one vignette per package.
           pkg_files.each do |file|
-            # Only get *.Rmd-files in vignettes directory
-            if file.match(/vignettes\/.*\.Rmd/) 
+            # Only get a single *_tutorial.Rmd-file in vignettes directory
+            if file.match(/vignettes\/.*_tutorial\.Rmd/) 
               puts "Parsing the content of #{file}"
               # Get the content of the Rmd-file as a String
               rmd_content = File.open(file, "rb").read
