@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>helsinki vignette &mdash; rOpenGov</title>
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/images/logo.png"/>
+  <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+  <meta name="title" content="helsinki vignette ">
+  <link rel="canonical" href="http://ropengov.github.io/tutorials/helsinki_tutorial.Rmd">
+   
+         
+  <meta property="og:title" content="helsinki vignette "/>
+  <meta property="og:url" content="http://ropengov.github.io/tutorials/helsinki_tutorial.Rmd"/>
+  
+  
+  <meta property="og:site_name" content="rOpenGov">     
+</head>
+<body>
+  
+  <section class="site-nav">
+  <header>
+      <nav id="navigation">
+          <a class="brand" href="/">
+              <img src="/images/logo.png" alt="rOpenGov">
+          </a>
+          <a href="/" class="home">Blog</a>
+          
+          <a href="http://ropengov.github.io/projects">Projects</a>
+          <a href="http://ropengov.github.io/about">About</a>
+          <a href="http://ropengov.github.io/contribute">Contribute</a>          
+      </nav>
+      
+  </header>
+  </section>
+
+  <article class="container">
+
+  <div class="span11">
+  <div class="row">
+
+  <header class="jumbotron subhead" id="overview"> 
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=helsinki&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=helsinki&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
+
+     <h1> <i class="fa fa-book"></i>  helsinki <small>v0.9.09</small> </h1>
+  </header>
+    
+  </div>
+  <!-- <br> -->
+
+  <div class"row"> <h2> <em> Helsinki R Tools </em> </h2>
+
+  <!-- <h3><i class="ss-icon" style="color:#ebeef6;">&#x2139;</i>&nbsp;&nbsp;This is the vignette in the helsinki package</h3> -->
+  <br>
+
+  <center><a href="https://github.com/ropengov/helsinki/" style="color:#ffffff" target="_blank"> <button class="btn btn-success btn-large" style="display: block; width: 75%;"><i class="icon-white icon-download"></i>Download from GitHub</button></a></center>
+  <br>
+  <!-- <hr class="soften"> -->
+  </div>
+  <div class="span11">
+  Helsinki  R tools
+===========
+
+The helsinki R package is part of the
+[rOpenGov](http://ropengov.github.com/helsinki) project.
+
+
+### Installation
+
+Release version for general users (NOT AVAILABLE YET!)
+
+```{r install, eval=FALSE}
+# install.packages("helsinki")
+# library(helsinki)
+```
+
+Development version for developers:
+
+```{r install2, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("helsinki", "ropengov")
+library(helsinki)
+```
+
+Further installation and development instructions at the [home
+page](http://ropengov.github.com/helsinki).
+
+
+## Helsinki region environmental services (Helsingin seudun ympäristöpalvelut HSY)
+
+
+
+### Population grid
+
+Download population information from [HSY database](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) ((C) 2011 HSY) and visualize on the Helsinki map. For data documentation, see [HSY website](http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf). Population size, density, and age structure per grid.
+
+```{r hsy-example, fig.width=8, fig.height=8, message=FALSE}
+# http://ropengov.github.com/helsinki
+library(helsinki)
+
+# Get population grid (Vaestotietoruudukko) 
+sp <- get_HSY_data("Vaestotietoruudukko")  
+
+# Visualize population grid
+#library(gisfi)
+# Define limits of the color scale
+#at <- c(seq(0, 2000, 250), Inf) 
+#q <- PlotShape(sp, "ASUKKAITA", type = "oneway", at = at, ncol = length(at)) 
+```
+
+Inspect data manually. Some rarely populated grids are censored with
+'99' to guarantee privacy.
+
+```{r hsy-example2, message=FALSE}
+df <- as.data.frame(sp)   
+head(df)
+```
+
+### Helsinki building information
+
+Information of buildings in Helsinki region. Data obtained from (C)
+HSY 2011. Grid-level (500mx500m) information on building counts
+(lukumaara), built area (kerrosala), usage (kayttotarkoitus), region
+efficiency (aluetehokkuus).
+
+```{r hsy-examplerak, message=FALSE}
+sp <- get_HSY_data("Rakennustietoruudukko")  
+df <- as.data.frame(sp)   
+head(df)
+```
+
+### Helsinki building area capacity
+
+Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011. 
+
+```{r hsy-exampleramava, message=FALSE}
+sp <- get_HSY_data("SeutuRAMAVA_kosa")  
+df <- as.data.frame(sp)   
+head(df)
+```
+
+
+### Further HSY data
+
+[HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has data for 2010-2011. More is coming, add later and allow temporal analysis.
+
+
+## Helsinki Real Estate Department (Helsingin kaupungin kiinteistövirasto, HKK)
+
+Retrieve [HKK](http://kartta.hel.fi/avoindata/index.html) data sets.
+
+### Helsinki address information
+
+```{r hkk-addressH, message=FALSE}
+dat <- get_HKK_address_data("Helsingin osoiteluettelo")
+head(dat)
+```
+
+```{r hkk-addressS, message=FALSE}
+dat <- get_HKK_address_data("Seudullinen osoiteluettelo")
+head(dat)
+```
+
+### Helsinki Service Map data
+
+Retrieve data from [Helsinki Service Map](http://www.hel.fi/palvelukartta/?lang=en) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
+
+```{r servicemap, message=FALSE}
+# Get servicetree
+pk.servicetree <- get_ServiceMap_data("servicetree")
+# Get id for parks
+str(pk.servicetree[[1]]$children[[7]]$children[[2]])
+# Get parks data
+parks.data <- get_ServiceMap_data("unit", service=25664)
+# Check what data is given for the first park
+str(parks.data[[1]])
+```
+
+
+### Licensing and Citations
+
+This work can be freely used, modified and distributed under the
+[Two-clause FreeBSD
+license](http://en.wikipedia.org/wiki/BSD\_licenses). Cite Helsinki R
+package and and the appropriate data provider, including a url
+link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
+Joona Lehtomäki (2013-2014). helsinki R package. URL:
+http://ropengov.github.io/helsinki'.
+
+For further usage examples, see
+[Louhos-blog](http://louhos.wordpress.com) and
+[takomo](https://github.com/louhos/takomo/tree/master/Helsinki).
+
+
+### Session info
+
+
+This vignette was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+
+
+  </div>
+
+  </article>
+
+  <footer class="site-footer">
+      <div class="container">
+          &copy; 2014 
+          
+          <nav>
+              <a href="http://ropengov.github.io/">rOpenGov</a> &middot;
+              <a href="/">Blog</a> &middot;
+              
+              
+          </nav>
+          
+          <nav class="social">
+              
+              <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+              
+                  
+              <a href="/feed.xml" title="RSS Feed">
+                  <i class="icon icon-rss black"></i>
+              </a>
+          </nav>
+          <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+      </div>
+  </footer>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

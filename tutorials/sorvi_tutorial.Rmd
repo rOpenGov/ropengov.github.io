@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sorvi vignette &mdash; rOpenGov</title>
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/images/logo.png"/>
+  <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+  <meta name="title" content="sorvi vignette ">
+  <link rel="canonical" href="http://ropengov.github.io/tutorials/sorvi_tutorial.Rmd">
+   
+         
+  <meta property="og:title" content="sorvi vignette "/>
+  <meta property="og:url" content="http://ropengov.github.io/tutorials/sorvi_tutorial.Rmd"/>
+  
+  
+  <meta property="og:site_name" content="rOpenGov">     
+</head>
+<body>
+  
+  <section class="site-nav">
+  <header>
+      <nav id="navigation">
+          <a class="brand" href="/">
+              <img src="/images/logo.png" alt="rOpenGov">
+          </a>
+          <a href="/" class="home">Blog</a>
+          
+          <a href="http://ropengov.github.io/projects">Projects</a>
+          <a href="http://ropengov.github.io/about">About</a>
+          <a href="http://ropengov.github.io/contribute">Contribute</a>          
+      </nav>
+      
+  </header>
+  </section>
+
+  <article class="container">
+
+  <div class="span11">
+  <div class="row">
+
+  <header class="jumbotron subhead" id="overview"> 
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sorvi&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sorvi&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
+
+     <h1> <i class="fa fa-book"></i>  sorvi <small>v0.4.24</small> </h1>
+  </header>
+    
+  </div>
+  <!-- <br> -->
+
+  <div class"row"> <h2> <em> Algorithms for Finnish Open Government Data </em> </h2>
+
+  <!-- <h3><i class="ss-icon" style="color:#ebeef6;">&#x2139;</i>&nbsp;&nbsp;This is the vignette in the sorvi package</h3> -->
+  <br>
+
+  <center><a href="https://github.com/ropengov/sorvi/" style="color:#ffffff" target="_blank"> <button class="btn btn-success btn-large" style="display: block; width: 75%;"><i class="icon-white icon-download"></i>Download from GitHub</button></a></center>
+  <br>
+  <!-- <hr class="soften"> -->
+  </div>
+  <div class="span11">
+  Finnish open government data toolkit for R
+===========
+
+This is an R package for Finnish open government data. New
+contributions are [welcome!](http://louhos.github.com/contact.html).
+
+This work is part of the [rOpenGov](http://ropengov.github.com)
+project.
+
+
+## Installation
+
+General users (CRAN release version):
+
+```{r install, eval=FALSE}
+install.packages("sorvi")
+library(sorvi)
+```
+
+Developers (Github development version):
+
+```{r install2, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("sorvi", "ropengov")
+library(sorvi)
+```
+
+Further installation and development instructions can be found at the
+project [home page](http://ropengov.github.com/sorvi). 
+
+
+## Using the package
+
+For further usage
+examples, see [Louhos-blog](http://louhos.wordpress.com) and
+[Datawiki](https://github.com/louhos/sorvi/wiki/Data).
+
+
+### Personal identification number (HETU)
+
+Extracting information from a Finnish personal identification number:
+
+```{r hetu, message=FALSE}
+library(sorvi)
+hetu("111111-111C")
+```
+
+Validating Finnish personal identification number:
+
+```{r hetu2, fig.message=FALSE}
+valid.hetu("010101-0101") # TRUE/FALSE
+```
+
+### Postal codes
+
+Get Finnish postal codes vs. municipalities table from Wikipedia
+
+```{r postalcodes, message=FALSE}
+postal.code.table <- GetPostalCodeInfo() 
+head(postal.code.table)
+```
+
+### IP Location
+
+Get geographic coordinates for a given IP-address from 
+http://www.datasciencetoolkit.org//ip2coordinates/
+
+```{r iplocation, message=FALSE}
+ip_location("137.224.252.10")
+```
+
+
+### Municipality information
+
+Finnish municipality information is available through Population
+Registry (Vaestorekisterikeskus), Statistics Finland (Tilastokeskus)
+and Land Survey Finland (Maanmittauslaitos). We provide separate
+download routine for each data set. The row names are in harmonized
+format and can be used to match data sets from different sources, as
+different data sets may carry slightly different versions of certain
+municipality names. Examples for each case:
+
+Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
+
+```{r municipalityMML, message=FALSE, warning=FALSE}
+municipality.info.mml <- GetMunicipalityInfoMML()
+municipality.info.mml[1:2,]
+```
+
+Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
+
+```{r municipalityStatFi, message=FALSE, warning=FALSE}
+municipality.info.statfi <- GetMunicipalityInfoStatFi()
+municipality.info.statfi[1:2,]
+```
+
+List the province for each municipality in Finland:
+```{r province2, message=FALSE, warning=FALSE}
+
+# Specific municipalities
+m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
+head(m2p)
+
+# All municipalities
+m2p <- FindProvince(municipality.info.statfi$Kunta) 
+
+# Speeding up with predefined municipality info table:
+m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
+head(m2p)
+```
+
+Convert municipality codes and names:
+```{r province3, message=FALSE}
+municipality_ids <- ConvertMunicipalityCodes()
+head(municipality_ids)
+```
+
+Translate municipality names Finnish/English:
+
+```{r translate, message=FALSE}
+translations <- LoadData("translations")
+head(translations)
+```
+
+### Retrieve population register data
+
+Municipality-level population information from [Vaestorekisterikeskus](http://vrk.fi/default.aspx?docid=5127&site=3&id=0):
+
+```{r popreg, message=FALSE}
+df <- GetPopulationRegister()
+head(df)
+```
+
+### Province information
+
+Get information of Finnish provinces from Wikipedia:
+
+```{r municipality, message=FALSE}
+tab <- GetProvinceInfoWikipedia()
+head(tab)
+```
+
+### Company subsidies from the Finnish government
+
+Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
+
+```{r yritystuet-1, warning=FALSE, message=FALSE}
+tuet <- GetMOTYritystuet()
+head(tuet)
+```
+
+
+### Visualization routines
+
+Line fit with confidence smoothers:
+
+```{r regressionline, message=FALSE}
+library(sorvi); 
+data(iris); 
+p <- vwReg(Sepal.Length ~ Sepal.Width, iris) 
+print(p)
+```
+
+Plot matrix:
+
+```{r , message=FALSE}
+mat <- rbind(c(1,2,3), c(1, 3, 1), c(4,2,2)); 
+pm <- PlotMatrix(mat, "twoway", midpoint = 2) 
+
+# Plotting the scale
+# sc <- PlotScale(pm$colors, pm$breaks)
+```
+
+## Licensing and Citations
+
+This work can be freely used, modified and distributed under the 
+[Two-clause FreeBSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
+
+Kindly cite the work, if appropriate, as 'Leo Lahti, Juuso Parkkinen
+ja Joona Lehtomaki (2011). sorvi - suomalainen avoimen datan
+tyokalupakki. URL: http://louhos.github.com/sorvi)'. A full list of
+authors and contributors and the relevant contact information is
+[here](http://louhos.github.com/contact).
+
+## Session info
+
+
+This vignette was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+
+
+
+
+
+  </div>
+
+  </article>
+
+  <footer class="site-footer">
+      <div class="container">
+          &copy; 2014 
+          
+          <nav>
+              <a href="http://ropengov.github.io/">rOpenGov</a> &middot;
+              <a href="/">Blog</a> &middot;
+              
+              
+          </nav>
+          
+          <nav class="social">
+              
+              <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+              
+                  
+              <a href="/feed.xml" title="RSS Feed">
+                  <i class="icon icon-rss black"></i>
+              </a>
+          </nav>
+          <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+      </div>
+  </footer>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

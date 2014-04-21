@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maddison project in R  &mdash; rOpenGov</title>
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+    <meta name="title" content="Maddison project in R  ">
+    <link rel="canonical" href="http://ropengov.github.io/general/2013/12/05/maddison-data/">
+     
+           
+    <meta property="og:title" content="Maddison project in R  "/>
+    <meta property="og:url" content="http://ropengov.github.io/general/2013/12/05/maddison-data/"/>
+    
+    
+    <meta property="og:description" content="There is a growing trend of new methods for assessing economic data in R"/>
+    <meta name="description" content="There is a growing trend of new methods for assessing economic data in R"/>
+    
+    <meta property="og:site_name" content="rOpenGov">     
+</head>
+<body>
+    
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="rOpenGov">
+            </a>
+            <a href="/" class="home">Blog</a>
+            
+            <a href="http://ropengov.github.io/projects">Projects</a>
+            <a href="http://ropengov.github.io/about">About</a>
+            <a href="http://ropengov.github.io/contribute">Contribute</a>
+        </nav>
+        
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="Markus Kainu" target="_blank">Markus Kainu</a> &mdash;
+                <time pubdate datetime="2013-05-December" title="December 05, 2013">December 05, 2013</time>
+            </div>
+            <h1 class="title">Maddison project in R </h1>
+            
+        </header>
+
+        <section>
+            <h2 id='economic_data_in_r'>Economic data in R</h2>
+
+<p>There is a growing trend of new methods for assessing economic data in R. Packages as <a href='https://github.com/vincentarelbundock/WDI'>WDI: World Development indicators</a>, <a href='http://www.quandl.com/help/packages/r'>Quandl</a>, <a href='http://cran.r-project.org/web/packages/pwt/index.html'>pwt: Penn World Table</a>. Also the <strong>data sets</strong> -section in <a href='http://cran.r-project.org/web/views/Econometrics.html'>CRAN Task View: Computational Econometrics</a> is worth looking.</p>
+
+<h2 id='maddison_project_database'>Maddison Project database</h2>
+
+<p>One which is seemingly missing is the mighty <a href='http://www.ggdc.net/maddison/maddison-project/home.htm'>Maddison Project database</a> that is often used especially by economic historians. Data includes estimates of economic growth in the world economic between <strong>AD 1 and 2010</strong>. A major update was done in January 2013 and a detailed documentation of that update can be read from <a href='http://www.ggdc.net/maddison/maddison-project/publications/wp4.pdf'>Bolt and Van Zanden (2013). The First Update of the Maddison Project; Re-Estimating Growth Before 1820, Maddison Project Working Paper 4.</a>. The actual data as .xlsx-file is here: <a href='http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx'>mpd_2013-01.xlsx</a></p>
+
+<h2 id='the_exercise'>The Exercise</h2>
+
+<p>Below is a stepwise explanation on how to visualize the data.</p>
+
+<h3 id='load_the_data'>Load the data</h3>
+<div class='highlight'><pre><code class='r'>library<span class='p'>(</span>gdata<span class='p'>)</span>
+url <span class='o'>&lt;-</span> <span class='s'>&quot;http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx&quot;</span>
+dat <span class='o'>&lt;-</span> read.xls<span class='p'>(</span>url<span class='p'>,</span> header <span class='o'>=</span> <span class='kc'>TRUE</span><span class='p'>,</span> skip <span class='o'>=</span> <span class='m'>1</span><span class='p'>,</span> stringsAsFactors <span class='o'>=</span> <span class='kc'>FALSE</span><span class='p'>)</span>
+</code></pre></div>
+<h3 id='manipulating_the_data'>Manipulating the data</h3>
+
+<p>Excel-sheets usually require some processing in R. Below I&#8217;m removing row not needed and melting the data in long format, and convert in to numerical.</p>
+<div class='highlight'><pre><code class='r'>column.names <span class='o'>&lt;-</span> as.character<span class='p'>(</span>dat<span class='p'>[</span><span class='m'>1</span><span class='p'>,</span> <span class='p'>])</span>
+column.names<span class='p'>[</span><span class='m'>1</span><span class='p'>]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;year&quot;</span>
+df.mad <span class='o'>&lt;-</span> dat<span class='p'>[</span><span class='m'>-1</span><span class='p'>,</span> <span class='p'>]</span>
+names<span class='p'>(</span>df.mad<span class='p'>)</span> <span class='o'>&lt;-</span> column.names
+library<span class='p'>(</span>reshape2<span class='p'>)</span>
+df.mad.l <span class='o'>&lt;-</span> melt<span class='p'>(</span>df.mad<span class='p'>,</span> id.vars <span class='o'>=</span> <span class='s'>&quot;year&quot;</span><span class='p'>)</span>
+df.mad.l<span class='o'>$</span>value <span class='o'>&lt;-</span> as.numeric<span class='p'>(</span>df.mad.l<span class='o'>$</span>value<span class='p'>)</span>
+df.mad.l <span class='o'>&lt;-</span> df.mad.l<span class='p'>[</span><span class='o'>!</span>is.na<span class='p'>(</span>df.mad.l<span class='o'>$</span>value<span class='p'>),</span> <span class='p'>]</span>
+</code></pre></div>
+<h3 id='subset_the_data'>Subset the data</h3>
+
+<p>My research emphasises in post-socialist space and therefore I will subset the data. In addition to post-socialist countries I&#8217;m including some Western countries, too.</p>
+<div class='highlight'><pre><code class='r'>cntry.list <span class='o'>&lt;-</span> c<span class='p'>(</span><span class='s'>&quot;Czech Republic&quot;</span><span class='p'>,</span> <span class='s'>&quot;Estonia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Hungary&quot;</span><span class='p'>,</span> <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>,</span> <span class='s'>&quot;Latvia&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Lithuania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Poland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovakia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovenia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Romania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Albania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Bosnia&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>,</span> <span class='s'>&quot;Croatia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Macedonia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Montenegro&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kosovo&quot;</span><span class='p'>,</span> <span class='s'>&quot;Serbia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Armenia&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Azerbaijan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Belarus&quot;</span><span class='p'>,</span> <span class='s'>&quot;Georgia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kazakhstan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kyrgyzstan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Moldova&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Mongolia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Russia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Tajikistan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Ukraine&quot;</span><span class='p'>,</span> <span class='s'>&quot;Uzbekistan&quot;</span><span class='p'>,</span> <span class='s'>&quot;F. USSR&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;USA&quot;</span><span class='p'>,</span> <span class='s'>&quot;Japan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Finland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Sweden&quot;</span><span class='p'>)</span>
+library<span class='p'>(</span>stringr<span class='p'>)</span>
+df.mad.l<span class='o'>$</span>variable <span class='o'>&lt;-</span> str_trim<span class='p'>(</span>df.mad.l<span class='o'>$</span>variable<span class='p'>,</span> side <span class='o'>=</span> <span class='s'>&quot;both&quot;</span><span class='p'>)</span>
+df.mad.l2 <span class='o'>&lt;-</span> df.mad.l<span class='p'>[</span>df.mad.l<span class='o'>$</span>variable <span class='o'>%in%</span> cntry.list<span class='p'>,</span> <span class='p'>]</span>
+</code></pre></div>
+<p>Then I will group the countries in one sensible way.</p>
+<div class='highlight'><pre><code class='r'>library<span class='p'>(</span>car<span class='p'>)</span>
+df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;Czech Republic&quot;</span><span class='p'>,</span> <span class='s'>&quot;Estonia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Hungary&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>,</span> <span class='s'>&quot;Latvia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Lithuania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Poland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovakia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovenia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Romania&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;CEE&quot;</span>
+df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;Albania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Bosnia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Croatia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Macedonia&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Montenegro&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kosovo&quot;</span><span class='p'>,</span> <span class='s'>&quot;Serbia&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;Balkan&quot;</span>
+df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;Armenia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Azerbaijan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Belarus&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Georgia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kazakhstan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kyrgyzstan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Moldova&quot;</span><span class='p'>,</span> <span class='s'>&quot;Mongolia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Russia&quot;</span><span class='p'>,</span> 
+    <span class='s'>&quot;Tajikistan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Ukraine&quot;</span><span class='p'>,</span> <span class='s'>&quot;Uzbekistan&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;CIS&quot;</span>
+df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;USA&quot;</span><span class='p'>,</span> <span class='s'>&quot;Japan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Finland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Sweden&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;WEST&quot;</span>
+df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;F. USSR&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;USSR&quot;</span>
+</code></pre></div>
+<h3 id='plotting_the_data_from_1850_to_2010'>Plotting the data from 1850 to 2010</h3>
+
+<p>As I mentioned in the beginning the data extends for over 2000 years. My interest is more of contemporary nature, so I will subset data to cover only the last 160 years from 1850 to 2010. Also, I will add some major historical events during that period that have had an effect on economic growth, too.</p>
+<div class='highlight'><pre><code class='r'>library<span class='p'>(</span>ggplot2<span class='p'>)</span>
+ggplot<span class='p'>(</span>data <span class='o'>=</span> df.mad.l2<span class='p'>[</span>df.mad.l2<span class='o'>$</span>year <span class='o'>&gt;</span> <span class='m'>1850</span><span class='p'>,</span> <span class='p'>],</span> aes<span class='p'>(</span>x <span class='o'>=</span> year<span class='p'>,</span> y <span class='o'>=</span> value<span class='p'>,</span> group <span class='o'>=</span> variable<span class='p'>,</span> 
+    color <span class='o'>=</span> group<span class='p'>))</span> <span class='o'>+</span> geom_line<span class='p'>()</span> <span class='o'>+</span> geom_point<span class='p'>()</span> <span class='o'>+</span> geom_text<span class='p'>(</span>data <span class='o'>=</span> df.mad.l2<span class='p'>[</span>df.mad.l2<span class='o'>$</span>year <span class='o'>==</span> 
+    <span class='m'>2010</span><span class='p'>,</span> <span class='p'>],</span> aes<span class='p'>(</span>x <span class='o'>=</span> year<span class='p'>,</span> y <span class='o'>=</span> value<span class='p'>,</span> label <span class='o'>=</span> variable<span class='p'>))</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;rect&quot;</span><span class='p'>,</span> 
+    xmin <span class='o'>=</span> <span class='m'>1914</span><span class='p'>,</span> xmax <span class='o'>=</span> <span class='m'>1918</span><span class='p'>,</span> ymin <span class='o'>=</span> <span class='m'>5</span><span class='p'>,</span> ymax <span class='o'>=</span> <span class='m'>20000</span><span class='p'>,</span> alpha <span class='o'>=</span> <span class='m'>0.2</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;text&quot;</span><span class='p'>,</span> 
+    x <span class='o'>=</span> <span class='m'>1916</span><span class='p'>,</span> y <span class='o'>=</span> <span class='m'>21000</span><span class='p'>,</span> label <span class='o'>=</span> <span class='s'>&quot;WW1&quot;</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;rect&quot;</span><span class='p'>,</span> xmin <span class='o'>=</span> <span class='m'>1939</span><span class='p'>,</span> xmax <span class='o'>=</span> <span class='m'>1945</span><span class='p'>,</span> 
+    ymin <span class='o'>=</span> <span class='m'>5</span><span class='p'>,</span> ymax <span class='o'>=</span> <span class='m'>20000</span><span class='p'>,</span> alpha <span class='o'>=</span> <span class='m'>0.2</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;text&quot;</span><span class='p'>,</span> x <span class='o'>=</span> <span class='m'>1942</span><span class='p'>,</span> y <span class='o'>=</span> <span class='m'>21000</span><span class='p'>,</span> 
+    label <span class='o'>=</span> <span class='s'>&quot;WW2&quot;</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;segment&quot;</span><span class='p'>,</span> x <span class='o'>=</span> <span class='m'>1991</span><span class='p'>,</span> xend <span class='o'>=</span> <span class='m'>1991</span><span class='p'>,</span> y <span class='o'>=</span> <span class='m'>0</span><span class='p'>,</span> yend <span class='o'>=</span> <span class='m'>30000</span><span class='p'>,</span> 
+    colour <span class='o'>=</span> <span class='s'>&quot;blue&quot;</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;text&quot;</span><span class='p'>,</span> x <span class='o'>=</span> <span class='m'>1991</span><span class='p'>,</span> y <span class='o'>=</span> <span class='m'>31000</span><span class='p'>,</span> label <span class='o'>=</span> <span class='s'>&quot;Dissolution of \n the Soviet Union&quot;</span><span class='p'>)</span> <span class='o'>+</span> 
+    theme_minimal<span class='p'>()</span> <span class='o'>+</span> theme<span class='p'>(</span>legend.position <span class='o'>=</span> <span class='s'>&quot;top&quot;</span><span class='p'>)</span>
+</code></pre></div>
+<p><img alt='center' src='/figs/2013-12-05-maddison-data/maddison5.png' /></p>
+            
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button"  data-text="Maddison project in R " data-related="ropengov">Tweet</a>
+    </div>
+    
+    
+    <div>
+        <div class="fb-like" data-width="150" data-layout="button_count" data-action="like" data-show-faces="true" data-send="false"></div>
+    </div>
+    
+    
+    <div>
+        <div class="g-plusone" data-size="medium"></div>
+    </div>
+    
+    
+    
+    <div>
+        <a href="http://news.ycombinator.com/submit" class="hn-share-button">Vote on HN</a>
+    </div>
+    
+</div>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/markus.jpg">
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">Markus Kainu</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+        <section>
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ropengov'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+        </section>
+        
+    </div>
+</article>
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2014 
+        
+        <nav>
+            <a href="http://ropengov.github.io/">rOpenGov</a> &middot;
+            <a href="/">Blog</a> &middot;
+            
+            
+        </nav>
+        
+        <nav class="social">
+            
+            <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+            
+                
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
