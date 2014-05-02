@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.24
+package_version: 0.4.25
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -70,7 +70,7 @@ valid.hetu("010101-0101") # TRUE/FALSE
 
 Get Finnish postal codes vs. municipalities table from Wikipedia
 
-```{r postalcodes, message=FALSE}
+```{r postalcodes, message=FALSE, eval=FALSE}
 postal.code.table <- GetPostalCodeInfo() 
 head(postal.code.table)
 ```
@@ -97,20 +97,20 @@ municipality names. Examples for each case:
 
 Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
 
-```{r municipalityMML, message=FALSE, warning=FALSE}
+```{r municipalityMML, message=FALSE, warning=FALSE, eval=FALSE}
 municipality.info.mml <- GetMunicipalityInfoMML()
 municipality.info.mml[1:2,]
 ```
 
 Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
 
-```{r municipalityStatFi, message=FALSE, warning=FALSE}
+```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=FALSE}
 municipality.info.statfi <- GetMunicipalityInfoStatFi()
 municipality.info.statfi[1:2,]
 ```
 
 List the province for each municipality in Finland:
-```{r province2, message=FALSE, warning=FALSE}
+```{r province2, message=FALSE, warning=FALSE, eval=FALSE}
 
 # Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
@@ -125,7 +125,7 @@ head(m2p)
 ```
 
 Convert municipality codes and names:
-```{r province3, message=FALSE}
+```{r province3, message=FALSE, eval=FALSE}
 municipality_ids <- ConvertMunicipalityCodes()
 head(municipality_ids)
 ```
@@ -159,7 +159,7 @@ head(tab)
 
 Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
 
-```{r yritystuet-1, warning=FALSE, message=FALSE}
+```{r yritystuet-1, warning=FALSE, message=FALSE, eval=FALSE}
 tuet <- GetMOTYritystuet()
 head(tuet)
 ```
@@ -169,7 +169,7 @@ head(tuet)
 
 Line fit with confidence smoothers:
 
-```{r regressionline, message=FALSE}
+```{r regressionline, message=FALSE, eval=FALSE}
 library(sorvi); 
 data(iris); 
 p <- vwReg(Sepal.Length ~ Sepal.Width, iris) 

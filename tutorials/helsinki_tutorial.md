@@ -3,29 +3,39 @@ title: helsinki vignette
 layout: tutorial_page
 package_name: helsinki
 package_name_show: helsinki
-author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki
-meta_description: Helsinki R Tools
+author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
+meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
 github_user: ropengov
-package_version: 0.9.09
-header_descripton: Helsinki R Tools
+package_version: 0.9.13
+header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
 ---
+
+
+
 
 
 
 Helsinki  R tools
 ===========
 
-The helsinki R package is part of the
-[rOpenGov](http://ropengov.github.com/helsinki) project.
+This is an [rOpenGov](https://github.com/rOpenGov/helsinki) R package
+providing tools for open data in the Helsinki region in Finland.
+
+## Available data
+
+The following data sets are currently available:
+* [Helsinki region environmental services](#helsinki-region-environmental-services)
+* [Helsinki Real Estate Department](#helsinki-real-estate-department)
+* [Helsinki Service Map](#helsinki-service-map)
 
 
 ### Installation
 
-Release version for general users (NOT AVAILABLE YET!)
+Release version for general users:
 
 
 {% highlight r %}
-# install.packages('helsinki') library(helsinki)
+install.packages("helsinki")
 {% endhighlight %}
 
 
@@ -36,41 +46,43 @@ Development version for developers:
 install.packages("devtools")
 library(devtools)
 install_github("helsinki", "ropengov")
+{% endhighlight %}
+
+
+Load package.
+
+
+{% highlight r %}
 library(helsinki)
 {% endhighlight %}
 
 
-Further installation and development instructions at the [home
-page](http://ropengov.github.com/helsinki).
+
+{% highlight text %}
+## Loading required package: rjson
+## Loading required package: RCurl
+## Loading required package: bitops
+## helsinki R package: tools for open data from Helsinki, Finland capital region.
+## This R package is part of rOpenGov <ropengov.github.io>.
+## Copyright (C) 2010-2014 Leo Lahti, Juuso Parkkinen and Joona Lehtomaki.
+## This is free software. You are free to use, modify and redistribute it under the FreeBSD license.
+{% endhighlight %}
 
 
-## Helsinki region environmental services (Helsingin seudun ympäristöpalvelut HSY)
+Further development instructions at the [Github
+page](https://github.com/rOpenGov/helsinki).
 
+## Helsinki region environmental services
 
+Data from Helsingin seudun ympäristöpalvelut, HSY.
 
 ### Population grid
 
-Download population information from [HSY database](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) ((C) 2011 HSY) and visualize on the Helsinki map. For data documentation, see [HSY website](http://www.hsy.fi/seututieto/Documents/Paikkatiedot/Tietokuvaukset_kaikki.pdf). Population size, density, and age structure per grid.
+Download population information from [HSY database](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) (C) 2013 HSY, and inspect the data manually. Some rarely populated grids are censored with '99' to guarantee privacy.
 
 
 {% highlight r %}
-# http://ropengov.github.com/helsinki
-library(helsinki)
-
-# Get population grid (Vaestotietoruudukko)
 sp <- get_HSY_data("Vaestotietoruudukko")
-
-# Visualize population grid library(gisfi) Define limits of the color scale
-# at <- c(seq(0, 2000, 250), Inf) q <- PlotShape(sp, 'ASUKKAITA', type =
-# 'oneway', at = at, ncol = length(at))
-{% endhighlight %}
-
-
-Inspect data manually. Some rarely populated grids are censored with
-'99' to guarantee privacy.
-
-
-{% highlight r %}
 df <- as.data.frame(sp)
 head(df)
 {% endhighlight %}
@@ -95,16 +107,17 @@ head(df)
 {% endhighlight %}
 
 
+
 ### Helsinki building information
 
 Information of buildings in Helsinki region. Data obtained from (C)
-HSY 2011. Grid-level (500mx500m) information on building counts
+HSY 2013. Grid-level (500mx500m) information on building counts
 (lukumaara), built area (kerrosala), usage (kayttotarkoitus), region
 efficiency (aluetehokkuus).
 
 
 {% highlight r %}
-sp <- get_HSY_data("Rakennustietoruudukko")
+sp <- get_HSY_data("Rakennustietoruudukko", 2013)
 df <- as.data.frame(sp)
 head(df)
 {% endhighlight %}
@@ -138,7 +151,7 @@ head(df)
 
 ### Helsinki building area capacity
 
-Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011. 
+Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2013. 
 
 
 {% highlight r %}
@@ -198,10 +211,12 @@ head(df)
 
 ### Further HSY data
 
-[HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has data for 2010-2011. More is coming, add later and allow temporal analysis.
+[HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has more data that will be included in the helsinki package later.
 
 
-## Helsinki Real Estate Department (Helsingin kaupungin kiinteistövirasto, HKK)
+## Helsinki Real Estate Department
+
+Data from Helsingin kaupungin kiinteistövirasto, HKK.
 
 Retrieve [HKK](http://kartta.hel.fi/avoindata/index.html) data sets.
 
@@ -259,7 +274,7 @@ head(dat)
 {% endhighlight %}
 
 
-### Helsinki Service Map data
+## Helsinki Service Map
 
 Retrieve data from [Helsinki Service Map](http://www.hel.fi/palvelukartta/?lang=en) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
 
@@ -295,16 +310,16 @@ str(parks.data[[1]])
 
 {% highlight text %}
 ## List of 14
-##  $ id                : num 27143
+##  $ id                : num 26902
 ##  $ org_id            : num 92
 ##  $ provider_type     : num 101
 ##  $ name_fi           : chr "Puisto, lähivirkistysalue tai vastaava"
 ##  $ name_sv           : chr "Puisto, lähivirkistysalue tai vastaava"
 ##  $ name_en           : chr "Puisto, lähivirkistysalue tai vastaava"
-##  $ latitude          : num 60.3
-##  $ longitude         : num 24.8
-##  $ northing_etrs_gk25: num 6682922
-##  $ easting_etrs_gk25 : num 25491213
+##  $ latitude          : num 60.2
+##  $ longitude         : num 25.1
+##  $ northing_etrs_gk25: num 6681175
+##  $ easting_etrs_gk25 : num 25506208
 ##  $ address_city_fi   : chr "Vantaa"
 ##  $ address_city_sv   : chr "Vantaa"
 ##  $ address_city_en   : chr "Vantaa"
@@ -321,12 +336,7 @@ license](http://en.wikipedia.org/wiki/BSD\_licenses). Cite Helsinki R
 package and and the appropriate data provider, including a url
 link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
 Joona Lehtomäki (2013-2014). helsinki R package. URL:
-http://ropengov.github.io/helsinki'.
-
-For further usage examples, see
-[Louhos-blog](http://louhos.wordpress.com) and
-[takomo](https://github.com/louhos/takomo/tree/master/Helsinki).
-
+https://github.com/rOpenGov/helsinki/'.
 
 ### Session info
 
@@ -351,12 +361,23 @@ sessionInfo()
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-## [1] helsinki_0.9.09 maptools_0.8-29 sp_1.0-14       RCurl_1.95-4.1 
-## [5] bitops_1.0-6    rjson_0.2.13    knitr_1.5      
+##  [1] helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6    rjson_0.2.13   
+##  [5] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
+##  [9] rgeos_0.3-4     maptools_0.8-29 fingis_0.9.9    rgdal_0.8-16   
+## [13] sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-## [1] evaluate_0.5.1  foreign_0.8-60  formatR_0.10    grid_3.0.3     
-## [5] lattice_0.20-27 stringr_0.6.2   tools_3.0.3
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         reshape2_1.2.2     
+## [25] RgoogleMaps_1.2.0.5 RJSONIO_1.0-3       scales_0.2.3       
+## [28] spdep_0.5-71        splines_3.0.3       stringr_0.6.2      
+## [31] tools_3.0.3         XML_3.95-0.2
 {% endhighlight %}
 
 

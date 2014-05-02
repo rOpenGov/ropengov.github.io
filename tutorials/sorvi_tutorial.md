@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.24
+package_version: 0.4.25
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -125,18 +125,6 @@ head(postal.code.table)
 {% endhighlight %}
 
 
-
-{% highlight text %}
-##   postal.code municipality municipality.ascii
-## 1       07230       Askola             Askola
-## 2       07500       Askola             Askola
-## 3       07510       Askola             Askola
-## 4       07530       Askola             Askola
-## 5       07580       Askola             Askola
-## 6       07590       Askola             Askola
-{% endhighlight %}
-
-
 ### IP Location
 
 Get geographic coordinates for a given IP-address from 
@@ -174,127 +162,12 @@ municipality.info.mml[1:2, ]
 {% endhighlight %}
 
 
-
-{% highlight text %}
-##           Kohderyhma Kohdeluokk AVI Maakunta Kunta
-## Äänekoski         71      84200   4       13   992
-## Ähtäri            71      84200   4       14   989
-##                                             AVI_ni1
-## Äänekoski Länsi- ja Sisä-Suomen aluehallintovirasto
-## Ähtäri    Länsi- ja Sisä-Suomen aluehallintovirasto
-##                                                      AVI_ni2
-## Äänekoski Regionförvaltningsverket i Västra och Inre Finland
-## Ähtäri    Regionförvaltningsverket i Västra och Inre Finland
-##                 Maaku_ni1         Maaku_ni2 Kunta_ni1 Kunta_ni2 Kieli_ni1
-## Äänekoski     Keski-Suomi Mellersta Finland Äänekoski       N_A     Suomi
-## Ähtäri    Etelä-Pohjanmaa Södra Österbotten    Ähtäri    Etseri     Suomi
-##           Kieli_ni2                                    AVI.FI Kieli.FI
-## Äänekoski       N_A Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
-## Ähtäri       Ruotsi Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
-##                Maakunta.FI  Kunta.FI
-## Äänekoski      Keski-Suomi Äänekoski
-## Ähtäri    EtelÃ¤-Pohjanmaa    Ähtäri
-{% endhighlight %}
-
-
 Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
 
 
 {% highlight r %}
 municipality.info.statfi <- GetMunicipalityInfoStatFi()
 municipality.info.statfi[1:2, ]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##                Alue Maapinta-ala, km2 1.1.2013 Taajama-aste, % 1.1.2012
-## Äänekoski Äänekoski                        884                     76.1
-## Ähtäri       Ähtäri                        805                     61.9
-##           Väkiluku 31.12.2012 Väkiluvun muutos, % 2011 - 2012
-## Äänekoski               20265                            -0.3
-## Ähtäri                   6363                            -0.8
-##           0-14 -vuotiaiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                           17.4
-## Ähtäri                                              14.9
-##           15-64 -vuotiaiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                            61.1
-## Ähtäri                                               60.4
-##           65 vuotta täyttäneiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                                 21.5
-## Ähtäri                                                    24.6
-##           Ruotsinkielisten osuus väestöstä, % 31.12.2012
-## Äänekoski                                            0.1
-## Ähtäri                                               0.1
-##           Ulkomaiden kansalaisten osuus väestöstä, % 31.12.2012
-## Äänekoski                                                   1.1
-## Ähtäri                                                      0.8
-##           Kuntien välinen muuttovoitto/-tappio, henkilöä 2012
-## Äänekoski                                                 -67
-## Ähtäri                                                    -35
-##           Syntyneiden enemmyys, henkilöä 2012
-## Äänekoski                                 -14
-## Ähtäri                                    -20
-##           Perheiden lukumäärä 31.12.2012
-## Äänekoski                           5570
-## Ähtäri                              1807
-##           Valtionveronalaiset tulot, euroa/tulonsaaja  2011
-## Äänekoski                                             23540
-## Ähtäri                                                21744
-##           Asuntokuntien lukumäärä 31.12.2012
-## Äänekoski                               9624
-## Ähtäri                                  2957
-##           Vuokra-asunnossa asuvien asuntokuntien osuus, % 31.12.2012
-## Äänekoski                                                       26.0
-## Ähtäri                                                          20.3
-##           Rivi- ja pientaloissa asuvien asuntokuntien osuus asuntokunnista, % 31.12.2012
-## Äänekoski                                                                           65.1
-## Ähtäri                                                                              86.8
-##           Kesämökkien lukumäärä 31.12.2012
-## Äänekoski                             2551
-## Ähtäri                                1354
-##           Vähintään keskiasteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2011
-## Äänekoski                                                                                      63.2
-## Ähtäri                                                                                         64.2
-##           Korkea-asteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2011
-## Äänekoski                                                                              19.5
-## Ähtäri                                                                                 19.9
-##           Kunnassa olevien työpaikkojen lukumäärä 31.12.2011
-## Äänekoski                                               7972
-## Ähtäri                                                  2453
-##           Työllisten osuus 18-74-vuotiaista, % 31.12.2011
-## Äänekoski                                            54.2
-## Ähtäri                                               55.3
-##           Työttömyysaste, % 31.12.2011
-## Äänekoski                         15.5
-## Ähtäri                            11.3
-##           Kunnassa asuvan työllisen työvoiman määrä 31.12.2011
-## Äänekoski                                                 7679
-## Ähtäri                                                    2475
-##           Asuinkunnassaan työssäkäyvien osuus työllisestä työvoimasta, % 31.12. 2011
-## Äänekoski                                                                       77.3
-## Ähtäri                                                                          77.3
-##           Alkutuotannon työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                            2.8
-## Ähtäri                                               9.1
-##           Jalostuksen työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                         43.7
-## Ähtäri                                            27.7
-##           Palvelujen työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                        52.5
-## Ähtäri                                           62.0
-##           Toimialaltaan tuntemattomien työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                                           1.0
-## Ähtäri                                                              1.2
-##           Taloudellinen huoltosuhde, työvoiman ulkopuolella tai työttömänä olevat yhtä työllistä kohti 31.12.2011
-## Äänekoski                                                                                                    1.65
-## Ähtäri                                                                                                       1.59
-##           Eläkkeellä olevien osuus väestöstä, % 31.12.2011
-## Äänekoski                                             28.1
-## Ähtäri                                                31.3
-##           Yritystoimipaikkojen lukumäärä 2012     Kunta
-## Äänekoski                                  NA Äänekoski
-## Ähtäri                                    478    Ähtäri
 {% endhighlight %}
 
 
@@ -305,18 +178,6 @@ List the province for each municipality in Finland:
 # Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"))
 head(m2p)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##          Helsinki           Tampere             Turku 
-##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 
 # All municipalities
 m2p <- FindProvince(municipality.info.statfi$Kunta)
@@ -327,30 +188,11 @@ head(m2p)
 {% endhighlight %}
 
 
-
-{% highlight text %}
-##          Helsinki           Tampere             Turku 
-##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
-{% endhighlight %}
-
-
 Convert municipality codes and names:
 
 {% highlight r %}
 municipality_ids <- ConvertMunicipalityCodes()
 head(municipality_ids)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##            id      name
-## Äänekoski 992 Äänekoski
-## Ähtäri    989    Ähtäri
-## Akaa      020      Akaa
-## Alajärvi  005  Alajärvi
-## Alavieska 009 Alavieska
-## Alavus    010    Alavus
 {% endhighlight %}
 
 
@@ -425,24 +267,7 @@ Finnish broadcasting company YLE published a large data set on Finnish company s
 
 {% highlight r %}
 tuet <- GetMOTYritystuet()
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error: cannot open the connection
-{% endhighlight %}
-
-
-
-{% highlight r %}
 head(tuet)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error: object 'tuet' not found
 {% endhighlight %}
 
 
@@ -458,8 +283,6 @@ data(iris)
 p <- vwReg(Sepal.Length ~ Sepal.Width, iris)
 print(p)
 {% endhighlight %}
-
-![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline.png) 
 
 
 Plot matrix:
@@ -512,18 +335,24 @@ sessionInfo()
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] RColorBrewer_1.0-5 ggplot2_0.9.3.1    XML_3.95-0.2      
-##  [4] pxR_0.29           stringr_0.6.2      reshape_0.8.4     
-##  [7] plyr_1.8.1         sorvi_0.4.24       helsinki_0.9.09   
-## [10] maptools_0.8-29    sp_1.0-14          RCurl_1.95-4.1    
-## [13] bitops_1.0-6       rjson_0.2.13       knitr_1.5         
+##  [1] sorvi_0.4.25    helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6   
+##  [5] rjson_0.2.13    mapproj_1.2-2   maps_2.3-6      ggmap_2.3      
+##  [9] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.9   
+## [13] rgdal_0.8-16    sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] foreign_0.8-60   formatR_0.10     grid_3.0.3       gtable_0.1.2    
-##  [9] labeling_0.2     lattice_0.20-27  MASS_7.3-30      munsell_0.4.2   
-## [13] proto_0.3-10     Rcpp_0.11.1      reshape2_1.2.2   scales_0.2.3    
-## [17] tools_3.0.3
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] pxR_0.29            RColorBrewer_1.0-5  Rcpp_0.11.1        
+## [25] reshape_0.8.4       reshape2_1.2.2      RgoogleMaps_1.2.0.5
+## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
+## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
+## [34] XML_3.95-0.2
 {% endhighlight %}
 
 

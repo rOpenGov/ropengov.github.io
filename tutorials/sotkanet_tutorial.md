@@ -6,7 +6,7 @@ package_name_show: sotkanet
 author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
 meta_description: Sotkanet API R Tools
 github_user: ropengov
-package_version: 0.9.02
+package_version: 0.9.05
 header_descripton: Sotkanet API R Tools
 ---
 
@@ -278,18 +278,23 @@ sessionInfo()
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sotkanet_0.9.02    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
-##  [4] XML_3.95-0.2       pxR_0.29           stringr_0.6.2     
-##  [7] reshape_0.8.4      plyr_1.8.1         sorvi_0.4.24      
-## [10] helsinki_0.9.09    maptools_0.8-29    sp_1.0-14         
-## [13] RCurl_1.95-4.1     bitops_1.0-6       rjson_0.2.13      
-## [16] knitr_1.5         
+##  [1] sotkanet_0.9.05 sorvi_0.4.25    helsinki_0.9.13 RCurl_1.95-4.1 
+##  [5] bitops_1.0-6    rjson_0.2.13    mapproj_1.2-2   maps_2.3-6     
+##  [9] ggmap_2.3       ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29
+## [13] fingis_0.9.9    rgdal_0.8-16    sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] foreign_0.8-60   formatR_0.10     grid_3.0.3       gtable_0.1.2    
-##  [9] labeling_0.2     lattice_0.20-27  MASS_7.3-30      munsell_0.4.2   
-## [13] proto_0.3-10     Rcpp_0.11.1      reshape2_1.2.2   scales_0.2.3    
-## [17] tools_3.0.3
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] pxR_0.29            RColorBrewer_1.0-5  Rcpp_0.11.1        
+## [25] reshape_0.8.4       reshape2_1.2.2      RgoogleMaps_1.2.0.5
+## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
+## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
+## [34] XML_3.95-0.2
 {% endhighlight %}
 

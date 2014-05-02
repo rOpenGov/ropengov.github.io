@@ -1,6 +1,6 @@
 ---
-title: "sotkanet"
-description: "Sotkanet R Tools"
+title: sotkanet
+description: Sotkanet R Tools
 maintainer: Leo Lahti <louhos@googlegroups.com>
 link: https://github.com/ropengov/sotkanet
 github: https://github.com/rOpenGov/sotkanet
