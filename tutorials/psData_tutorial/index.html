@@ -63,6 +63,7 @@
   <!-- <hr class="soften"> -->
   </div>
   <div class="span11">
+<<<<<<< HEAD
   <h1 id='psdata_motivation_and_tutorial'>psData Motivation and Tutorial</h1>
 
 <p>A lot of progress has been made on improving political scientists&#8217; ability to access data &#8216;programmatically&#8217;, e.g. data can be downloaded with source code R. Packages such as <a href='http://cran.r-project.org/web/packages/WDI/index.html'>WDI</a> for World Bank Development Indicator and <a href='http://cran.r-project.org/web/packages/dvn/index.html'>dvn</a> for many data sets stored on the <a href='http://thedata.org/'>Dataverse Network</a> make it much easier for political scientists to use this data as part of a highly <a href='http://christophergandrud.blogspot.de/2013/07/getting-started-with-reproducible.html'>integrated and reproducible workflow</a>.</p>
@@ -70,6 +71,15 @@
 <p>There are nonetheless still many commonly used political science data sets that aren&#8217;t easily accessible to researchers. Recently, I&#8217;ve been using the <a href='http://econ.worldbank.org/WBSITE/EXTERNAL/EXTDEC/EXTRESEARCH/0,,contentMDK:20649465~pagePK:64214825~piPK:64214943~theSitePK:469382,00.html'>Database of Political Institutions (DPI)</a>, <a href='http://www.systemicpeace.org/polity/polity4.htm'>Polity IV</a> democracy indicators, and <a href='http://www.carmenreinhart.com/data/browse-by-topic/topics/7/'>Reinhart and Rogoff&#8217;s (2010)</a> financial crisis occurrence data. All three of these data sets are freely available for download online. However, getting them, cleaning them up, and merging them together is kind of a pain. This is especially true for the Reinhart and Rogoff data, which is in 4 Excel files with over 70 individual sheets, one for each country&#8217;s data.</p>
 
 <p>Also, I&#8217;ve been using variables that are combinations and/or transformations of indicators in regularly updated data sets, but which themselves aren&#8217;t regularly updated. In particular, <a href='http://www.nyu.edu/gsas/dept/politics/data/bdm2s2/Logic.htm'>Bueno de Mesquita et al. (2003)</a> devised two variables that they called the &#8216;winset&#8217; and the &#8216;selectorate&#8217;. These are basically specific combinations of data in DPI and Polity IV. However, the winset and selectorate variables haven&#8217;t been updated alongside the yearly updates of DPI and Polity IV.</p>
+=======
+  <h1 id="psdata_motivation_and_tutorial">psData Motivation and Tutorial</h1>
+
+<p>A lot of progress has been made on improving political scientists’ ability to access data ‘programmatically’, e.g. data can be downloaded with source code R. Packages such as <a href="http://cran.r-project.org/web/packages/WDI/index.html">WDI</a> for World Bank Development Indicator and <a href="http://cran.r-project.org/web/packages/dvn/index.html">dvn</a> for many data sets stored on the <a href="http://thedata.org/">Dataverse Network</a> make it much easier for political scientists to use this data as part of a highly <a href="http://christophergandrud.blogspot.de/2013/07/getting-started-with-reproducible.html">integrated and reproducible workflow</a>.</p>
+
+<p>There are nonetheless still many commonly used political science data sets that aren’t easily accessible to researchers. Recently, I’ve been using the <a href="http://econ.worldbank.org/WBSITE/EXTERNAL/EXTDEC/EXTRESEARCH/0,,contentMDK:20649465~pagePK:64214825~piPK:64214943~theSitePK:469382,00.html">Database of Political Institutions (DPI)</a>, <a href="http://www.systemicpeace.org/polity/polity4.htm">Polity IV</a> democracy indicators, and <a href="http://www.carmenreinhart.com/data/browse-by-topic/topics/7/">Reinhart and Rogoff’s (2010)</a> financial crisis occurrence data. All three of these data sets are freely available for download online. However, getting them, cleaning them up, and merging them together is kind of a pain. This is especially true for the Reinhart and Rogoff data, which is in 4 Excel files with over 70 individual sheets, one for each country’s data.</p>
+
+<p>Also, I’ve been using variables that are combinations and/or transformations of indicators in regularly updated data sets, but which themselves aren’t regularly updated. In particular, <a href="http://www.nyu.edu/gsas/dept/politics/data/bdm2s2/Logic.htm">Bueno de Mesquita et al. (2003)</a> devised two variables that they called the ‘winset’ and the ‘selectorate’. These are basically specific combinations of data in DPI and Polity IV. However, the winset and selectorate variables haven’t been updated alongside the yearly updates of DPI and Polity IV.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
 <p>There are two big problems here:</p>
 
@@ -83,6 +93,7 @@
 </li>
 </ol>
 
+<<<<<<< HEAD
 <p>As a solution, I&#8217;ve been working on a new R package called <em>psData</em>. This package includes functions that automate the gathering, cleaning, and creation of common political science data and variables. So far (February 2014) it gathers DPI, Polity IV, and Reinhart and Rogoff data, as well as creates winset and selectorate variables. Hopefully the package will save political scientists a lot of time and reduce the number of data management errors.</p>
 
 <p>There certainly could be errors in the way <em>psData</em> gathers data. However, once spotted the errors could be easily reported on the package&#8217;s <a href='https://github.com/christophergandrud/psData/issues'>Issues Page</a>. Once fixed, the correction will be spread to all users via a package update.</p>
@@ -94,17 +105,35 @@
 <h2 id='examples'>Examples</h2>
 
 <p>To download only the <strong>polity2</strong> variable from <a href='http://www.systemicpeace.org/polity/polity4.htm'>Polity IV</a>:</p>
+=======
+<p>As a solution, I’ve been working on a new R package called <em>psData</em>. This package includes functions that automate the gathering, cleaning, and creation of common political science data and variables. So far (February 2014) it gathers DPI, Polity IV, and Reinhart and Rogoff data, as well as creates winset and selectorate variables. Hopefully the package will save political scientists a lot of time and reduce the number of data management errors.</p>
+
+<p>There certainly could be errors in the way <em>psData</em> gathers data. However, once spotted the errors could be easily reported on the package’s <a href="https://github.com/christophergandrud/psData/issues">Issues Page</a>. Once fixed, the correction will be spread to all users via a package update.</p>
+
+<h2 id="types_of_functions">Types of functions</h2>
+
+<p>There are two basic types of functions in <em>psData</em>: <strong>Getters</strong> and <strong>Variable Builders</strong>. Getter functions automate the gathering and cleaning of particular data sets so that they can easily be merged with other data. They do not transform the underlying data. Variable Builders use Getters to gather data and then transform it into new variables suggested by the political science literature.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>To download only the <strong>polity2</strong> variable from <a href="http://www.systemicpeace.org/polity/polity4.htm">Polity IV</a>:</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'><span class='c1'># Load package</span>
 library<span class='p'>(</span>psData<span class='p'>)</span>
 
 <span class='c1'># Download polity2 variable</span>
 PolityData <span class='o'>&lt;-</span> PolityGet<span class='p'>(</span>vars <span class='o'>=</span> <span class='s'>&quot;polity2&quot;</span><span class='p'>)</span>
 </code></pre></div>
+<<<<<<< HEAD
 <p>Note that the <strong>iso2c</strong> variable refers to the <a href='http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2'>ISO two letter country code country ID</a>. This standardised country identifier could be used to easily merge the Polity IV data with another data set. Another country ID type can be selected with the <code>OutCountryID</code> argument. See the package documentation for details.</p>
+=======
+<p>Note that the <strong>iso2c</strong> variable refers to the <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO two letter country code country ID</a>. This standardised country identifier could be used to easily merge the Polity IV data with another data set. Another country ID type can be selected with the <code>OutCountryID</code> argument. See the package documentation for details.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
 <p>To create <strong>winset</strong> (<strong>W</strong>) and <strong>selectorate</strong> (<strong>ModS</strong>) data use the following code:</p>
 <div class='highlight'><pre><code class='r'>WinData <span class='o'>&lt;-</span> WinsetCreator<span class='p'>()</span>
 </code></pre></div><hr />
+<<<<<<< HEAD
 <h2 id='install'>Install</h2>
 
 <p><em>psData</em> is on <a href='http://cran.r-project.org/web/packages/psData/index.html'>CRAN</a>. You can also download the development version with the <a href='https://github.com/hadley/devtools'>devtools</a> package:</p>
@@ -116,6 +145,19 @@ devtools::install_github(&#39;psData&#39;, &#39;christophergandrud&#39;)
 <h2 id='suggestions'>Suggestions</h2>
 
 <p>Please feel free to suggest other data set downloading and variable creating functions. To do this just leave a note on the package&#8217;s <a href='https://github.com/christophergandrud/psData/issues'>Issues page</a> or make a pull request with a new function added.</p>
+=======
+<h2 id="install">Install</h2>
+
+<p><em>psData</em> is on <a href="http://cran.r-project.org/web/packages/psData/index.html">CRAN</a>. You can also download the development version with the <a href="https://github.com/hadley/devtools">devtools</a> package:</p>
+
+<pre><code>
+devtools::install_github(&#39;psData&#39;, &#39;christophergandrud&#39;)
+</code></pre>
+
+<h2 id="suggestions">Suggestions</h2>
+
+<p>Please feel free to suggest other data set downloading and variable creating functions. To do this just leave a note on the package’s <a href="https://github.com/christophergandrud/psData/issues">Issues page</a> or make a pull request with a new function added.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
   </div>
 
   </article>

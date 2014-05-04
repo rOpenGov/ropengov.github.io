@@ -55,6 +55,7 @@
         </header>
 
         <section>
+<<<<<<< HEAD
             <h2 id='economic_data_in_r'>Economic data in R</h2>
 
 <p>There is a growing trend of new methods for assessing economic data in R. Packages as <a href='https://github.com/vincentarelbundock/WDI'>WDI: World Development indicators</a>, <a href='http://www.quandl.com/help/packages/r'>Quandl</a>, <a href='http://cran.r-project.org/web/packages/pwt/index.html'>pwt: Penn World Table</a>. Also the <strong>data sets</strong> -section in <a href='http://cran.r-project.org/web/views/Econometrics.html'>CRAN Task View: Computational Econometrics</a> is worth looking.</p>
@@ -68,13 +69,34 @@
 <p>Below is a stepwise explanation on how to visualize the data.</p>
 
 <h3 id='load_the_data'>Load the data</h3>
+=======
+            <h2 id="economic_data_in_r">Economic data in R</h2>
+
+<p>There is a growing trend of new methods for assessing economic data in R. Packages as <a href="https://github.com/vincentarelbundock/WDI">WDI: World Development indicators</a>, <a href="http://www.quandl.com/help/packages/r">Quandl</a>, <a href="http://cran.r-project.org/web/packages/pwt/index.html">pwt: Penn World Table</a>. Also the <strong>data sets</strong> -section in <a href="http://cran.r-project.org/web/views/Econometrics.html">CRAN Task View: Computational Econometrics</a> is worth looking.</p>
+
+<h2 id="maddison_project_database">Maddison Project database</h2>
+
+<p>One which is seemingly missing is the mighty <a href="http://www.ggdc.net/maddison/maddison-project/home.htm">Maddison Project database</a> that is often used especially by economic historians. Data includes estimates of economic growth in the world economic between <strong>AD 1 and 2010</strong>. A major update was done in January 2013 and a detailed documentation of that update can be read from <a href="http://www.ggdc.net/maddison/maddison-project/publications/wp4.pdf">Bolt and Van Zanden (2013). The First Update of the Maddison Project; Re-Estimating Growth Before 1820, Maddison Project Working Paper 4.</a>. The actual data as .xlsx-file is here: <a href="http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx">mpd_2013-01.xlsx</a></p>
+
+<h2 id="the_exercise">The Exercise</h2>
+
+<p>Below is a stepwise explanation on how to visualize the data.</p>
+
+<h3 id="load_the_data">Load the data</h3>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'>library<span class='p'>(</span>gdata<span class='p'>)</span>
 url <span class='o'>&lt;-</span> <span class='s'>&quot;http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx&quot;</span>
 dat <span class='o'>&lt;-</span> read.xls<span class='p'>(</span>url<span class='p'>,</span> header <span class='o'>=</span> <span class='kc'>TRUE</span><span class='p'>,</span> skip <span class='o'>=</span> <span class='m'>1</span><span class='p'>,</span> stringsAsFactors <span class='o'>=</span> <span class='kc'>FALSE</span><span class='p'>)</span>
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='manipulating_the_data'>Manipulating the data</h3>
 
 <p>Excel-sheets usually require some processing in R. Below I&#8217;m removing row not needed and melting the data in long format, and convert in to numerical.</p>
+=======
+<h3 id="manipulating_the_data">Manipulating the data</h3>
+
+<p>Excel-sheets usually require some processing in R. Below I’m removing row not needed and melting the data in long format, and convert in to numerical.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'>column.names <span class='o'>&lt;-</span> as.character<span class='p'>(</span>dat<span class='p'>[</span><span class='m'>1</span><span class='p'>,</span> <span class='p'>])</span>
 column.names<span class='p'>[</span><span class='m'>1</span><span class='p'>]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;year&quot;</span>
 df.mad <span class='o'>&lt;-</span> dat<span class='p'>[</span><span class='m'>-1</span><span class='p'>,</span> <span class='p'>]</span>
@@ -84,9 +106,15 @@ df.mad.l <span class='o'>&lt;-</span> melt<span class='p'>(</span>df.mad<span cl
 df.mad.l<span class='o'>$</span>value <span class='o'>&lt;-</span> as.numeric<span class='p'>(</span>df.mad.l<span class='o'>$</span>value<span class='p'>)</span>
 df.mad.l <span class='o'>&lt;-</span> df.mad.l<span class='p'>[</span><span class='o'>!</span>is.na<span class='p'>(</span>df.mad.l<span class='o'>$</span>value<span class='p'>),</span> <span class='p'>]</span>
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='subset_the_data'>Subset the data</h3>
 
 <p>My research emphasises in post-socialist space and therefore I will subset the data. In addition to post-socialist countries I&#8217;m including some Western countries, too.</p>
+=======
+<h3 id="subset_the_data">Subset the data</h3>
+
+<p>My research emphasises in post-socialist space and therefore I will subset the data. In addition to post-socialist countries I’m including some Western countries, too.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'>cntry.list <span class='o'>&lt;-</span> c<span class='p'>(</span><span class='s'>&quot;Czech Republic&quot;</span><span class='p'>,</span> <span class='s'>&quot;Estonia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Hungary&quot;</span><span class='p'>,</span> <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>,</span> <span class='s'>&quot;Latvia&quot;</span><span class='p'>,</span> 
     <span class='s'>&quot;Lithuania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Poland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovakia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Slovenia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Romania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Albania&quot;</span><span class='p'>,</span> <span class='s'>&quot;Bosnia&quot;</span><span class='p'>,</span> 
     <span class='s'>&quot;Bulgaria&quot;</span><span class='p'>,</span> <span class='s'>&quot;Croatia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Macedonia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Montenegro&quot;</span><span class='p'>,</span> <span class='s'>&quot;Kosovo&quot;</span><span class='p'>,</span> <span class='s'>&quot;Serbia&quot;</span><span class='p'>,</span> <span class='s'>&quot;Armenia&quot;</span><span class='p'>,</span> 
@@ -110,7 +138,11 @@ df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span cla
 df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;USA&quot;</span><span class='p'>,</span> <span class='s'>&quot;Japan&quot;</span><span class='p'>,</span> <span class='s'>&quot;Finland&quot;</span><span class='p'>,</span> <span class='s'>&quot;Sweden&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;WEST&quot;</span>
 df.mad.l2<span class='o'>$</span>group<span class='p'>[</span>df.mad.l2<span class='o'>$</span>variable <span class='o'>%in%</span> c<span class='p'>(</span><span class='s'>&quot;F. USSR&quot;</span><span class='p'>)]</span> <span class='o'>&lt;-</span> <span class='s'>&quot;USSR&quot;</span>
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='plotting_the_data_from_1850_to_2010'>Plotting the data from 1850 to 2010</h3>
+=======
+<h3 id="plotting_the_data_from_1850_to_2010">Plotting the data from 1850 to 2010</h3>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
 <p>As I mentioned in the beginning the data extends for over 2000 years. My interest is more of contemporary nature, so I will subset data to cover only the last 160 years from 1850 to 2010. Also, I will add some major historical events during that period that have had an effect on economic growth, too.</p>
 <div class='highlight'><pre><code class='r'>library<span class='p'>(</span>ggplot2<span class='p'>)</span>
@@ -124,7 +156,11 @@ ggplot<span class='p'>(</span>data <span class='o'>=</span> df.mad.l2<span class
     colour <span class='o'>=</span> <span class='s'>&quot;blue&quot;</span><span class='p'>)</span> <span class='o'>+</span> annotate<span class='p'>(</span><span class='s'>&quot;text&quot;</span><span class='p'>,</span> x <span class='o'>=</span> <span class='m'>1991</span><span class='p'>,</span> y <span class='o'>=</span> <span class='m'>31000</span><span class='p'>,</span> label <span class='o'>=</span> <span class='s'>&quot;Dissolution of \n the Soviet Union&quot;</span><span class='p'>)</span> <span class='o'>+</span> 
     theme_minimal<span class='p'>()</span> <span class='o'>+</span> theme<span class='p'>(</span>legend.position <span class='o'>=</span> <span class='s'>&quot;top&quot;</span><span class='p'>)</span>
 </code></pre></div>
+<<<<<<< HEAD
 <p><img alt='center' src='/figs/2013-12-05-maddison-data/maddison5.png' /></p>
+=======
+<p><img src="/figs/2013-12-05-maddison-data/maddison5.png" alt="center" /></p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
             
 <div class="social">
     <div>

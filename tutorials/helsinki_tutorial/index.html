@@ -47,13 +47,21 @@
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=helsinki&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=helsinki&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
 
+<<<<<<< HEAD
      <h1> <i class="fa fa-book"></i>  helsinki <small>v0.9.09</small> </h1>
+=======
+     <h1> <i class="fa fa-book"></i>  helsinki <small>v0.9.13</small> </h1>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
   </header>
     
   </div>
   <!-- <br> -->
 
+<<<<<<< HEAD
   <div class"row"> <h2> <em> Helsinki R Tools </em> </h2>
+=======
+  <div class"row"> <h2> <em> Tools for accessing various open data sources in the Helsinkiregion in Finland. Current data sources include the Real Estate Departmentand the Environmental Services Authority. </em> </h2>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
   <!-- <h3><i class="ss-icon" style="color:#ebeef6;">&#x2139;</i>&nbsp;&nbsp;This is the vignette in the helsinki package</h3> -->
   <br>
@@ -63,6 +71,7 @@
   <!-- <hr class="soften"> -->
   </div>
   <div class="span11">
+<<<<<<< HEAD
   <h1 id='helsinki_r_tools'>Helsinki R tools</h1>
 
 <p>The helsinki R package is part of the <a href='http://ropengov.github.com/helsinki'>rOpenGov</a> project.</p>
@@ -71,11 +80,34 @@
 
 <p>Release version for general users (NOT AVAILABLE YET!)</p>
 <div class='highlight'><pre><code class='r'><span class='c1'># install.packages(&#39;helsinki&#39;) library(helsinki)</span>
+=======
+  <h1 id="helsinki_r_tools">Helsinki R tools</h1>
+
+<p>This is an <a href="https://github.com/rOpenGov/helsinki">rOpenGov</a> R package providing tools for open data in the Helsinki region in Finland.</p>
+
+<h2 id="available_data">Available data</h2>
+
+<p>The following data sets are currently available:</p>
+
+<ul>
+<li><a href="#helsinki-region-environmental-services">Helsinki region environmental services</a></li>
+
+<li><a href="#helsinki-real-estate-department">Helsinki Real Estate Department</a></li>
+
+<li><a href="#helsinki-service-map">Helsinki Service Map</a></li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+
+<p>Release version for general users:</p>
+<div class='highlight'><pre><code class='r'>install.packages<span class='p'>(</span><span class='s'>&quot;helsinki&quot;</span><span class='p'>)</span>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 </code></pre></div>
 <p>Development version for developers:</p>
 <div class='highlight'><pre><code class='r'>install.packages<span class='p'>(</span><span class='s'>&quot;devtools&quot;</span><span class='p'>)</span>
 library<span class='p'>(</span>devtools<span class='p'>)</span>
 install_github<span class='p'>(</span><span class='s'>&quot;helsinki&quot;</span><span class='p'>,</span> <span class='s'>&quot;ropengov&quot;</span><span class='p'>)</span>
+<<<<<<< HEAD
 library<span class='p'>(</span>helsinki<span class='p'>)</span>
 </code></pre></div>
 <p>Further installation and development instructions at the <a href='http://ropengov.github.com/helsinki'>home page</a>.</p>
@@ -97,6 +129,30 @@ sp <span class='o'>&lt;-</span> get_HSY_data<span class='p'>(</span><span class=
 </code></pre></div>
 <p>Inspect data manually. Some rarely populated grids are censored with &#8216;99&#8217; to guarantee privacy.</p>
 <div class='highlight'><pre><code class='r'>df <span class='o'>&lt;-</span> as.data.frame<span class='p'>(</span>sp<span class='p'>)</span>
+=======
+</code></pre></div>
+<p>Load package.</p>
+<div class='highlight'><pre><code class='r'>library<span class='p'>(</span>helsinki<span class='p'>)</span>
+</code></pre></div><div class='highlight'><pre><code class='text'>## Loading required package: rjson
+## Loading required package: RCurl
+## Loading required package: bitops
+## helsinki R package: tools for open data from Helsinki, Finland capital region.
+## This R package is part of rOpenGov &lt;ropengov.github.io&gt;.
+## Copyright (C) 2010-2014 Leo Lahti, Juuso Parkkinen and Joona Lehtomaki.
+## This is free software. You are free to use, modify and redistribute it under the FreeBSD license.
+</code></pre></div>
+<p>Further development instructions at the <a href="https://github.com/rOpenGov/helsinki">Github page</a>.</p>
+
+<h2 id="helsinki_region_environmental_services">Helsinki region environmental services</h2>
+
+<p>Data from Helsingin seudun ympäristöpalvelut, HSY.</p>
+
+<h3 id="population_grid">Population grid</h3>
+
+<p>Download population information from <a href="http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx">HSY database</a> (C) 2013 HSY, and inspect the data manually. Some rarely populated grids are censored with ‘99’ to guarantee privacy.</p>
+<div class='highlight'><pre><code class='r'>sp <span class='o'>&lt;-</span> get_HSY_data<span class='p'>(</span><span class='s'>&quot;Vaestotietoruudukko&quot;</span><span class='p'>)</span>
+df <span class='o'>&lt;-</span> as.data.frame<span class='p'>(</span>sp<span class='p'>)</span>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 head<span class='p'>(</span>df<span class='p'>)</span>
 </code></pre></div><div class='highlight'><pre><code class='text'>##   INDEX ASUKKAITA ASVALJYYS IKA0_9 IKA10_19 IKA20_29 IKA30_39 IKA40_49
 ## 0   688         5        50     99       99       99       99       99
@@ -113,10 +169,17 @@ head<span class='p'>(</span>df<span class='p'>)</span>
 ## 4       99       99       99        99
 ## 5       99       99       99        99
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='helsinki_building_information'>Helsinki building information</h3>
 
 <p>Information of buildings in Helsinki region. Data obtained from (C) HSY 2011. Grid-level (500mx500m) information on building counts (lukumaara), built area (kerrosala), usage (kayttotarkoitus), region efficiency (aluetehokkuus).</p>
 <div class='highlight'><pre><code class='r'>sp <span class='o'>&lt;-</span> get_HSY_data<span class='p'>(</span><span class='s'>&quot;Rakennustietoruudukko&quot;</span><span class='p'>)</span>
+=======
+<h3 id="helsinki_building_information">Helsinki building information</h3>
+
+<p>Information of buildings in Helsinki region. Data obtained from (C) HSY 2013. Grid-level (500mx500m) information on building counts (lukumaara), built area (kerrosala), usage (kayttotarkoitus), region efficiency (aluetehokkuus).</p>
+<div class='highlight'><pre><code class='r'>sp <span class='o'>&lt;-</span> get_HSY_data<span class='p'>(</span><span class='s'>&quot;Rakennustietoruudukko&quot;</span><span class='p'>,</span> <span class='m'>2013</span><span class='p'>)</span>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 df <span class='o'>&lt;-</span> as.data.frame<span class='p'>(</span>sp<span class='p'>)</span>
 head<span class='p'>(</span>df<span class='p'>)</span>
 </code></pre></div><div class='highlight'><pre><code class='text'>##   INDEX RAKLKM RAKLKM_AS RAKLKM_MUU KERALA_YHT KERALA_AS KERALA_MUU
@@ -141,9 +204,15 @@ head<span class='p'>(</span>df<span class='p'>)</span>
 ## 4  Yhden asunnon talot       Talousrakennukset Puuttuvan tiedon merkki
 ## 5  Yhden asunnon talot        Saunarakennukset       Talousrakennukset
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='helsinki_building_area_capacity'>Helsinki building area capacity</h3>
 
 <p>Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011.</p>
+=======
+<h3 id="helsinki_building_area_capacity">Helsinki building area capacity</h3>
+
+<p>Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2013.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'>sp <span class='o'>&lt;-</span> get_HSY_data<span class='p'>(</span><span class='s'>&quot;SeutuRAMAVA_kosa&quot;</span><span class='p'>)</span>
 df <span class='o'>&lt;-</span> as.data.frame<span class='p'>(</span>sp<span class='p'>)</span>
 head<span class='p'>(</span>df<span class='p'>)</span>
@@ -190,6 +259,7 @@ head<span class='p'>(</span>df<span class='p'>)</span>
 ## 4                                Helsinki
 ## 5                                    &lt;NA&gt;
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='further_hsy_data'>Further HSY data</h3>
 
 <p><a href='http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx'>HSY website</a> has data for 2010-2011. More is coming, add later and allow temporal analysis.</p>
@@ -199,6 +269,19 @@ head<span class='p'>(</span>df<span class='p'>)</span>
 <p>Retrieve <a href='http://kartta.hel.fi/avoindata/index.html'>HKK</a> data sets.</p>
 
 <h3 id='helsinki_address_information'>Helsinki address information</h3>
+=======
+<h3 id="further_hsy_data">Further HSY data</h3>
+
+<p><a href="http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx">HSY website</a> has more data that will be included in the helsinki package later.</p>
+
+<h2 id="helsinki_real_estate_department">Helsinki Real Estate Department</h2>
+
+<p>Data from Helsingin kaupungin kiinteistövirasto, HKK.</p>
+
+<p>Retrieve <a href="http://kartta.hel.fi/avoindata/index.html">HKK</a> data sets.</p>
+
+<h3 id="helsinki_address_information">Helsinki address information</h3>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'>dat <span class='o'>&lt;-</span> get_HKK_address_data<span class='p'>(</span><span class='s'>&quot;Helsingin osoiteluettelo&quot;</span><span class='p'>)</span>
 head<span class='p'>(</span>dat<span class='p'>)</span>
 </code></pre></div><div class='highlight'><pre><code class='text'>##           katunimi osoitenumero osoitenumero2 osoitekirjain       N
@@ -232,9 +315,15 @@ head<span class='p'>(</span>dat<span class='p'>)</span>
 ## 5 25485583    Espoo       Stora Bodö   Esbo      1 osoite tai katu
 ## 6 25482421    Espoo       Torraisarn   Esbo      1 osoite tai katu
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='helsinki_service_map_data'>Helsinki Service Map data</h3>
 
 <p>Retrieve data from <a href='http://www.hel.fi/palvelukartta/?lang=en'>Helsinki Service Map</a> <a href='http://www.hel.fi/palvelukarttaws/rest/ver2_en.html'>API</a>.</p>
+=======
+<h2 id="helsinki_service_map">Helsinki Service Map</h2>
+
+<p>Retrieve data from <a href="http://www.hel.fi/palvelukartta/?lang=en">Helsinki Service Map</a> <a href="http://www.hel.fi/palvelukarttaws/rest/ver2_en.html">API</a>.</p>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 <div class='highlight'><pre><code class='r'><span class='c1'># Get servicetree</span>
 pk.servicetree <span class='o'>&lt;-</span> get_ServiceMap_data<span class='p'>(</span><span class='s'>&quot;servicetree&quot;</span><span class='p'>)</span>
 <span class='c1'># Get id for parks</span>
@@ -250,21 +339,33 @@ parks.data <span class='o'>&lt;-</span> get_ServiceMap_data<span class='p'>(</sp
 <span class='c1'># Check what data is given for the first park</span>
 str<span class='p'>(</span>parks.data<span class='p'>[[</span><span class='m'>1</span><span class='p'>]])</span>
 </code></pre></div><div class='highlight'><pre><code class='text'>## List of 14
+<<<<<<< HEAD
 ##  $ id                : num 27143
+=======
+##  $ id                : num 26902
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 ##  $ org_id            : num 92
 ##  $ provider_type     : num 101
 ##  $ name_fi           : chr &quot;Puisto, lähivirkistysalue tai vastaava&quot;
 ##  $ name_sv           : chr &quot;Puisto, lähivirkistysalue tai vastaava&quot;
 ##  $ name_en           : chr &quot;Puisto, lähivirkistysalue tai vastaava&quot;
+<<<<<<< HEAD
 ##  $ latitude          : num 60.3
 ##  $ longitude         : num 24.8
 ##  $ northing_etrs_gk25: num 6682922
 ##  $ easting_etrs_gk25 : num 25491213
+=======
+##  $ latitude          : num 60.2
+##  $ longitude         : num 25.1
+##  $ northing_etrs_gk25: num 6681175
+##  $ easting_etrs_gk25 : num 25506208
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 ##  $ address_city_fi   : chr &quot;Vantaa&quot;
 ##  $ address_city_sv   : chr &quot;Vantaa&quot;
 ##  $ address_city_en   : chr &quot;Vantaa&quot;
 ##  $ phone             : chr &quot;09 8392 2407&quot;
 </code></pre></div>
+<<<<<<< HEAD
 <h3 id='licensing_and_citations'>Licensing and Citations</h3>
 
 <p>This work can be freely used, modified and distributed under the <a href='http://en.wikipedia.org/wiki/BSD\_licenses'>Two-clause FreeBSD license</a>. Cite Helsinki R package and and the appropriate data provider, including a url link. Kindly cite the R package as &#8216;Leo Lahti, Juuso Parkkinen ja Joona Lehtomäki (2013-2014). helsinki R package. URL: http://ropengov.github.io/helsinki&#8217;.</p>
@@ -272,6 +373,13 @@ str<span class='p'>(</span>parks.data<span class='p'>[[</span><span class='m'>1<
 <p>For further usage examples, see <a href='http://louhos.wordpress.com'>Louhos-blog</a> and <a href='https://github.com/louhos/takomo/tree/master/Helsinki'>takomo</a>.</p>
 
 <h3 id='session_info'>Session info</h3>
+=======
+<h3 id="licensing_and_citations">Licensing and Citations</h3>
+
+<p>This work can be freely used, modified and distributed under the <a href="http://en.wikipedia.org/wiki/BSD\_licenses">Two-clause FreeBSD license</a>. Cite Helsinki R package and and the appropriate data provider, including a url link. Kindly cite the R package as ‘Leo Lahti, Juuso Parkkinen ja Joona Lehtomäki (2013-2014). helsinki R package. URL: https://github.com/rOpenGov/helsinki/’.</p>
+
+<h3 id="session_info">Session info</h3>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
 <p>This vignette was created with</p>
 <div class='highlight'><pre><code class='r'>sessionInfo<span class='p'>()</span>
@@ -285,12 +393,32 @@ str<span class='p'>(</span>parks.data<span class='p'>[[</span><span class='m'>1<
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
+<<<<<<< HEAD
 ## [1] helsinki_0.9.09 maptools_0.8-29 sp_1.0-14       RCurl_1.95-4.1 
 ## [5] bitops_1.0-6    rjson_0.2.13    knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
 ## [1] evaluate_0.5.1  foreign_0.8-60  formatR_0.10    grid_3.0.3     
 ## [5] lattice_0.20-27 stringr_0.6.2   tools_3.0.3
+=======
+##  [1] helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6    rjson_0.2.13   
+##  [5] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
+##  [9] rgeos_0.3-4     maptools_0.8-29 fingis_0.9.9    rgdal_0.8-16   
+## [13] sp_1.0-14       knitr_1.5      
+## 
+## loaded via a namespace (and not attached):
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         reshape2_1.2.2     
+## [25] RgoogleMaps_1.2.0.5 RJSONIO_1.0-3       scales_0.2.3       
+## [28] spdep_0.5-71        splines_3.0.3       stringr_0.6.2      
+## [31] tools_3.0.3         XML_3.95-0.2
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 </code></pre></div>
   </div>
 

@@ -47,7 +47,11 @@
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sotkanet&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sotkanet&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
 
+<<<<<<< HEAD
      <h1> <i class="fa fa-book"></i>  sotkanet <small>v0.9.02</small> </h1>
+=======
+     <h1> <i class="fa fa-book"></i>  sotkanet <small>v0.9.05</small> </h1>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
   </header>
     
   </div>

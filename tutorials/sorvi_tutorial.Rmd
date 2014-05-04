@@ -47,7 +47,11 @@
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sorvi&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
      <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=sorvi&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
 
+<<<<<<< HEAD
      <h1> <i class="fa fa-book"></i>  sorvi <small>v0.4.24</small> </h1>
+=======
+     <h1> <i class="fa fa-book"></i>  sorvi <small>v0.4.25</small> </h1>
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
   </header>
     
   </div>
@@ -121,7 +125,11 @@ valid.hetu("010101-0101") # TRUE/FALSE
 
 Get Finnish postal codes vs. municipalities table from Wikipedia
 
+<<<<<<< HEAD
 ```{r postalcodes, message=FALSE}
+=======
+```{r postalcodes, message=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 postal.code.table <- GetPostalCodeInfo() 
 head(postal.code.table)
 ```
@@ -148,20 +156,32 @@ municipality names. Examples for each case:
 
 Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
 
+<<<<<<< HEAD
 ```{r municipalityMML, message=FALSE, warning=FALSE}
+=======
+```{r municipalityMML, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 municipality.info.mml <- GetMunicipalityInfoMML()
 municipality.info.mml[1:2,]
 ```
 
 Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
 
+<<<<<<< HEAD
 ```{r municipalityStatFi, message=FALSE, warning=FALSE}
+=======
+```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 municipality.info.statfi <- GetMunicipalityInfoStatFi()
 municipality.info.statfi[1:2,]
 ```
 
 List the province for each municipality in Finland:
+<<<<<<< HEAD
 ```{r province2, message=FALSE, warning=FALSE}
+=======
+```{r province2, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 
 # Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
@@ -176,7 +196,11 @@ head(m2p)
 ```
 
 Convert municipality codes and names:
+<<<<<<< HEAD
 ```{r province3, message=FALSE}
+=======
+```{r province3, message=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 municipality_ids <- ConvertMunicipalityCodes()
 head(municipality_ids)
 ```
@@ -210,7 +234,11 @@ head(tab)
 
 Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
 
+<<<<<<< HEAD
 ```{r yritystuet-1, warning=FALSE, message=FALSE}
+=======
+```{r yritystuet-1, warning=FALSE, message=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 tuet <- GetMOTYritystuet()
 head(tuet)
 ```
@@ -220,7 +248,11 @@ head(tuet)
 
 Line fit with confidence smoothers:
 
+<<<<<<< HEAD
 ```{r regressionline, message=FALSE}
+=======
+```{r regressionline, message=FALSE, eval=FALSE}
+>>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
 library(sorvi); 
 data(iris); 
 p <- vwReg(Sepal.Length ~ Sepal.Width, iris) 
