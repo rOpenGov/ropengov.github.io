@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +65,23 @@
   </div>
   <div class="span11">
   # psData Motivation and Tutorial
+=======
+---
+title: psData vignette
+layout: tutorial_page
+package_name: psData
+package_name_show: psData
+author: Christopher Gandrud
+meta_description: ["This R package includes functions for gathering commonly used and", "regularly maintained data set in political science. It also includes", "functions for combining components from these data sets into variables that", "have been suggested in the literature", "but are not regularly maintained."]
+github_user: ropengov
+package_version: 0.1.4
+header_descripton: ["This R package includes functions for gathering commonly used and", "regularly maintained data set in political science. It also includes", "functions for combining components from these data sets into variables that", "have been suggested in the literature", "but are not regularly maintained."]
+---
+
+
+
+# psData Motivation and Tutorial
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 A lot of progress has been made on improving political scientists' ability to access data 'programmatically', e.g. data can be downloaded with source code R. Packages such as [WDI](http://cran.r-project.org/web/packages/WDI/index.html) for World Bank Development Indicator and [dvn](http://cran.r-project.org/web/packages/dvn/index.html) for many data sets stored on the [Dataverse Network](http://thedata.org/) make it much easier for political scientists to use this data as part of a highly [integrated and reproducible workflow](http://christophergandrud.blogspot.de/2013/07/getting-started-with-reproducible.html). 
 
@@ -118,6 +136,7 @@ devtools::install_github('psData', 'christophergandrud')
 ## Suggestions
 
 Please feel free to suggest other data set downloading and variable creating functions. To do this just leave a note on the package's [Issues page](https://github.com/christophergandrud/psData/issues) or make a pull request with a new function added.
+<<<<<<< HEAD
 
   </div>
 
@@ -185,3 +204,5 @@ Please feel free to suggest other data set downloading and variable creating fun
 
   </body>
 </html>
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4

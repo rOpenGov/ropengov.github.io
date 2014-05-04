@@ -1,0 +1,10 @@
+_site/
+.DS_Store
+*.lock
+*.sublime*
+.directory
+cache/
+.Rhistory
+.tags*
+.RData
+*~

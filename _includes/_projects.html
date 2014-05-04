@@ -1,0 +1,50 @@
+{% if projects %}
+	<div class="table-responsive project-table">
+		<table class="table table-striped">
+		<tr>
+			<th>
+				Title
+			</th>
+			<th>
+				Description
+			</th>
+			<th>
+				Website
+			</th>
+			<th>
+				GitHub
+			</th>
+			<th>
+				CRAN
+			</th>
+			<th>
+				Tutorial
+			</th>
+		</tr>
+		{% for project in projects %}
+			<tr>
+				<td>
+					{{ project.title }}
+				</td>
+				<td>
+					{{ project.description }}
+				</td>
+				<td class="iconlink">
+					{% if project.link %}<a href="{{ project.link }}" class="fa fa-home" title="Website"></a>{% endif %}
+				</td>
+				<td class="iconlink">
+					{% if project.github %}<a href="{{ project.github }}" class="fa fa-github" title="GitHub"></a>{% endif %}
+				</td>
+				<td class="iconlink">
+					{% if project.cran %}<a href="{{ project.cran }}" class="fa fa-cog" title="The Comprehensive R Archive Network"></a>{% endif %}
+				</td>
+				<td class="iconlink">
+				 {% if project.tutorial %}
+				 	<a href="{{ site.url }}/tutorials/{{ project.title }}_tutorial" class="fa fa-question-circle" title="Tutorial"></a>				 	
+				 {% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+		</table>
+	</div>
+{% endif %}

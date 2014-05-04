@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,6 +69,23 @@
   </div>
   <div class="span11">
   Sotkanet API R tools
+=======
+---
+title: sotkanet vignette
+layout: tutorial_page
+package_name: sotkanet
+package_name_show: sotkanet
+author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
+meta_description: Sotkanet API R Tools
+github_user: ropengov
+package_version: 0.9.05
+header_descripton: Sotkanet API R Tools
+---
+
+
+
+Sotkanet API R tools
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 ===========
 
 This is the [sotkanet](http://ropengov.github.com/sotkanet) R package to access data from the [Sotkanet portal](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu) that provides over 2000 demographic indicators across Finland and Europe, maintained by the National Institute for Health and Welfare (THL). For more information, see [Sotkanet indicator database](http://uusi.sotkanet.fi/portal/page/portal/etusivu/tietoa_palvelusta) and [API description](http://uusi.sotkanet.fi/portal/pls/portal/!PORTAL.wwpob_page.show?_docname=22001.PDF). This package is part of [rOpenGov](http://ropengov.github.com/).
@@ -223,6 +241,7 @@ This vignette was created with
 ```{r sessioninfo, message=FALSE, warning=FALSE}
 sessionInfo()
 ```
+<<<<<<< HEAD
 
   </div>
 
@@ -290,3 +309,5 @@ sessionInfo()
 
   </body>
 </html>
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,6 +69,23 @@
   </div>
   <div class="span11">
   Finnish open government data toolkit for R
+=======
+---
+title: sorvi vignette
+layout: tutorial_page
+package_name: sorvi
+package_name_show: sorvi
+author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
+meta_description: Algorithms for Finnish Open Government Data
+github_user: ropengov
+package_version: 0.4.25
+header_descripton: Algorithms for Finnish Open Government Data
+---
+
+
+
+Finnish open government data toolkit for R
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 ===========
 
 This is an R package for Finnish open government data. New
@@ -126,10 +144,14 @@ valid.hetu("010101-0101") # TRUE/FALSE
 Get Finnish postal codes vs. municipalities table from Wikipedia
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r postalcodes, message=FALSE}
 =======
 ```{r postalcodes, message=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r postalcodes, message=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 postal.code.table <- GetPostalCodeInfo() 
 head(postal.code.table)
 ```
@@ -157,10 +179,14 @@ municipality names. Examples for each case:
 Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r municipalityMML, message=FALSE, warning=FALSE}
 =======
 ```{r municipalityMML, message=FALSE, warning=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r municipalityMML, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 municipality.info.mml <- GetMunicipalityInfoMML()
 municipality.info.mml[1:2,]
 ```
@@ -168,20 +194,28 @@ municipality.info.mml[1:2,]
 Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r municipalityStatFi, message=FALSE, warning=FALSE}
 =======
 ```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 municipality.info.statfi <- GetMunicipalityInfoStatFi()
 municipality.info.statfi[1:2,]
 ```
 
 List the province for each municipality in Finland:
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r province2, message=FALSE, warning=FALSE}
 =======
 ```{r province2, message=FALSE, warning=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r province2, message=FALSE, warning=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 # Specific municipalities
 m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
@@ -197,10 +231,14 @@ head(m2p)
 
 Convert municipality codes and names:
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r province3, message=FALSE}
 =======
 ```{r province3, message=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r province3, message=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 municipality_ids <- ConvertMunicipalityCodes()
 head(municipality_ids)
 ```
@@ -235,10 +273,14 @@ head(tab)
 Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r yritystuet-1, warning=FALSE, message=FALSE}
 =======
 ```{r yritystuet-1, warning=FALSE, message=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r yritystuet-1, warning=FALSE, message=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 tuet <- GetMOTYritystuet()
 head(tuet)
 ```
@@ -249,10 +291,14 @@ head(tuet)
 Line fit with confidence smoothers:
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r regressionline, message=FALSE}
 =======
 ```{r regressionline, message=FALSE, eval=FALSE}
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+```{r regressionline, message=FALSE, eval=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 library(sorvi); 
 data(iris); 
 p <- vwReg(Sepal.Length ~ Sepal.Width, iris) 
@@ -292,6 +338,7 @@ sessionInfo()
 
 
 
+<<<<<<< HEAD
 
   </div>
 
@@ -359,3 +406,5 @@ sessionInfo()
 
   </body>
 </html>
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4

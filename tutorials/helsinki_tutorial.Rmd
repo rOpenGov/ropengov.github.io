@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,6 +80,23 @@ The helsinki R package is part of the
 [rOpenGov](http://ropengov.github.com/helsinki) project.
 =======
   ```{r setup, echo=FALSE}
+=======
+---
+title: helsinki vignette
+layout: tutorial_page
+package_name: helsinki
+package_name_show: helsinki
+author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
+meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
+github_user: ropengov
+package_version: 0.9.13
+header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
+---
+
+
+
+```{r setup, echo=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 opts_knit$set(upload.fun = imgur_upload, base.url = NULL) # upload all images to imgur.com
 # opts_chunk$set(fig.width=5, fig.height=5, cache=TRUE)
 ```
@@ -95,11 +113,15 @@ The following data sets are currently available:
 * [Helsinki region environmental services](#helsinki-region-environmental-services)
 * [Helsinki Real Estate Department](#helsinki-real-estate-department)
 * [Helsinki Service Map](#helsinki-service-map)
+<<<<<<< HEAD
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 
 ### Installation
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Release version for general users (NOT AVAILABLE YET!)
 
@@ -107,11 +129,16 @@ Release version for general users (NOT AVAILABLE YET!)
 # install.packages("helsinki")
 # library(helsinki)
 =======
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 Release version for general users:
 
 ```{r install, eval=FALSE}
 install.packages("helsinki")
+<<<<<<< HEAD
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 ```
 
 Development version for developers:
@@ -120,6 +147,7 @@ Development version for developers:
 install.packages("devtools")
 library(devtools)
 install_github("helsinki", "ropengov")
+<<<<<<< HEAD
 <<<<<<< HEAD
 library(helsinki)
 ```
@@ -155,6 +183,8 @@ Inspect data manually. Some rarely populated grids are censored with
 
 ```{r hsy-example2, message=FALSE}
 =======
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 ```
 
 Load package.
@@ -176,32 +206,45 @@ Download population information from [HSY database](http://www.hsy.fi/seututieto
 
 ```{r hsy-example, fig.width=8, fig.height=8, message=FALSE}
 sp <- get_HSY_data("Vaestotietoruudukko")
+<<<<<<< HEAD
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 df <- as.data.frame(sp)   
 head(df)
 ```
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ### Helsinki building information
 
 Information of buildings in Helsinki region. Data obtained from (C)
 HSY 2011. Grid-level (500mx500m) information on building counts
 =======
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 ### Helsinki building information
 
 Information of buildings in Helsinki region. Data obtained from (C)
 HSY 2013. Grid-level (500mx500m) information on building counts
+<<<<<<< HEAD
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 (lukumaara), built area (kerrosala), usage (kayttotarkoitus), region
 efficiency (aluetehokkuus).
 
 ```{r hsy-examplerak, message=FALSE}
 <<<<<<< HEAD
+<<<<<<< HEAD
 sp <- get_HSY_data("Rakennustietoruudukko")  
 =======
 sp <- get_HSY_data("Rakennustietoruudukko", 2013)  
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+sp <- get_HSY_data("Rakennustietoruudukko", 2013)  
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 df <- as.data.frame(sp)   
 head(df)
 ```
@@ -209,10 +252,14 @@ head(df)
 ### Helsinki building area capacity
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2011. 
 =======
 Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2013. 
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2013. 
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 ```{r hsy-exampleramava, message=FALSE}
 sp <- get_HSY_data("SeutuRAMAVA_kosa")  
@@ -224,18 +271,24 @@ head(df)
 ### Further HSY data
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 [HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has data for 2010-2011. More is coming, add later and allow temporal analysis.
 
 
 ## Helsinki Real Estate Department (Helsingin kaupungin kiinteistövirasto, HKK)
 =======
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 [HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has more data that will be included in the helsinki package later.
 
 
 ## Helsinki Real Estate Department
 
 Data from Helsingin kaupungin kiinteistövirasto, HKK.
+<<<<<<< HEAD
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 Retrieve [HKK](http://kartta.hel.fi/avoindata/index.html) data sets.
 
@@ -252,10 +305,14 @@ head(dat)
 ```
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### Helsinki Service Map data
 =======
 ## Helsinki Service Map
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+## Helsinki Service Map
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 Retrieve data from [Helsinki Service Map](http://www.hel.fi/palvelukartta/?lang=en) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
 
@@ -280,6 +337,7 @@ package and and the appropriate data provider, including a url
 link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
 Joona Lehtomäki (2013-2014). helsinki R package. URL:
 <<<<<<< HEAD
+<<<<<<< HEAD
 http://ropengov.github.io/helsinki'.
 
 For further usage examples, see
@@ -289,6 +347,9 @@ For further usage examples, see
 =======
 https://github.com/rOpenGov/helsinki/'.
 >>>>>>> ad00f24c15372eac1129a45277dc4eef5575d757
+=======
+https://github.com/rOpenGov/helsinki/'.
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 
 ### Session info
 
@@ -299,6 +360,7 @@ This vignette was created with
 sessionInfo()
 ```
 
+<<<<<<< HEAD
 
   </div>
 
@@ -366,3 +428,5 @@ sessionInfo()
 
   </body>
 </html>
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4

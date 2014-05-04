@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +65,23 @@
   </div>
   <div class="span11">
   ```{r setup, echo=FALSE}
+=======
+---
+title: fingis vignette
+layout: tutorial_page
+package_name: fingis
+package_name_show: fingis
+author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
+meta_description: R tools for reading open geographical data in Finland.
+github_user: ropengov
+package_version: 0.9.9
+header_descripton: R tools for reading open geographical data in Finland.
+---
+
+
+
+```{r setup, echo=FALSE}
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
 opts_knit$set(upload.fun = imgur_upload, base.url = NULL) # upload all images to imgur.com
 # opts_chunk$set(fig.width=5, fig.height=5, cache=TRUE)
 ```
@@ -250,6 +268,7 @@ This vignette was created with
 sessionInfo()
 ```
 
+<<<<<<< HEAD
 
   </div>
 
@@ -317,3 +336,5 @@ sessionInfo()
 
   </body>
 </html>
+=======
+>>>>>>> 97a6e70cbe9b06eae70502f7ac269458b46b51d4
