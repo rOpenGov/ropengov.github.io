@@ -70,10 +70,10 @@ library(fingis)
 ## Loading required package: sp
 ## rgdal: version: 0.8-16, (SVN revision 498)
 ## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.10.1, released 2013/08/26
-## Path to GDAL shared files: /usr/share/gdal/1.10
+## Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
+## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
 ## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-## Path to PROJ.4 shared files: (autodetected)
+## Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
 ## fingis R package: tools for open GIS data for Finland.
 ## This R package is part of rOpenGov <ropengov.github.io>.
 ## Copyright (C) 2010-2014 Leo Lahti, Juuso Parkkinen and Joona Lehtomaki.
@@ -116,7 +116,7 @@ sp.suuralue <- get_Helsinki_aluejakokartat(map.specifier = "suuralue")
 plot_shape(sp = sp.suuralue, varname = "Name", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue1](http://i.imgur.com/LiaRLjO.png) 
+![plot of chunk hkk-suuralue1](http://i.imgur.com/VcmrwOj.png) 
 
 
 Retrieve 'suuralue_piste' spatial object, containing the center points of the districts, and plot with `spplot()`.
@@ -127,7 +127,7 @@ sp.suuralue.piste <- get_Helsinki_aluejakokartat(map.specifier = "suuralue_piste
 sp::spplot(obj = sp.suuralue.piste, zcol = "Name")
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue2](http://i.imgur.com/J2x5iBF.png) 
+![plot of chunk hkk-suuralue2](http://i.imgur.com/H7iFDk8.png) 
 
 
 Use `sp2df()` function to tranform the spatial objects into data frames. Plot with [ggplot2](http://ggplot2.org/), using blank map theme with `get_theme_map()`. 
@@ -146,7 +146,7 @@ ggplot(df.suuralue, aes(x = long, y = lat, fill = Name)) + geom_polygon() +
     geom_text(data = df.suuralue.piste, aes(label = Name)) + theme(legend.position = "none")
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue3](http://i.imgur.com/f6wS4fz.png) 
+![plot of chunk hkk-suuralue3](http://i.imgur.com/hycT9yW.png) 
 
 
 Add background map from OpenStreetMap using `get_map()` from [ggmap](https://sites.google.com/site/davidkahle/ggmap) and plot again.
@@ -155,43 +155,17 @@ Add background map from OpenStreetMap using `get_map()` from [ggmap](https://sit
 {% highlight r %}
 # Add background map from OpenStreetMap using ggmap
 library(ggmap)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error: there is no package called 'ggmap'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Get bounding box from sp.suuralue
 hel.bbox <- as.vector(sp.suuralue@bbox)
 # Get map using openstreetmap
 hel.map <- ggmap::get_map(location = hel.bbox, source = "osm")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error: there is no package called 'ggmap'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Plot transparent districts on top the background map
 ggmap(hel.map) + geom_polygon(data = df.suuralue, aes(x = long, y = lat, fill = Name), 
     alpha = 0.5) + geom_text(data = df.suuralue.piste, aes(x = long, y = lat, 
     label = Name)) + theme(legend.position = "none")
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error: could not find function "ggmap"
-{% endhighlight %}
+![plot of chunk hkk-suuralue4](http://i.imgur.com/e3r9Jc1.png) 
 
 
 Retrieve and plot äänetysaluejako (election districts) with `get_Helsinki_aluejakokartat()` and `plot_shape()`.
@@ -202,7 +176,7 @@ sp.aanestys <- get_Helsinki_aluejakokartat(map.specifier = "aanestysalue")
 plot_shape(sp.aanestys, "KUNTA", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk hkk-aanestysalue](http://i.imgur.com/GprYYIm.png) 
+![plot of chunk hkk-aanestysalue](http://i.imgur.com/FyydOvr.png) 
 
 
 ## <a name="hel-spatial"></a>Helsinki spatial data
@@ -374,7 +348,7 @@ Plot provinces (maakunnat) with `plot_shape()`.
 plot_shape(sp = sp.mml, varname = "Maakunta", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk MML_province](http://i.imgur.com/TuMi6Po.png) 
+![plot of chunk MML_province](http://i.imgur.com/6RIXTtP.png) 
 
 
 Plot municipalities (kunnat) with `plot_shape()`.
@@ -385,7 +359,7 @@ Plot municipalities (kunnat) with `plot_shape()`.
 plot_shape(sp = sp.mml, varname = "Kunta", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk MML_municipality](http://i.imgur.com/rkfq0A9.png) 
+![plot of chunk MML_municipality](http://i.imgur.com/MhJaSUi.png) 
 
 
 ## <a name="geocoding"></a>Geocoding
@@ -489,35 +463,33 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.1.0 (2014-04-10)
-## Platform: x86_64-pc-linux-gnu (64-bit)
+## R version 3.0.3 (2014-03-06)
+## Platform: x86_64-apple-darwin10.8.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-## [1] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10  
-## [5] rgdal_0.8-16    sp_1.0-15       knitr_1.5      
+##  [1] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
+##  [5] rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10   rgdal_0.8-16   
+##  [9] sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
-##  [4] deldir_0.1-5       digest_0.6.4       evaluate_0.5.5    
-##  [7] foreign_0.8-59     formatR_0.10       grid_3.1.0        
-## [10] gtable_0.1.2       labeling_0.2       lattice_0.20-29   
-## [13] LearnBayes_2.12    MASS_7.3-29        Matrix_1.1-2      
-## [16] munsell_0.4.2      nlme_3.1-113       plyr_1.8.1        
-## [19] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.1       
-## [22] RCurl_1.95-4.1     reshape2_1.4       rjson_0.2.13      
-## [25] scales_0.2.4       spdep_0.5-71       splines_3.1.0     
-## [28] stringr_0.6.2      tools_3.1.0        XML_3.98-1.1
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         RCurl_1.95-4.1     
+## [25] reshape2_1.2.2      RgoogleMaps_1.2.0.5 rjson_0.2.13       
+## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
+## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
+## [34] XML_3.95-0.2
 {% endhighlight %}
 
 
