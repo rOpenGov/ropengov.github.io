@@ -1,5 +1,5 @@
 ---
-title: statfi
+Title: statfi
 description: Statistics Finland R tools
 maintainer: Leo Lahti <louhos@googlegroups.com>
 link: http://ropengov.github.com/statfi
