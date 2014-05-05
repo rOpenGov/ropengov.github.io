@@ -179,11 +179,16 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.3 (2014-03-06)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.0.2 (2013-09-25)
+## Platform: x86_64-suse-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
@@ -191,21 +196,19 @@ sessionInfo()
 ## other attached packages:
 ##  [1] statfi_0.9.7    pxR_0.29        stringr_0.6.2   sotkanet_0.9.05
 ##  [5] sorvi_0.4.25    helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6   
-##  [9] rjson_0.2.13    mapproj_1.2-2   maps_2.3-6      ggmap_2.3      
-## [13] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10  
-## [17] rgdal_0.8-16    sp_1.0-14       knitr_1.5      
+##  [9] rjson_0.2.13    ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29
+## [13] fingis_0.9.10   rgdal_0.8-16    sp_1.0-15       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
-##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
-##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
-## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
-## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
-## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
-## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
-## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         reshape_0.8.4      
-## [25] reshape2_1.2.2      RgoogleMaps_1.2.0.5 RJSONIO_1.0-3      
-## [28] scales_0.2.3        spdep_0.5-71        splines_3.0.3      
-## [31] tools_3.0.3         XML_3.95-0.2
+##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
+##  [4] deldir_0.1-5       dichromat_2.0-0    digest_0.6.4      
+##  [7] evaluate_0.5.3     foreign_0.8-55     formatR_0.10      
+## [10] grid_3.0.2         gtable_0.1.2       labeling_0.2      
+## [13] lattice_0.20-29    LearnBayes_2.12    MASS_7.3-29       
+## [16] Matrix_1.0-14      munsell_0.4.2      nlme_3.1-111      
+## [19] plyr_1.8.1         proto_0.3-10       RColorBrewer_1.0-5
+## [22] Rcpp_0.11.1        reshape_0.8.4      reshape2_1.2.2    
+## [25] scales_0.2.3       spdep_0.5-71       splines_3.0.2     
+## [28] tools_3.0.2        XML_3.98-1.1
 {% endhighlight %}
 
