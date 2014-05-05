@@ -310,16 +310,16 @@ str(parks.data[[1]])
 
 {% highlight text %}
 ## List of 14
-##  $ id                : num 26902
+##  $ id                : num 27279
 ##  $ org_id            : num 92
 ##  $ provider_type     : num 101
 ##  $ name_fi           : chr "Puisto, lähivirkistysalue tai vastaava"
 ##  $ name_sv           : chr "Puisto, lähivirkistysalue tai vastaava"
 ##  $ name_en           : chr "Puisto, lähivirkistysalue tai vastaava"
-##  $ latitude          : num 60.2
-##  $ longitude         : num 25.1
-##  $ northing_etrs_gk25: num 6681175
-##  $ easting_etrs_gk25 : num 25506208
+##  $ latitude          : num 60.3
+##  $ longitude         : num 25
+##  $ northing_etrs_gk25: num 6688506
+##  $ easting_etrs_gk25 : num 25502199
 ##  $ address_city_fi   : chr "Vantaa"
 ##  $ address_city_sv   : chr "Vantaa"
 ##  $ address_city_en   : chr "Vantaa"
@@ -351,33 +351,36 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.3 (2014-03-06)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
 ##  [1] helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6    rjson_0.2.13   
-##  [5] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
-##  [9] rgeos_0.3-4     maptools_0.8-29 fingis_0.9.9    rgdal_0.8-16   
-## [13] sp_1.0-14       knitr_1.5      
+##  [5] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10  
+##  [9] rgdal_0.8-16    sp_1.0-15       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
-##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
-##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
-## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
-## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
-## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
-## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
-## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         reshape2_1.2.2     
-## [25] RgoogleMaps_1.2.0.5 RJSONIO_1.0-3       scales_0.2.3       
-## [28] spdep_0.5-71        splines_3.0.3       stringr_0.6.2      
-## [31] tools_3.0.3         XML_3.95-0.2
+##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
+##  [4] deldir_0.1-5       digest_0.6.4       evaluate_0.5.5    
+##  [7] foreign_0.8-59     formatR_0.10       grid_3.1.0        
+## [10] gtable_0.1.2       labeling_0.2       lattice_0.20-29   
+## [13] LearnBayes_2.12    MASS_7.3-29        Matrix_1.1-2      
+## [16] munsell_0.4.2      nlme_3.1-113       plyr_1.8.1        
+## [19] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.1       
+## [22] reshape2_1.4       scales_0.2.4       spdep_0.5-71      
+## [25] splines_3.1.0      stringr_0.6.2      tools_3.1.0       
+## [28] XML_3.98-1.1
 {% endhighlight %}
 
 

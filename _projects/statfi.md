@@ -6,5 +6,5 @@ link: http://ropengov.github.com/statfi
 github: https://github.com/rOpenGov/statfi
 cran: http://ropengov.github.com/statfi
 category: ropengov
-tutorial: false
+tutorial: true
 ---

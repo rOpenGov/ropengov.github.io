@@ -6,7 +6,7 @@ package_name_show: fingis
 author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
 meta_description: R tools for reading open geographical data in Finland.
 github_user: ropengov
-package_version: 0.9.9
+package_version: 0.9.10
 header_descripton: R tools for reading open geographical data in Finland.
 ---
 
@@ -15,29 +15,35 @@ header_descripton: R tools for reading open geographical data in Finland.
 
 
 
-Finland GIS R tools
+fingis - tutorial
 ===========
 
-This is an [rOpenGov](https://github.com/rOpenGov/fingis) R package
-providing tools for Finnish GIS data.
+This R package provides tools to access open spatial data in Finland
+as part of the [rOpenGov](http://ropengov.github.io) project.
 
-## Available data
+For contact information and source code, see the [github page](https://github.com/rOpenGov/fingis)
 
-The following data sets are currently available:
-* [Helsinki region aluejakokartat](#helsinki-region-aluejakokartat)
-* [Helsinki spatial data](#helsinki-spatial-data)
-* [Maanmittauslaitos](#maanmittauslaitos)
+## Available data sources
+
+The following data sources are currently available:
+* [Helsinki region district maps](#aluejakokartat) (Helsingin seudun aluejakokartat)
+  * Aluejakokartat, äänestysaluejako from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/)
+* [Helsinki spatial data](#hel-spatial) (Helsingin seudun avoimia paikkatietoaineistoja)
+  * Seutukartta, Helsingin piirijako, rakennusrekisterin ote from [Helsingin kaupungin Kiinteistövirasto](http://ptp.hel.fi/avoindata/)
+* [National Land Survery data](#maanmittauslaitos) (Maanmittauslaitoksen avointa dataa)
+  * Yleiskartat from [National Land Survery Finland](http://www.maanmittauslaitos.fi/en/opendata)
 * [Geocoding](#geocoding)
+  * Services: [OKF.fi Geocoding API Test Console](http://data.okf.fi/console/), [OpenStreetMap Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy), [Google](http://code.google.com/apis/maps/documentation/geocoding/)
 
-### Installation
+## Installation
 
-Note! The fingis package uses the [rgdal](http://cran.r-project.org/web/packages/rgdal/index.html) library, which depends on the [GDAL](http://www.gdal.org/) spatial framework. Some rgdal installation tips for various platforms lister below. If you encounter problems, please contact us by email: louhos@googlegroups.com.
-* Windows: Install binaries from [CRAN](http://cran.r-project.org/web/packages/rgdal/index.html)
-* OSX: Install binaries from [CRAN](http://cran.r-project.org/web/packages/rgdal/index.html). Check also [KyngChaos Wiki](http://www.kyngchaos.com/software/frameworks) 
-* Linux: Try the installation scripts [here](https://github.com/louhos/takomo/tree/master/installation/) (not necessarily up-to-date!)
+Release version for general users:
 
 
-Release version for general users (NOT AVAILABLE YET):
+{% highlight r %}
+install.packages("fingis")
+{% endhighlight %}
+
 
 Development version for developers:
 
@@ -64,10 +70,10 @@ library(fingis)
 ## Loading required package: sp
 ## rgdal: version: 0.8-16, (SVN revision 498)
 ## Geospatial Data Abstraction Library extensions to R successfully loaded
-## Loaded GDAL runtime: GDAL 1.9.2, released 2012/10/08
-## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/gdal
+## Loaded GDAL runtime: GDAL 1.10.1, released 2013/08/26
+## Path to GDAL shared files: /usr/share/gdal/1.10
 ## Loaded PROJ.4 runtime: Rel. 4.8.0, 6 March 2012, [PJ_VERSION: 480]
-## Path to PROJ.4 shared files: /Library/Frameworks/R.framework/Versions/3.0/Resources/library/rgdal/proj
+## Path to PROJ.4 shared files: (autodetected)
 ## fingis R package: tools for open GIS data for Finland.
 ## This R package is part of rOpenGov <ropengov.github.io>.
 ## Copyright (C) 2010-2014 Leo Lahti, Juuso Parkkinen and Joona Lehtomaki.
@@ -75,12 +81,16 @@ library(fingis)
 {% endhighlight %}
 
 
-Further development instructions at the [Github
-page](https://github.com/rOpenGov/fingis).
+### Notes
 
-### Helsinki region aluejakokartat
+The fingis package uses the [rgdal](http://cran.r-project.org/web/packages/rgdal/index.html) library, which depends on the [GDAL](http://www.gdal.org/) spatial framework. Some rgdal installation tips for various platforms lister below. If you encounter problems, please contact us by email: louhos@googlegroups.com.
+* Windows: Install binaries from [CRAN](http://cran.r-project.org/web/packages/rgdal/index.html)
+* OSX: Install binaries from [CRAN](http://cran.r-project.org/web/packages/rgdal/index.html). Check also [KyngChaos Wiki](http://www.kyngchaos.com/software/frameworks) 
+* Linux: Try the installation scripts [here](https://github.com/louhos/takomo/tree/master/installation/) (not necessarily up-to-date!)
 
-Helsinki region aluejakokartat (district maps) from [HKK](http://ptp.hel.fi/avoindata/).
+## <a name="aluejakokartat"></a>Helsinki region district maps
+
+Helsinki region district maps (Helsingin seudun aluejakokartat) from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/).
 
 List available maps with `get_Helsinki_aluejakokartat()`.
 
@@ -106,7 +116,7 @@ sp.suuralue <- get_Helsinki_aluejakokartat(map.specifier = "suuralue")
 plot_shape(sp = sp.suuralue, varname = "Name", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue1](http://i.imgur.com/vAierGN.png) 
+![plot of chunk hkk-suuralue1](http://i.imgur.com/LiaRLjO.png) 
 
 
 Retrieve 'suuralue_piste' spatial object, containing the center points of the districts, and plot with `spplot()`.
@@ -117,7 +127,7 @@ sp.suuralue.piste <- get_Helsinki_aluejakokartat(map.specifier = "suuralue_piste
 sp::spplot(obj = sp.suuralue.piste, zcol = "Name")
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue2](http://i.imgur.com/JzPlqHK.png) 
+![plot of chunk hkk-suuralue2](http://i.imgur.com/J2x5iBF.png) 
 
 
 Use `sp2df()` function to tranform the spatial objects into data frames. Plot with [ggplot2](http://ggplot2.org/), using blank map theme with `get_theme_map()`. 
@@ -136,7 +146,7 @@ ggplot(df.suuralue, aes(x = long, y = lat, fill = Name)) + geom_polygon() +
     geom_text(data = df.suuralue.piste, aes(label = Name)) + theme(legend.position = "none")
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue3](http://i.imgur.com/zvzhxvu.png) 
+![plot of chunk hkk-suuralue3](http://i.imgur.com/f6wS4fz.png) 
 
 
 Add background map from OpenStreetMap using `get_map()` from [ggmap](https://sites.google.com/site/davidkahle/ggmap) and plot again.
@@ -145,17 +155,43 @@ Add background map from OpenStreetMap using `get_map()` from [ggmap](https://sit
 {% highlight r %}
 # Add background map from OpenStreetMap using ggmap
 library(ggmap)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error: there is no package called 'ggmap'
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # Get bounding box from sp.suuralue
 hel.bbox <- as.vector(sp.suuralue@bbox)
 # Get map using openstreetmap
 hel.map <- ggmap::get_map(location = hel.bbox, source = "osm")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error: there is no package called 'ggmap'
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # Plot transparent districts on top the background map
 ggmap(hel.map) + geom_polygon(data = df.suuralue, aes(x = long, y = lat, fill = Name), 
     alpha = 0.5) + geom_text(data = df.suuralue.piste, aes(x = long, y = lat, 
     label = Name)) + theme(legend.position = "none")
 {% endhighlight %}
 
-![plot of chunk hkk-suuralue4](http://i.imgur.com/uY6OdeD.png) 
+
+
+{% highlight text %}
+## Error: could not find function "ggmap"
+{% endhighlight %}
 
 
 Retrieve and plot äänetysaluejako (election districts) with `get_Helsinki_aluejakokartat()` and `plot_shape()`.
@@ -166,12 +202,12 @@ sp.aanestys <- get_Helsinki_aluejakokartat(map.specifier = "aanestysalue")
 plot_shape(sp.aanestys, "KUNTA", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk hkk-aanestysalue](http://i.imgur.com/6DFGacT.png) 
+![plot of chunk hkk-aanestysalue](http://i.imgur.com/GprYYIm.png) 
 
 
-### Helsinki spatial data
+## <a name="hel-spatial"></a>Helsinki spatial data
 
-Other Helsinki region spatial data from [HKK](http://ptp.hel.fi/avoindata/).
+Other Helsinki region spatial data from [Helsingin Kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/).
 
 List available spatial data with `get_Helsinki_spatial()`.
 
@@ -187,14 +223,14 @@ get_Helsinki_spatial()
 ##  [1] "A_es_pie"   "a_hy_suu"   "a_ki_pie"   "a_nu_til"   "a_tu_til"  
 ##  [6] "l_jrata"    " m_jarvet"  "N_MERI_R"   "A_es_suu"   "a_hy_til"  
 ## [11] "a_ki_suu"   "a_pkspie"   "a_va_kos"   "l_kiitor"   "m_joet"    
-## [16] "  N_MERI_S" "a_es_til"   "a_ja_pie"   "a_ki_til"   "a_pkstil"  
+## [16] "N_MERI_S"   "a_es_til"   "a_ja_pie"   "a_ki_til"   "a_pkstil"  
 ## [21] "a_va_suu"   "l_metras"   "m_meri"     "  N_PAIK_R" "a_hk_osa"  
 ## [26] "a_ja_til"   "a_kunta"    " a_pksuur"  "a_vi_pie"   "l_metror"  
 ## [31] "m_rantav"   "N_PAIK_S"   "a_hk_per"   "a_ka_pie"   "a_ma_pie"  
 ## [36] "a_po_til"   "a_vi_suu"   "l_tiest2"   "m_teolal"   "a_hk_pie"  
 ## [41] "a_ka_til"   "a_ma_til"   "a_si_pie"   "a_vi_til"   "l_tiesto"  
 ## [46] "m_vihral"   "a_hk_suu"   "a_ke_pie"   "a_nu_pie"   "a_tu_pie"  
-## [51] "Copyrig"    " Maankay2"  "N_KOS_R"    "a_hy_pie"   "a_ke_til"  
+## [51] "Copyrig"    "Maankay2"   "N_KOS_R"    "a_hy_pie"   "a_ke_til"  
 ## [56] "a_nu_suu"   "a_tu_suu"   "l_jasema"   "m_asalue"   "N_KOS_S"   
 ## 
 ## $piirijako
@@ -210,9 +246,9 @@ get_Helsinki_spatial()
 
 
 
-### Maanmittauslaitos
+## <a name="maanmittauslaitos"></a>National Land Survery Finland
 
-Spatial data from  Maanmittauslaitos (MML, Land Survey Finland). These data are preprocessed into RData format, see details [here](https://github.com/avoindata/mml/tree/master/rdata).
+Spatial data from [National Land Survey Finland](http://www.maanmittauslaitos.fi/en/opendata)  (Maanmittauslaitos, MML). These data are preprocessed into RData format, see details [here](https://github.com/avoindata/mml/tree/master/rdata).
 
 List available data sets with `list_mml_datasets()`.
 
@@ -338,7 +374,7 @@ Plot provinces (maakunnat) with `plot_shape()`.
 plot_shape(sp = sp.mml, varname = "Maakunta", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk MML_province](http://i.imgur.com/WwL8YDM.png) 
+![plot of chunk MML_province](http://i.imgur.com/TuMi6Po.png) 
 
 
 Plot municipalities (kunnat) with `plot_shape()`.
@@ -349,10 +385,10 @@ Plot municipalities (kunnat) with `plot_shape()`.
 plot_shape(sp = sp.mml, varname = "Kunta", type = "discrete", plot = FALSE)
 {% endhighlight %}
 
-![plot of chunk MML_municipality](http://i.imgur.com/NgkooNN.png) 
+![plot of chunk MML_municipality](http://i.imgur.com/rkfq0A9.png) 
 
 
-### Geocoding
+## <a name="geocoding"></a>Geocoding
 
 Get geocodes for given location (address etc.) using one of the available services. Please read carefully the usage policies for the different services:
 * [OKF.fi Geocoding API Test Console](http://data.okf.fi/console/)
@@ -360,6 +396,9 @@ Get geocodes for given location (address etc.) using one of the available servic
 * [Google](http://code.google.com/apis/maps/documentation/geocoding/)
 
 The function `get_geocode()` returns both latitude and longitude for the first hit, and the raw output (varies depending on the service used).
+
+Warning! The geocode result may vary between sources, use with care!
+
 
 
 {% highlight r %}
@@ -403,15 +442,38 @@ unlist(gc3[1:2])
 {% endhighlight %}
 
 
-### Licensing and Citations
+### Citing the package
 
-This work can be freely used, modified and distributed under the
-[Two-clause FreeBSD
-license](http://en.wikipedia.org/wiki/BSD\_licenses). Cite this R
-package and and the appropriate data provider, including a url
-link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
-Joona Lehtomäki (2014). fingis R package. URL:
-https://github.com/rOpenGov/fingis'.
+**Citing the data:** See `help()` to get citation information for each data source individually.
+
+**Citing the R package:**
+
+
+{% highlight r %}
+citation("fingis")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+
+Kindly cite the helsinki R package as follows:
+
+  (C) Juuso Parkkinen, Leo Lahti and Joona Lehtomaki 2014. fingis
+  R package
+
+A BibTeX entry for LaTeX users is
+
+  @Misc{,
+    title = {fingis R package},
+    author = {Juuso Parkkinen and Leo Lahti and Joona Lehtomaki},
+    year = {2014},
+  }
+
+Many thanks for all contributors! For more info, see:
+https://github.com/rOpenGov/fingis
+{% endhighlight %}
+
 
 
 ### Session info
@@ -427,33 +489,35 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.3 (2014-03-06)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
-##  [5] rgeos_0.3-4     maptools_0.8-29 fingis_0.9.9    rgdal_0.8-16   
-##  [9] sp_1.0-14       knitr_1.5      
+## [1] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10  
+## [5] rgdal_0.8-16    sp_1.0-15       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
-##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
-##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
-## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
-## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
-## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
-## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
-## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         RCurl_1.95-4.1     
-## [25] reshape2_1.2.2      RgoogleMaps_1.2.0.5 rjson_0.2.13       
-## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
-## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
-## [34] XML_3.95-0.2
+##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
+##  [4] deldir_0.1-5       digest_0.6.4       evaluate_0.5.5    
+##  [7] foreign_0.8-59     formatR_0.10       grid_3.1.0        
+## [10] gtable_0.1.2       labeling_0.2       lattice_0.20-29   
+## [13] LearnBayes_2.12    MASS_7.3-29        Matrix_1.1-2      
+## [16] munsell_0.4.2      nlme_3.1-113       plyr_1.8.1        
+## [19] proto_0.3-10       RColorBrewer_1.0-5 Rcpp_0.11.1       
+## [22] RCurl_1.95-4.1     reshape2_1.4       rjson_0.2.13      
+## [25] scales_0.2.4       spdep_0.5-71       splines_3.1.0     
+## [28] stringr_0.6.2      tools_3.1.0        XML_3.98-1.1
 {% endhighlight %}
 
 
