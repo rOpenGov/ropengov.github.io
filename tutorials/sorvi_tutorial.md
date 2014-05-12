@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.25
+package_version: 0.4.27
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -21,6 +21,8 @@ contributions are [welcome!](http://louhos.github.com/contact.html).
 This work is part of the [rOpenGov](http://ropengov.github.com)
 project.
 
+We also maintain a [todo list](todo-datasets) of further data sources
+to be added. Contributions welcome!
 
 ## Installation
 
@@ -104,7 +106,7 @@ Validating Finnish personal identification number:
 
 
 {% highlight r %}
-valid.hetu("010101-0101")  # TRUE/FALSE
+valid_hetu("010101-0101")  # TRUE/FALSE
 {% endhighlight %}
 
 
@@ -120,7 +122,7 @@ Get Finnish postal codes vs. municipalities table from Wikipedia
 
 
 {% highlight r %}
-postal.code.table <- GetPostalCodeInfo()
+postal.code.table <- get_postal_code_info()
 head(postal.code.table)
 {% endhighlight %}
 
@@ -157,7 +159,7 @@ Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, M
 
 
 {% highlight r %}
-municipality.info.mml <- GetMunicipalityInfoMML()
+municipality.info.mml <- get_municipality_info_mml()
 municipality.info.mml[1:2, ]
 {% endhighlight %}
 
@@ -166,7 +168,7 @@ Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](ht
 
 
 {% highlight r %}
-municipality.info.statfi <- GetMunicipalityInfoStatFi()
+municipality.info.statfi <- get_municipality_info_statfi()
 municipality.info.statfi[1:2, ]
 {% endhighlight %}
 
@@ -176,14 +178,14 @@ List the province for each municipality in Finland:
 {% highlight r %}
 
 # Specific municipalities
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"))
+m2p <- find_province(c("Helsinki", "Tampere", "Turku"))
 head(m2p)
 
 # All municipalities
-m2p <- FindProvince(municipality.info.statfi$Kunta)
+m2p <- find_province(municipality.info.statfi$Kunta)
 
 # Speeding up with predefined municipality info table:
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
+m2p <- find_province(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
 head(m2p)
 {% endhighlight %}
 
@@ -191,7 +193,7 @@ head(m2p)
 Convert municipality codes and names:
 
 {% highlight r %}
-municipality_ids <- ConvertMunicipalityCodes()
+municipality_ids <- convert_municipality_codes()
 head(municipality_ids)
 {% endhighlight %}
 
@@ -200,7 +202,7 @@ Translate municipality names Finnish/English:
 
 
 {% highlight r %}
-translations <- LoadData("translations")
+translations <- load_sorvi_data("translations")
 head(translations)
 {% endhighlight %}
 
@@ -220,7 +222,7 @@ Municipality-level population information from [Vaestorekisterikeskus](http://vr
 
 
 {% highlight r %}
-df <- GetPopulationRegister()
+df <- get_population_register()
 head(df)
 {% endhighlight %}
 
@@ -243,7 +245,7 @@ Get information of Finnish provinces from Wikipedia:
 
 
 {% highlight r %}
-tab <- GetProvinceInfoWikipedia()
+tab <- get_province_info_wikipedia()
 head(tab)
 {% endhighlight %}
 
@@ -266,7 +268,7 @@ Finnish broadcasting company YLE published a large data set on Finnish company s
 
 
 {% highlight r %}
-tuet <- GetMOTYritystuet()
+tuet <- get_mot_yritystuet()
 head(tuet)
 {% endhighlight %}
 
@@ -280,7 +282,7 @@ Line fit with confidence smoothers:
 {% highlight r %}
 library(sorvi)
 data(iris)
-p <- vwReg(Sepal.Length ~ Sepal.Width, iris)
+p <- regression_plot(Sepal.Length ~ Sepal.Width, iris)
 print(p)
 {% endhighlight %}
 
@@ -290,30 +292,29 @@ Plot matrix:
 
 {% highlight r %}
 mat <- rbind(c(1, 2, 3), c(1, 3, 1), c(4, 2, 2))
-pm <- PlotMatrix(mat, "twoway", midpoint = 2)
+pm <- plot_matrix(mat, "twoway", midpoint = 2)
 {% endhighlight %}
 
 ![plot of chunk unnamed-chunk-1](../../figs/sorvi_tutorial/unnamed-chunk-1.png) 
 
 {% highlight r %}
 
-# Plotting the scale sc <- PlotScale(pm$colors, pm$breaks)
+# Plotting the scale sc <- plot_scale(pm$colors, pm$breaks)
 {% endhighlight %}
 
 
 ## Licensing and Citations
 
 This work can be freely used, modified and distributed under the 
-[Two-clause FreeBSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
+[Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
 
 Kindly cite the work, if appropriate, as 'Leo Lahti, Juuso Parkkinen
-ja Joona Lehtomaki (2011). sorvi - suomalainen avoimen datan
+ja Joona Lehtomaki (2014). sorvi - suomalainen avoimen datan
 tyokalupakki. URL: http://louhos.github.com/sorvi)'. A full list of
-authors and contributors and the relevant contact information is
+authors and contributors and contact information is
 [here](http://louhos.github.com/contact).
 
 ## Session info
-
 
 This vignette was created with
 
@@ -325,37 +326,34 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-suse-linux-gnu (64-bit)
+## R version 3.0.3 (2014-03-06)
+## Platform: x86_64-apple-darwin10.8.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sorvi_0.4.25    helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6   
-##  [5] rjson_0.2.13    ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29
-##  [9] fingis_0.9.10   rgdal_0.8-16    sp_1.0-15       knitr_1.5      
+##  [1] sorvi_0.4.27    helsinki_0.9.16 mapproj_1.2-2   maps_2.3-6     
+##  [5] rgeos_0.3-4     maptools_0.8-29 gisfin_0.9.14   ggmap_2.3      
+##  [9] ggplot2_0.9.3.1 fingis_0.9.12   rgdal_0.8-16    sp_1.0-14      
+## [13] knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
-##  [4] deldir_0.1-5       dichromat_2.0-0    digest_0.6.4      
-##  [7] evaluate_0.5.3     foreign_0.8-55     formatR_0.10      
-## [10] grid_3.0.2         gtable_0.1.2       labeling_0.2      
-## [13] lattice_0.20-29    LearnBayes_2.12    MASS_7.3-29       
-## [16] Matrix_1.0-14      munsell_0.4.2      nlme_3.1-111      
-## [19] plyr_1.8.1         proto_0.3-10       pxR_0.29          
-## [22] RColorBrewer_1.0-5 Rcpp_0.11.1        reshape_0.8.4     
-## [25] reshape2_1.2.2     scales_0.2.3       spdep_0.5-71      
-## [28] splines_3.0.2      stringr_0.6.2      tools_3.0.2       
-## [31] XML_3.98-1.1
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] pxR_0.29            RColorBrewer_1.0-5  Rcpp_0.11.1        
+## [25] RCurl_1.95-4.1      reshape_0.8.4       reshape2_1.2.2     
+## [28] RgoogleMaps_1.2.0.5 rjson_0.2.13        RJSONIO_1.0-3      
+## [31] scales_0.2.3        spdep_0.5-71        splines_3.0.3      
+## [34] stringr_0.6.2       tools_3.0.3         XML_3.95-0.2
 {% endhighlight %}
 
 

@@ -6,7 +6,7 @@ package_name_show: helsinki
 author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
 meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
 github_user: ropengov
-package_version: 0.9.13
+package_version: 0.9.16
 header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
 ---
 
@@ -15,21 +15,46 @@ header_descripton: ["Tools for accessing various open data sources in the Helsin
 
 
 
-Helsinki  R tools
+
+helsinki - tutorial
 ===========
 
-This is an [rOpenGov](https://github.com/rOpenGov/helsinki) R package
-providing tools for open data in the Helsinki region in Finland.
+This R package provides tools to access open data from the Helsinki region in Finland
+as part of the [rOpenGov](http://ropengov.github.io) project.
 
-## Available data
+For contact information and source code, see the [github page](https://github.com/rOpenGov/helsinki). 
 
-The following data sets are currently available:
-* [Helsinki region environmental services](#helsinki-region-environmental-services)
-* [Helsinki Real Estate Department](#helsinki-real-estate-department)
-* [Helsinki Service Map](#helsinki-service-map)
+## Available data sources
 
+[Helsinki region district maps](#aluejakokartat) (Helsingin seudun aluejakokartat)
+* Aluejakokartat: kunta, pien-, suur-, tilastoalueet (Helsinki region district maps)
+* Äänestysaluejako: (Helsinki region election district maps)
+* Source: [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/)
 
-### Installation
+Helsinki Real Estate Department (HKK:n avointa dataa)
+* Spatial data from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/) availabe in the [gisfin](https://github.com/rOpenGov/gisfin) package, see [gisfin tutorial](https://github.com/rOpenGov/gisfin/blob/master/vignettes/gisfin_tutorial.md) for examples
+
+[Helsinki region environmental services](#hsy) (HSY:n avointa dataa)
+* Väestötietoruudukko (population grid)
+* Rakennustietoruudukko (building information grid)
+* SeutuRAMAVA (building land resource information(?))
+* Source: [Helsingin seudun ympäristöpalvelut, HSY](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx)
+
+[Service and event information](#servicemap)
+* [Helsinki region Service Map](http://www.hel.fi/palvelukartta/Default.aspx?language=fi&city=91) (Pääkaupunkiseudun Palvelukartta)
+* [Omakaupunki](http://api.omakaupunki.fi/) (requires personal API key, no examples given)
+
+[Helsinki Region Infoshare statistics API](#hri_stats)
+* [Aluesarjat (original source)](http://www.aluesarjat.fi/) (regional time series data)
+* More data coming...
+* Source: [Helsinki Region Infoshare statistics API](http://dev.hel.fi/stats/)
+
+[Economic data](#economy)
+* [Taloudellisia tunnuslukuja](http://www.hri.fi/fi/data/paakaupunkiseudun-kuntien-taloudellisia-tunnuslukuja/) (economic indicators)
+ 
+List of potential data sources to be added to the package can be found [here](https://github.com/rOpenGov/helsinki/blob/master/vignettes/todo-datasets.md).
+
+## Installation
 
 Release version for general users:
 
@@ -57,251 +82,112 @@ library(helsinki)
 {% endhighlight %}
 
 
+## <a name="aluejakokartat"></a>Helsinki region district maps
 
-{% highlight text %}
-## Loading required package: rjson
-## Loading required package: RCurl
-## Loading required package: bitops
-## helsinki R package: tools for open data from Helsinki, Finland capital region.
-## This R package is part of rOpenGov <ropengov.github.io>.
-## Copyright (C) 2010-2014 Leo Lahti, Juuso Parkkinen and Joona Lehtomaki.
-## This is free software. You are free to use, modify and redistribute it under the FreeBSD license.
-{% endhighlight %}
-
-
-Further development instructions at the [Github
-page](https://github.com/rOpenGov/helsinki).
-
-## Helsinki region environmental services
-
-Data from Helsingin seudun ympäristöpalvelut, HSY.
-
-### Population grid
-
-Download population information from [HSY database](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) (C) 2013 HSY, and inspect the data manually. Some rarely populated grids are censored with '99' to guarantee privacy.
+Helsinki region district maps (Helsingin seudun aluejakokartat) and election maps (äänestysalueet) from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/) are available in the helsinki package with `data(aluejakokartat)`. The data are available as both spatial object (`sp`) and data frame (`df`). These are preprocessed in the [gisfin](https://github.com/rOpenGov/gisfin) package, and more examples can be found in the [gisfin tutorial](https://github.com/rOpenGov/gisfin/blob/master/vignettes/gisfin_tutorial.md). 
 
 
 {% highlight r %}
-sp <- get_HSY_data("Vaestotietoruudukko")
-df <- as.data.frame(sp)
-head(df)
+# Load aluejakokartat and study contents
+data(aluejakokartat)
+str(aluejakokartat, m = 2)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-##   INDEX ASUKKAITA ASVALJYYS IKA0_9 IKA10_19 IKA20_29 IKA30_39 IKA40_49
-## 0   688         5        50     99       99       99       99       99
-## 1   703         6        42     99       99       99       99       99
-## 2   710         7        36     99       99       99       99       99
-## 3   711         7        64     99       99       99       99       99
-## 4   715        16        28     99       99       99       99       99
-## 5   864        10        65     99       99       99       99       99
-##   IKA50_59 IKA60_69 IKA70_79 IKA_YLI80
-## 0       99       99       99        99
-## 1       99       99       99        99
-## 2       99       99       99        99
-## 3       99       99       99        99
-## 4       99       99       99        99
-## 5       99       99       99        99
+## List of 2
+##  $ sp:List of 8
+##   ..$ kunta            :Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+##   ..$ pienalue         :Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+##   ..$ pienalue_piste   :Formal class 'SpatialPointsDataFrame' [package "sp"] with 5 slots
+##   ..$ suuralue         :Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+##   ..$ suuralue_piste   :Formal class 'SpatialPointsDataFrame' [package "sp"] with 5 slots
+##   ..$ tilastoalue      :Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+##   ..$ tilastoalue_piste:Formal class 'SpatialPointsDataFrame' [package "sp"] with 5 slots
+##   ..$ aanestysalue     :Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
+##  $ df:List of 8
+##   ..$ kunta            :'data.frame':	1664 obs. of  7 variables:
+##   ..$ pienalue         :'data.frame':	33594 obs. of  7 variables:
+##   ..$ pienalue_piste   :'data.frame':	295 obs. of  3 variables:
+##   ..$ suuralue         :'data.frame':	6873 obs. of  7 variables:
+##   ..$ suuralue_piste   :'data.frame':	23 obs. of  3 variables:
+##   ..$ tilastoalue      :'data.frame':	17279 obs. of  7 variables:
+##   ..$ tilastoalue_piste:'data.frame':	125 obs. of  3 variables:
+##   ..$ aanestysalue     :'data.frame':	35349 obs. of  11 variables:
+{% endhighlight %}
+
+
+
+## <a name="hsy"></a> Helsinki region environmental services
+
+Retrieve data from [Helsingin seudun ympäristöpalvelut (HSY)](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) with `get_hsy()`.
+
+### Population grid 
+
+Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids wiht less than 99 persons are censored with '99' to guarantee privacy.
+
+
+{% highlight r %}
+sp.vaesto <- get_hsy(which.data = "Vaestotietoruudukko", which.year = 2013)
+head(sp.vaesto@data)
 {% endhighlight %}
 
 
 
 ### Helsinki building information
 
-Information of buildings in Helsinki region. Data obtained from (C)
-HSY 2013. Grid-level (500mx500m) information on building counts
-(lukumaara), built area (kerrosala), usage (kayttotarkoitus), region
+Building information grid (rakennustietoruudukko) in Helsinki region on grid-level (500m x 500m): building counts (lukumäärä), built area (kerrosala), usage (käyttötarkoitus), and region
 efficiency (aluetehokkuus).
 
 
 {% highlight r %}
-sp <- get_HSY_data("Rakennustietoruudukko", 2013)
-df <- as.data.frame(sp)
-head(df)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##   INDEX RAKLKM RAKLKM_AS RAKLKM_MUU KERALA_YHT KERALA_AS KERALA_MUU
-## 0   688      3         2          1        324       282         42
-## 1   691      3         2          1         90        80         10
-## 2   692      9         4          5        286       206         80
-## 3   702      2         2          0        262       262          0
-## 4   703      3         2          1        373       326         47
-## 5   710      6         2          4        370       302         68
-##   KATAKER1  KATAKER2  KATAKER3 SUMMA1    SUMMA2    SUMMA3 ALUETEHOK
-## 0       11       941 999999999    282        42 999999999  0.005288
-## 1       41       941 999999999     80        10 999999999  0.001440
-## 2       41       941       931    206        47        33  0.007304
-## 3       11 999999999 999999999    262 999999999 999999999  0.004192
-## 4       11       941 999999999    326        47 999999999  0.005968
-## 5       11       931       941    302        39        29  0.005920
-##   KATAKER1.description    KATAKER2.description    KATAKER3.description
-## 0  Yhden asunnon talot       Talousrakennukset Puuttuvan tiedon merkki
-## 1   Vapaa-ajan asunnot       Talousrakennukset Puuttuvan tiedon merkki
-## 2   Vapaa-ajan asunnot       Talousrakennukset        Saunarakennukset
-## 3  Yhden asunnon talot Puuttuvan tiedon merkki Puuttuvan tiedon merkki
-## 4  Yhden asunnon talot       Talousrakennukset Puuttuvan tiedon merkki
-## 5  Yhden asunnon talot        Saunarakennukset       Talousrakennukset
+sp.rakennus <- get_hsy(which.data = "Rakennustietoruudukko", which.year = 2013)
+head(sp.rakennus@data)
 {% endhighlight %}
 
 
 ### Helsinki building area capacity
 
-Building area capacity per municipal region (kaupunginosittain summattu tieto rakennusmaavarannosta). Data obtained from (C) HSY 2013. 
+Building area capacity per municipal region (kaupunginosittain summattua tietoa rakennusmaavarannosta). Plot with number of buildlings with `spplot()`.
 
 
 {% highlight r %}
-sp <- get_HSY_data("SeutuRAMAVA_kosa")
-df <- as.data.frame(sp)
-head(df)
+sp.ramava <- get_hsy(which.data = "SeutuRAMAVA_tila", which.year = 2013)
+head(sp.ramava@data)
+# Values with less than five units are given as 999999999, set those to zero
+sp.ramava@data[sp.ramava@data == 999999999] <- 0
+# Plot number of buildings for each region
+spplot(sp.ramava, zcol = "RAKLKM", main = "Number of buildings in each 'tilastoalue'")
 {% endhighlight %}
 
-
-
-{% highlight text %}
-##   KUNTA KAUPOSANRO         NIMI  NIMI_SE    RAKLKM    YKSLKM RAKEOIKEUS
-## 0   091        042    KULOSAARI   BRÄNDÖ       463       316     299000
-## 1   091        038        MALMI     MALM      1854      1124    2117691
-## 2   091        006         EIRA     EIRA        99        92      79754
-## 3   091        023      TOUKOLA  MAJSTAD       360       215     659170
-## 4   091        024      KUMPULA  GUMTÄKT       354       184     384043
-## 5   091        005 SALMENKALLIO SUNDBERG 999999999 999999999          0
-##   KARA_YHT KARA_AS KARA_MUU RAKERA_YHT RAKERA_AS RAKERA_MUU VARA_YHT
-## 0   288232  225049    63183       8343       961       7382    21555
-## 1  1736853 1078574   658279      26176      7211      18965   400414
-## 2    93880   83956     9924          0         0          0      294
-## 3   607988  357174   250814      41364     41210        154    78023
-## 4   324227  151115   173112         36         0         36    66874
-## 5        0       0        0          0         0          0        0
-##   VARA_AS VARA_AP VARA_AK VARA_MUU VANHINRAKE UUSINRAKE  OMLAJI_1
-## 0   16599   14897    1702     4956       1890      2013        11
-## 1   89321   51455   37866   311093       1890      2013         2
-## 2     294       0     294        0       1901      2000        11
-## 3   10514     140   10374    67509       1874      2013         2
-## 4    4214     170    4044    62660       1919      2013         2
-## 5       0       0       0        0  999999999 999999999 999999999
-##                                 OMLAJI_1S  OMLAJI_2
-## 0 Asunto-osakeyhtiö tai asunto-osuuskunta        11
-## 1                                Helsinki         2
-## 2 Asunto-osakeyhtiö tai asunto-osuuskunta        11
-## 3                                Helsinki         2
-## 4                                Helsinki         2
-## 5                                    <NA> 999999999
-##                                 OMLAJI_2S  OMLAJI_3
-## 0 Asunto-osakeyhtiö tai asunto-osuuskunta        11
-## 1                                Helsinki         2
-## 2 Asunto-osakeyhtiö tai asunto-osuuskunta        11
-## 3                                Helsinki         2
-## 4                                Helsinki         2
-## 5                                    <NA> 999999999
-##                                 OMLAJI_3S
-## 0 Asunto-osakeyhtiö tai asunto-osuuskunta
-## 1                                Helsinki
-## 2 Asunto-osakeyhtiö tai asunto-osuuskunta
-## 3                                Helsinki
-## 4                                Helsinki
-## 5                                    <NA>
-{% endhighlight %}
+![plot of chunk hsy_ramava](../../figs/helsinki_tutorial/hsy_ramava.png) 
 
 
 
-### Further HSY data
+## <a name="servicemap"></a>Service and event information
 
-[HSY website](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) has more data that will be included in the helsinki package later.
-
-
-## Helsinki Real Estate Department
-
-Data from Helsingin kaupungin kiinteistövirasto, HKK.
-
-Retrieve [HKK](http://kartta.hel.fi/avoindata/index.html) data sets.
-
-### Helsinki address information
-
-
-{% highlight r %}
-dat <- get_HKK_address_data("Helsingin osoiteluettelo")
-head(dat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##           katunimi osoitenumero osoitenumero2 osoitekirjain       N
-## 1         Haapatie           24            NA             b 6682555
-## 2        Pallokuja           12            NA               6678084
-## 3       Poutunkuja            4            NA               6678926
-## 4       Haukkakuja            1            NA               6683284
-## 5       Haukkakuja            4            NA               6683307
-## 6 Merikapteenintie            4            NA               6681909
-##          E kaupunki           gatan      staden tyyppi tyyppi_selite
-## 1 25499401 Helsinki        Aspvägen Helsingfors      1  osoite, katu
-## 2 25508664 Helsinki     Bollgränden Helsingfors      1  osoite, katu
-## 3 25494428 Helsinki   Pouttugränden Helsingfors      1  osoite, katu
-## 4 25503858 Helsinki     Falkgränden Helsingfors      1  osoite, katu
-## 5 25503852 Helsinki     Falkgränden Helsingfors      1  osoite, katu
-## 6 25512316 Helsinki Sjökaptensvägen Helsingfors      1  osoite, katu
-{% endhighlight %}
-
-
-
-{% highlight r %}
-dat <- get_HKK_address_data("Seudullinen osoiteluettelo")
-head(dat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##          katunimi osoitenumero osoitenumero2 osoitekirjain       N
-## 1    Gråängsvägen            0            NA               6673565
-## 2        Grådalen            0            NA               6673640
-## 3      Lillaisarn            0            NA               6665767
-## 4 Herrö Träskholm            0            NA               6663250
-## 5      Stora Bodö            0            NA               6666765
-## 6      Torraisarn            0            NA               6664992
-##          E kaupunki            gatan staden tyyppi   tyyppi_selite
-## 1 25478911    Espoo  Harmaaniityntie   Esbo      1 osoite tai katu
-## 2 25478711    Espoo     Harmaalaakso   Esbo      1 osoite tai katu
-## 3 25483084    Espoo       Lillaisarn   Esbo      1 osoite tai katu
-## 4 25481439    Espoo Herrön Träskholm   Esbo      1 osoite tai katu
-## 5 25485583    Espoo       Stora Bodö   Esbo      1 osoite tai katu
-## 6 25482421    Espoo       Torraisarn   Esbo      1 osoite tai katu
-{% endhighlight %}
-
-
-## Helsinki Service Map
-
-Retrieve data from [Helsinki Service Map](http://www.hel.fi/palvelukartta/?lang=en) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
+Function `get_servicemap()` retrieves regional service data from the [Service Map](http://www.hel.fi/palvelukartta/Default.aspx?language=fi&city=91) [API](http://www.hel.fi/palvelukarttaws/rest/ver2_en.html).
 
 
 {% highlight r %}
 # Get servicetree
-pk.servicetree <- get_ServiceMap_data("servicetree")
+pk.servicetree <- get_servicemap("servicetree")
 # Get id for parks
 str(pk.servicetree[[1]]$children[[7]]$children[[2]])
+# Get parks data
+parks.data <- get_servicemap("unit", service = 25664)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-## List of 5
-##  $ id      : num 25664
-##  $ name_fi : chr "Viheralueet"
-##  $ name_sv : chr "Grönområden"
-##  $ name_en : chr "Green areas"
-##  $ children: list()
+## Error: Proxy Error: remote host didn't send any data - URL "http://10.231.128.27:10058/tprek/rest/v2/unit/?service=25664"
 {% endhighlight %}
 
 
 
 {% highlight r %}
-# Get parks data
-parks.data <- get_ServiceMap_data("unit", service = 25664)
 # Check what data is given for the first park
 str(parks.data[[1]])
 {% endhighlight %}
@@ -309,31 +195,136 @@ str(parks.data[[1]])
 
 
 {% highlight text %}
-## List of 11
-##  $ id                : num 29456
-##  $ org_id            : num 49
-##  $ provider_type     : num 101
-##  $ name_fi           : chr "Auringonkehrä"
-##  $ name_sv           : chr "Solskivans"
-##  $ name_en           : chr "Auringonkehrä"
-##  $ latitude          : num 60.2
-##  $ longitude         : num 24.7
-##  $ northing_etrs_gk25: num 6673244
-##  $ easting_etrs_gk25 : num 25484815
-##  $ phone             : chr "09 8162 5100"
+## Error: object 'parks.data' not found
+{% endhighlight %}
+
+
+Function `get_omakaupunki()` retrieves regional service and event data from the [Omakaupunki API](http://api.omakaupunki.fi/). However, the API needs a personal key, so no examples are given here.
+
+## <a name="hri_stats"></a> Helsinki Region Infoshare statistics API
+
+Function `get_hri_stats()` retrieves data from the [Helsinki Region Infoshare statistics API](http://dev.hel.fi/stats/). Note! The implementation will be updated!
+
+
+{% highlight r %}
+# Retrieve list of available data
+stats.list <- get_hri_stats(query = "")
+# Show first results
+head(stats.list)
 {% endhighlight %}
 
 
 
-### Licensing and Citations
+{% highlight text %}
+##                             Helsingin väestö äidinkielen mukaan 1.1. 
+##                            "aluesarjat_a03s_hki_vakiluku_aidinkieli" 
+##                                           Syntyneet äidin iän mukaan 
+##                             "aluesarjat_hginseutu_va_vm04_syntyneet" 
+##   Vantaalla asuva työllinen työvoima sukupuolen ja iän mukaan 31.12. 
+##                             "aluesarjat_c01s_van_tyovoima_sukupuoli" 
+## Espoon lapsiperheet lasten määrän mukaan (0-17-vuotiaat lapset) 1.1. 
+##                            "aluesarjat_b03s_esp_lapsiperheet_alle18" 
+##                                 Väestö iän ja sukupuolen mukaan 1.1. 
+##                          "aluesarjat_hginseutu_va_vr01_vakiluku_ika" 
+##         Helsingin asuntotuotanto rahoitusmuodon ja huoneluvun mukaan 
+##                         "aluesarjat_a03hki_astuot_rahoitus_huonelkm"
+{% endhighlight %}
 
-This work can be freely used, modified and distributed under the
-[Two-clause FreeBSD
-license](http://en.wikipedia.org/wiki/BSD\_licenses). Cite Helsinki R
-package and and the appropriate data provider, including a url
-link. Kindly cite the R package as 'Leo Lahti, Juuso Parkkinen ja
-Joona Lehtomäki (2013-2014). helsinki R package. URL:
-https://github.com/rOpenGov/helsinki/'.
+
+Specify a dataset to retrieve. The output is currently a three-dimensional array.
+
+
+{% highlight r %}
+# Retrieve a specific dataset
+stats.res <- get_hri_stats(query = stats.list[1])
+# Show the structure of the results
+str(stats.res)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##  num [1:22, 1:4, 1:197] 497526 501518 508659 515765 525031 ...
+##  - attr(*, "dimnames")=List of 3
+##   ..$ vuosi     : chr [1:22] "1992" "1993" "1994" "1995" ...
+##   ..$ aidinkieli: chr [1:4] "Kaikki äidinkielet" "Suomi ja saame" "Ruotsi" "Muu kieli"
+##   ..$ alue      : chr [1:197] "091 Helsinki" "091 1 Eteläinen suurpiiri" "091 101 Vironniemen peruspiiri" "091 10 Kruununhaka" ...
+{% endhighlight %}
+
+
+More examples to be added.
+
+## <a name="economy"></a> Economic data
+
+Function `get_economic_indicators()` retrieves [economic indicator](http://www.hri.fi/fi/data/paakaupunkiseudun-kuntien-taloudellisia-tunnuslukuja/) data for Helsinki, Espoo, Vantaa and Kauniainen from years 1998-2010. 
+
+
+{% highlight r %}
+# Retrieve data
+ec.res <- get_economic_indicators()
+# See first results
+head(ec.res$indicators)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##       Alue                         Tunnusluku     1998     1999     2000
+## 1 Helsinki                  Asukasluku 31.12. 546317.0 551123.0 555474.0
+## 2 Helsinki               Tuloveroprosentti 1)     16.5     16.5     16.5
+## 3 Helsinki     Verotettavat tulot, EUR/as. 2)  13856.0  14677.0  15512.0
+## 4 Helsinki Verotettavien tulojen muutos, % 2)      6.8      7.3      6.6
+## 5 Helsinki        Verotulot yhteensä, EUR/as.   3386.0   3336.0   3894.0
+## 6 Helsinki           - Kunnallisvero, EUR/as.   2129.0   2187.0   2425.0
+##       2001     2002     2003     2004     2005     2006     2007     2008
+## 1 559718.0 559716.0 559330.0 559046.0 560905.0 564521.0 568531.0 574564.0
+## 2     16.5     16.5     17.5     17.5     17.5     17.5     17.5     17.5
+## 3  16077.0  16463.0  16424.0  16613.0  17111.0  17947.0  19022.0  19989.0
+## 4      4.5      3.2     -0.2      1.1      2.9      5.2      6.7      5.8
+## 5   4072.0   3556.0   3548.0   3448.0   3535.0   3709.0   3979.0   4199.0
+## 6   2677.0   2860.0   2937.0   2863.0   2935.0   3096.0   3274.0   3437.0
+##       2009 2010
+## 1 583350.0   NA
+## 2     17.5 17.5
+## 3  19840.0   NA
+## 4      0.3   NA
+## 5   4120.0   NA
+## 6   3477.0   NA
+{% endhighlight %}
+
+
+### Citation
+
+**Citing the data:** See `help()` to get citation information for each data source individually.
+
+**Citing the R package:**
+
+
+{% highlight r %}
+citation("helsinki")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+
+Kindly cite the helsinki R package as follows:
+
+  (C) Juuso Parkkinen, Leo Lahti and Joona Lehtomaki 2014.
+  helsinki R package
+
+A BibTeX entry for LaTeX users is
+
+  @Misc{,
+    title = {helsinki R package},
+    author = {Juuso Parkkinen and Leo Lahti and Joona Lehtomaki},
+    year = {2014},
+  }
+
+Many thanks for all contributors! For more info, see:
+https://github.com/rOpenGov/helsinki
+{% endhighlight %}
+
 
 ### Session info
 
@@ -348,36 +339,33 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-suse-linux-gnu (64-bit)
+## R version 3.0.3 (2014-03-06)
+## Platform: x86_64-apple-darwin10.8.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] helsinki_0.9.13 RCurl_1.95-4.1  bitops_1.0-6    rjson_0.2.13   
-##  [5] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 fingis_0.9.10  
-##  [9] rgdal_0.8-16    sp_1.0-15       knitr_1.5      
+##  [1] helsinki_0.9.16 mapproj_1.2-2   maps_2.3-6      rgeos_0.3-4    
+##  [5] maptools_0.8-29 gisfin_0.9.14   ggmap_2.3       ggplot2_0.9.3.1
+##  [9] fingis_0.9.12   rgdal_0.8-16    sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-9         coda_0.16-1        colorspace_1.2-4  
-##  [4] deldir_0.1-5       dichromat_2.0-0    digest_0.6.4      
-##  [7] evaluate_0.5.3     foreign_0.8-55     formatR_0.10      
-## [10] grid_3.0.2         gtable_0.1.2       labeling_0.2      
-## [13] lattice_0.20-29    LearnBayes_2.12    MASS_7.3-29       
-## [16] Matrix_1.0-14      munsell_0.4.2      nlme_3.1-111      
-## [19] plyr_1.8.1         proto_0.3-10       RColorBrewer_1.0-5
-## [22] Rcpp_0.11.1        reshape2_1.2.2     scales_0.2.3      
-## [25] spdep_0.5-71       splines_3.0.2      stringr_0.6.2     
-## [28] tools_3.0.2        XML_3.98-1.1
+##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
+##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
+##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
+## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
+## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
+## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
+## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
+## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         RCurl_1.95-4.1     
+## [25] reshape2_1.2.2      RgoogleMaps_1.2.0.5 rjson_0.2.13       
+## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
+## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
+## [34] XML_3.95-0.2
 {% endhighlight %}
 
 

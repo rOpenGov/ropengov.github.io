@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.25
+package_version: 0.4.27
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -21,6 +21,8 @@ contributions are [welcome!](http://louhos.github.com/contact.html).
 This work is part of the [rOpenGov](http://ropengov.github.com)
 project.
 
+We also maintain a [todo list](todo-datasets) of further data sources
+to be added. Contributions welcome!
 
 ## Installation
 
@@ -63,7 +65,7 @@ hetu("111111-111C")
 Validating Finnish personal identification number:
 
 ```{r hetu2, fig.message=FALSE}
-valid.hetu("010101-0101") # TRUE/FALSE
+valid_hetu("010101-0101") # TRUE/FALSE
 ```
 
 ### Postal codes
@@ -71,7 +73,7 @@ valid.hetu("010101-0101") # TRUE/FALSE
 Get Finnish postal codes vs. municipalities table from Wikipedia
 
 ```{r postalcodes, message=FALSE, eval=FALSE}
-postal.code.table <- GetPostalCodeInfo() 
+postal.code.table <- get_postal_code_info() 
 head(postal.code.table)
 ```
 
@@ -98,14 +100,14 @@ municipality names. Examples for each case:
 Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
 
 ```{r municipalityMML, message=FALSE, warning=FALSE, eval=FALSE}
-municipality.info.mml <- GetMunicipalityInfoMML()
+municipality.info.mml <- get_municipality_info_mml()
 municipality.info.mml[1:2,]
 ```
 
 Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
 
 ```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=FALSE}
-municipality.info.statfi <- GetMunicipalityInfoStatFi()
+municipality.info.statfi <- get_municipality_info_statfi()
 municipality.info.statfi[1:2,]
 ```
 
@@ -113,27 +115,27 @@ List the province for each municipality in Finland:
 ```{r province2, message=FALSE, warning=FALSE, eval=FALSE}
 
 # Specific municipalities
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku")) 
+m2p <- find_province(c("Helsinki", "Tampere", "Turku")) 
 head(m2p)
 
 # All municipalities
-m2p <- FindProvince(municipality.info.statfi$Kunta) 
+m2p <- find_province(municipality.info.statfi$Kunta) 
 
 # Speeding up with predefined municipality info table:
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
+m2p <- find_province(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
 head(m2p)
 ```
 
 Convert municipality codes and names:
 ```{r province3, message=FALSE, eval=FALSE}
-municipality_ids <- ConvertMunicipalityCodes()
+municipality_ids <- convert_municipality_codes()
 head(municipality_ids)
 ```
 
 Translate municipality names Finnish/English:
 
 ```{r translate, message=FALSE}
-translations <- LoadData("translations")
+translations <- load_sorvi_data("translations")
 head(translations)
 ```
 
@@ -142,7 +144,7 @@ head(translations)
 Municipality-level population information from [Vaestorekisterikeskus](http://vrk.fi/default.aspx?docid=5127&site=3&id=0):
 
 ```{r popreg, message=FALSE}
-df <- GetPopulationRegister()
+df <- get_population_register()
 head(df)
 ```
 
@@ -151,7 +153,7 @@ head(df)
 Get information of Finnish provinces from Wikipedia:
 
 ```{r municipality, message=FALSE}
-tab <- GetProvinceInfoWikipedia()
+tab <- get_province_info_wikipedia()
 head(tab)
 ```
 
@@ -160,7 +162,7 @@ head(tab)
 Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
 
 ```{r yritystuet-1, warning=FALSE, message=FALSE, eval=FALSE}
-tuet <- GetMOTYritystuet()
+tuet <- get_mot_yritystuet()
 head(tuet)
 ```
 
@@ -172,7 +174,7 @@ Line fit with confidence smoothers:
 ```{r regressionline, message=FALSE, eval=FALSE}
 library(sorvi); 
 data(iris); 
-p <- vwReg(Sepal.Length ~ Sepal.Width, iris) 
+p <- regression_plot(Sepal.Length ~ Sepal.Width, iris) 
 print(p)
 ```
 
@@ -180,25 +182,24 @@ Plot matrix:
 
 ```{r , message=FALSE}
 mat <- rbind(c(1,2,3), c(1, 3, 1), c(4,2,2)); 
-pm <- PlotMatrix(mat, "twoway", midpoint = 2) 
+pm <- plot_matrix(mat, "twoway", midpoint = 2) 
 
 # Plotting the scale
-# sc <- PlotScale(pm$colors, pm$breaks)
+# sc <- plot_scale(pm$colors, pm$breaks)
 ```
 
 ## Licensing and Citations
 
 This work can be freely used, modified and distributed under the 
-[Two-clause FreeBSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
+[Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
 
 Kindly cite the work, if appropriate, as 'Leo Lahti, Juuso Parkkinen
-ja Joona Lehtomaki (2011). sorvi - suomalainen avoimen datan
+ja Joona Lehtomaki (2014). sorvi - suomalainen avoimen datan
 tyokalupakki. URL: http://louhos.github.com/sorvi)'. A full list of
-authors and contributors and the relevant contact information is
+authors and contributors and contact information is
 [here](http://louhos.github.com/contact).
 
 ## Session info
-
 
 This vignette was created with
 
