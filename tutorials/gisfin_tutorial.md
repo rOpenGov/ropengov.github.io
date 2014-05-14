@@ -477,9 +477,9 @@ sessionInfo()
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] mapproj_1.2-2   maps_2.3-6      rgeos_0.3-4     maptools_0.8-29
-##  [5] gisfin_0.9.14   ggmap_2.3       ggplot2_0.9.3.1 fingis_0.9.12  
-##  [9] rgdal_0.8-16    sp_1.0-14       knitr_1.5      
+##  [1] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
+##  [5] rgeos_0.3-4     maptools_0.8-29 gisfin_0.9.14   rgdal_0.8-16   
+##  [9] sp_1.0-14       knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   

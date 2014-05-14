@@ -190,10 +190,10 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] statfi_0.9.7    pxR_0.29        stringr_0.6.2   sotkanet_0.9.05
-##  [5] rjson_0.2.13    sorvi_0.4.27    helsinki_0.9.16 mapproj_1.2-2  
-##  [9] maps_2.3-6      rgeos_0.3-4     maptools_0.8-29 gisfin_0.9.14  
-## [13] ggmap_2.3       ggplot2_0.9.3.1 fingis_0.9.12   rgdal_0.8-16   
-## [17] sp_1.0-14       knitr_1.5      
+##  [5] rjson_0.2.13    sorvi_0.4.27    helsinki_0.9.19 mapproj_1.2-2  
+##  [9] maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1 rgeos_0.3-4    
+## [13] maptools_0.8-29 gisfin_0.9.14   rgdal_0.8-16    sp_1.0-14      
+## [17] knitr_1.5      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
