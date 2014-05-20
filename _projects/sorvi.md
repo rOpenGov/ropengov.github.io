@@ -1,6 +1,6 @@
 ---
-title: "sorvi"
-description: "Finnish Open Data Tools"
+title: sorvi
+description: Finnish Open Data Tools
 maintainer: Leo Lahti <louhos@googlegroups.com>
 link: http://louhos.github.com/sorvi
 github: https://github.com/rOpenGov/sorvi

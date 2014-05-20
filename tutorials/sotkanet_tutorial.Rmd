@@ -6,7 +6,7 @@ package_name_show: sotkanet
 author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
 meta_description: Sotkanet API R Tools
 github_user: ropengov
-package_version: 0.9.02
+package_version: 0.9.05
 header_descripton: Sotkanet API R Tools
 ---
 
