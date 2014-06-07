@@ -37,7 +37,7 @@ inc:
   analytics:
     google: 
       # eg. 'UA-123-12'
-      id:       'UA-44262937-1'
+      id:       'UA-44262937-7'
 
 
   # Google Fonts
