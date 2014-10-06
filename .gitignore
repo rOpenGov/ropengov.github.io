@@ -8,3 +8,4 @@ cache/
 .tags*
 .RData
 *~
+.Rproj.user
