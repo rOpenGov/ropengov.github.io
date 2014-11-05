@@ -6,9 +6,11 @@ package_name_show: gisfin
 author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
 meta_description: R tools for reading open geographical data in Finland.
 github_user: ropengov
-package_version: 0.9.14
+package_version: 0.9.15
 header_descripton: R tools for reading open geographical data in Finland.
 ---
+
+
 
 
 
@@ -51,6 +53,9 @@ For contact information and source code, see the [github page](https://github.co
 * [OKF.fi Geocoding API Test Console](http://data.okf.fi/console/)
 * [OpenStreetMap Nominatim](http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy)
 * [Google](http://code.google.com/apis/maps/documentation/geocoding/)
+
+[IP address geographic coordinates](#ip) 
+* [Data Science Toolkit](http://www.datasciencetoolkit.org/)
 
 List of potential data sources to be added to the package can be found [here](https://github.com/rOpenGov/gisfin/blob/master/vignettes/todo-datasets.md).
 
@@ -233,6 +238,15 @@ gc2 <- get_geocode("Mannerheimintie 100, Helsinki", service="openstreetmap")
 unlist(gc2[1:2])
 gc3 <- get_geocode("Mannerheimintie 100, Helsinki", service="google")
 unlist(gc3[1:2])
+```
+
+## <a name="ip"></a>IP Location
+
+Geographic coordinates for a given IP-address from
+[Data Science Toolkit](http://www.datasciencetoolkit.org/):
+
+```{r iplocation, message=FALSE, eval=TRUE}
+ip_location("137.224.252.10")
 ```
 
 ### Citation

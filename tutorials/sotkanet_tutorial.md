@@ -28,7 +28,6 @@ install.packages("sotkanet")
 library(sotkanet)
 {% endhighlight %}
 
-
 Development version for developers:
 
 
@@ -39,14 +38,13 @@ install_github("sotkanet", "ropengov")
 library(sotkanet)
 {% endhighlight %}
 
-
 ### Listing available indicators
 
 List available Sotkanet indicators:
 
 
 {% highlight r %}
-library(sotkanet)
+library(sotkanet) 
 sotkanet.indicators <- SotkanetIndicators(type = "table")
 head(sotkanet.indicators)
 {% endhighlight %}
@@ -77,7 +75,6 @@ head(sotkanet.indicators)
 ## 6                      3                          Tilastokeskus
 {% endhighlight %}
 
-
 List geographical regions with available indicators:
 
 
@@ -106,7 +103,6 @@ head(sotkanet.regions)
 {% endhighlight %}
 
 
-
 ### Querying SOTKAnet indicators
 
 Get the [indicator 10013](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu/metadata?type=I&indicator=10013) from Finland (Suomi) for 1990-2012 (Eurostat employment statistics youth unemployment), and plot a graph:
@@ -114,8 +110,10 @@ Get the [indicator 10013](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hak
 
 {% highlight r %}
 # Get indicator data
-dat <- GetDataSotkanet(indicators = 10013, years = 1990:2012, genders = c("female", 
-    "male", "total"), region.category = "EUROOPPA", region = "Suomi")
+dat <- GetDataSotkanet(indicators = 10013, years = 1990:2012, 
+       		       genders = c('female', 'male', 'total'), 
+		       region.category = "EUROOPPA", 
+		       region = "Suomi")
 
 # Investigate the first lines in the data
 head(dat)
@@ -150,17 +148,16 @@ head(dat)
 
 
 {% highlight r %}
-
 # Pick indicator name
 indicator.name <- as.character(unique(dat$indicator.title.fi))
 indicator.source <- as.character(unique(dat$indicator.organization.title.fi))
 
 # Visualize
-library(ggplot2, quietly = TRUE)
-theme_set(theme_bw(20))
-p <- ggplot(dat, aes(x = year, y = primary.value, group = gender, color = gender))
-p <- p + geom_line() + ggtitle(paste(indicator.name, indicator.source, sep = " / "))
-p <- p + xlab("Year") + ylab("Value")
+library(ggplot2, quietly=TRUE)
+theme_set(theme_bw(20)); 
+p <- ggplot(dat, aes(x = year, y = primary.value, group = gender, color = gender)) 
+p <- p + geom_line() + ggtitle(paste(indicator.name, indicator.source, sep = " / ")) 
+p <- p + xlab("Year") + ylab("Value") 
 p <- p + theme(title = element_text(size = 10))
 p <- p + theme(axis.title.x = element_text(size = 20))
 p <- p + theme(axis.title.y = element_text(size = 20))
@@ -171,7 +168,6 @@ print(p)
 ![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData.png) 
 
 
-
 ### Effect of municipality size
 
 Smaller municipalities have more random variation.
@@ -179,13 +175,12 @@ Smaller municipalities have more random variation.
 
 {% highlight r %}
 selected.inds <- c(127, 178)
-dat <- GetDataSotkanet(indicators = selected.inds, years = 2011, genders = c("total"))
+dat <- GetDataSotkanet(indicators = selected.inds, years = 2011, genders = c('total'))
 datf <- dat[, c("region.title.fi", "indicator.title.fi", "primary.value")]
-dw <- reshape(datf, idvar = "region.title.fi", timevar = "indicator.title.fi", 
-    direction = "wide")
+dw <- reshape(datf, idvar = "region.title.fi", timevar = "indicator.title.fi", direction = "wide")
 names(dw) <- c("Municipality", "Population", "Migration")
 p <- ggplot(dw, aes(x = log10(Population), y = Migration)) + geom_point(size = 3)
-p <- p + ggtitle("Migration vs. population size")
+p <- p + ggtitle("Migration vs. population size") 
 p <- p + theme(title = element_text(size = 15))
 p <- p + theme(axis.title.x = element_text(size = 20))
 p <- p + theme(axis.title.y = element_text(size = 20))
@@ -194,7 +189,6 @@ print(p)
 {% endhighlight %}
 
 ![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3.png) 
-
 
 
 
@@ -207,21 +201,18 @@ use. Save the data on your local disk for further work.
 
 {% highlight r %}
 # These indicators have problems with R routines:
-probematic.indicators <- c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 
-    2033, 2050, 3386, 3443)
+probematic.indicators <- c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 2033, 2050, 3386, 3443)
 
 # Get data for all indicators
 datlist <- list()
 for (ind in setdiff(sotkanet.indicators$indicator, probematic.indicators)) {
-    datlist[[as.character(ind)]] <- GetDataSotkanet(indicators = ind, years = 1990:2013, 
-        genders = c("female", "male", "total"))
+  datlist[[as.character(ind)]] <- GetDataSotkanet(indicators = ind, years = 1990:2013, genders = c('female', 'male', 'total'))
 }
 
-# Combine tables (this may require considerable time and memory for the full
-# data set)
+# Combine tables (this may require considerable time and memory 
+# for the full data set)
 dat <- do.call("rbind", datlist)
 {% endhighlight %}
-
 
 For further usage examples, see
 [Louhos-blog](http://louhos.wordpress.com), and
@@ -268,33 +259,34 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.3 (2014-03-06)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sotkanet_0.9.05 rjson_0.2.13    sorvi_0.4.27    helsinki_0.9.19
-##  [5] mapproj_1.2-2   maps_2.3-6      ggmap_2.3       ggplot2_0.9.3.1
-##  [9] rgeos_0.3-4     maptools_0.8-29 gisfin_0.9.14   rgdal_0.8-16   
-## [13] sp_1.0-14       knitr_1.5      
+##  [1] sotkanet_0.9.05    rjson_0.2.13       RColorBrewer_1.0-5
+##  [4] sorvi_0.6.23       pxR_0.40.0         plyr_1.8.1        
+##  [7] RJSONIO_1.2-0.2    reshape2_1.4       stringr_0.6.2     
+## [10] reshape_0.8.5      helsinki_0.9.19    ggplot2_1.0.0     
+## [13] rgeos_0.3-4        maptools_0.8-29    gisfin_0.9.15     
+## [16] rgdal_0.8-16       sp_1.0-15          knitr_1.6         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
-##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
-##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
-## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
-## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
-## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
-## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
-## [22] pxR_0.29            RColorBrewer_1.0-5  Rcpp_0.11.1        
-## [25] RCurl_1.95-4.1      reshape_0.8.4       reshape2_1.2.2     
-## [28] RgoogleMaps_1.2.0.5 RJSONIO_1.0-3       scales_0.2.3       
-## [31] spdep_0.5-71        splines_3.0.3       stringr_0.6.2      
-## [34] tools_3.0.3         XML_3.95-0.2
+##  [1] boot_1.3-11      coda_0.16-1      colorspace_1.2-4 deldir_0.1-5    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_0.10    
+##  [9] grid_3.1.0       gtable_0.1.2     labeling_0.2     lattice_0.20-29 
+## [13] LearnBayes_2.12  MASS_7.3-33      Matrix_1.1-3     munsell_0.4.2   
+## [17] nlme_3.1-117     proto_0.3-10     Rcpp_0.11.1      RCurl_1.95-4.1  
+## [21] scales_0.2.4     spdep_0.5-71     splines_3.1.0    tools_3.1.0     
+## [25] XML_3.98-1.1
 {% endhighlight %}
-

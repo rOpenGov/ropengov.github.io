@@ -44,9 +44,8 @@ To download only the **polity2** variable from [Polity IV](http://www.systemicpe
 library(psData)
 
 # Download polity2 variable
-PolityData <- PolityGet(vars = "polity2")
+PolityData <- PolityGet(vars = 'polity2')
 {% endhighlight %}
-
 
 Note that the **iso2c** variable refers to the [ISO two letter country code country ID](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This standardised country identifier could be used to easily merge the Polity IV data with another data set. Another country ID type can be selected with the `OutCountryID` argument. See the package documentation for details.
 
@@ -56,7 +55,6 @@ To create **winset** (**W**) and **selectorate** (**ModS**) data use the followi
 {% highlight r %}
 WinData <- WinsetCreator()
 {% endhighlight %}
-
 
 ---
 

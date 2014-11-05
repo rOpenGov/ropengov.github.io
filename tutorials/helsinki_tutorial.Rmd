@@ -102,7 +102,7 @@ Retrieve data from [Helsingin seudun ympäristöpalvelut (HSY)](http://www.hsy.f
 
 ### Population grid 
 
-Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids wiht less than 99 persons are censored with '99' to guarantee privacy.
+Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids with less than 99 persons are censored with '99' to guarantee privacy.
 
 ```{r hsy_vaesto, message=FALSE, warning=FALSE}
 sp.vaesto <- get_hsy(which.data="Vaestotietoruudukko", which.year=2013)

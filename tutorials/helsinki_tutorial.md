@@ -15,7 +15,6 @@ header_descripton: ["Tools for accessing various open data sources in the Helsin
 
 
 
-
 helsinki - tutorial
 ===========
 
@@ -67,7 +66,6 @@ Release version for general users:
 install.packages("helsinki")
 {% endhighlight %}
 
-
 Development version for developers:
 
 
@@ -77,14 +75,12 @@ library(devtools)
 install_github("helsinki", "ropengov")
 {% endhighlight %}
 
-
 Load package.
 
 
 {% highlight r %}
 library(helsinki)
 {% endhighlight %}
-
 
 ## <a name="aluejakokartat"></a>Helsinki region district maps
 
@@ -94,7 +90,7 @@ Helsinki region district maps (Helsingin seudun aluejakokartat) and election map
 {% highlight r %}
 # Load aluejakokartat and study contents
 data(aluejakokartat)
-str(aluejakokartat, m = 2)
+str(aluejakokartat, m=2)
 {% endhighlight %}
 
 
@@ -122,18 +118,17 @@ str(aluejakokartat, m = 2)
 {% endhighlight %}
 
 
-
 ## <a name="hsy"></a> Helsinki region environmental services
 
 Retrieve data from [Helsingin seudun ympäristöpalvelut (HSY)](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) with `get_hsy()`.
 
 ### Population grid 
 
-Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids wiht less than 99 persons are censored with '99' to guarantee privacy.
+Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids with less than 99 persons are censored with '99' to guarantee privacy.
 
 
 {% highlight r %}
-sp.vaesto <- get_hsy(which.data = "Vaestotietoruudukko", which.year = 2013)
+sp.vaesto <- get_hsy(which.data="Vaestotietoruudukko", which.year=2013)
 head(sp.vaesto@data)
 {% endhighlight %}
 
@@ -157,7 +152,6 @@ head(sp.vaesto@data)
 {% endhighlight %}
 
 
-
 ### Helsinki building information
 
 Building information grid (rakennustietoruudukko) in Helsinki region on grid-level (500m x 500m): building counts (lukumäärä), built area (kerrosala), usage (käyttötarkoitus), and region
@@ -165,7 +159,7 @@ efficiency (aluetehokkuus).
 
 
 {% highlight r %}
-sp.rakennus <- get_hsy(which.data = "Rakennustietoruudukko", which.year = 2013)
+sp.rakennus <- get_hsy(which.data="Rakennustietoruudukko", which.year=2013)  
 head(sp.rakennus@data)
 {% endhighlight %}
 
@@ -195,14 +189,13 @@ head(sp.rakennus@data)
 ## 5  Yhden asunnon talot        Saunarakennukset       Talousrakennukset
 {% endhighlight %}
 
-
 ### Helsinki building area capacity
 
 Building area capacity per municipal region (kaupunginosittain summattua tietoa rakennusmaavarannosta). Plot with number of buildlings with `spplot()`.
 
 
 {% highlight r %}
-sp.ramava <- get_hsy(which.data = "SeutuRAMAVA_tila", which.year = 2013)
+sp.ramava <- get_hsy(which.data="SeutuRAMAVA_tila", which.year=2013)  
 head(sp.ramava@data)
 {% endhighlight %}
 
@@ -250,14 +243,12 @@ head(sp.ramava@data)
 
 {% highlight r %}
 # Values with less than five units are given as 999999999, set those to zero
-sp.ramava@data[sp.ramava@data == 999999999] <- 0
+sp.ramava@data[sp.ramava@data==999999999] <- 0
 # Plot number of buildings for each region
-spplot(sp.ramava, zcol = "RAKLKM", main = "Number of buildings in each 'tilastoalue'", 
-    col.regions = colorRampPalette(c("blue", "gray80", "red"))(100))
+spplot(sp.ramava, zcol="RAKLKM", main="Number of buildings in each 'tilastoalue'", col.regions=colorRampPalette(c('blue', 'gray80', 'red'))(100))
 {% endhighlight %}
 
 ![plot of chunk hsy_ramava](../../figs/helsinki_tutorial/hsy_ramava.png) 
-
 
 
 ## <a name="servicemap"></a>Service and event information
@@ -266,18 +257,18 @@ Function `get_servicemap()` retrieves regional service data from the new [Servic
 
 
 {% highlight r %}
-# Search for 'puisto' (park) (specify q='query')
-search.puisto <- get_servicemap(query = "search", q = "puisto")
+# Search for "puisto" (park) (specify q="query")
+search.puisto <- get_servicemap(query="search", q="puisto")
 # Study results
-str(search.puisto, m = 1)
+str(search.puisto, m=1)
 {% endhighlight %}
 
 
 
 {% highlight text %}
 ## List of 4
-##  $ count   : num 1076
-##  $ next    : chr "http://api.hel.fi/servicemap/v1/search/?q=puisto&page=2"
+##  $ count   : num 1403
+##  $ next    : chr "http://api.hel.fi/servicemap/v1/search/?page=2&q=puisto"
 ##  $ previous: NULL
 ##  $ results :List of 20
 {% endhighlight %}
@@ -285,33 +276,34 @@ str(search.puisto, m = 1)
 
 
 {% highlight r %}
-# A lot of results found (count > 1000) Get names for the first 20 results
+# A lot of results found (count > 1000)
+# Get names for the first 20 results
 sapply(search.puisto$results, function(x) x$name$fi)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-##  [1] "Asematien puisto"                  
-##  [2] "Hurtigin puisto"                   
-##  [3] "Kasavuoren puisto"                 
-##  [4] "Kaupungintalon puisto"             
-##  [5] "Stenbergin puisto"                 
-##  [6] "Sinebrychoffin puisto"             
-##  [7] "Sibeliuksen puisto"                
-##  [8] "Hesperian puisto"                  
-##  [9] "Kaisaniemen puisto"                
-## [10] "Esplanadin puisto"                 
-## [11] "Heiniitty, puisto"                 
-## [12] "Ullanmäki, puisto"                 
-## [13] "Puistot ja viheralueet"            
-## [14] "Puistot ja viheralueet"            
-## [15] "Säätytalon puisto, puistotäti"     
-## [16] "Myllykallion puisto, puistotäti"   
-## [17] "Teinintien puisto, puistotäti"     
-## [18] "Esplanadin puiston WLAN-tukiasema" 
-## [19] "Sibeliuksen puiston yleisövessa"   
-## [20] "Sinebrychoffin puiston yleisövessa"
+##  [1] "Sibeliuksen puiston yleisövessa"      
+##  [2] "Sinebrychoffin puiston yleisövessa"   
+##  [3] "Topeliuksen puiston yleisövessa"      
+##  [4] "Puistot ja viheralueet"               
+##  [5] "Matti Heleniuksen puiston yleisövessa"
+##  [6] "Thurmaninpuisto"                      
+##  [7] "Asematien puisto"                     
+##  [8] "Hurtigin puisto"                      
+##  [9] "Kasavuoren puisto"                    
+## [10] "Kaupungintalon puisto"                
+## [11] "Stenbergin puisto"                    
+## [12] "Leikkipaikka Härkävaljakon puisto"    
+## [13] "Leikkipaikka Ilkantien puisto"        
+## [14] "Leikkipaikka Johanneksen puisto"      
+## [15] "Leikkipaikka Katajanokan puisto"      
+## [16] "Leikkipaikka Kivitorpan puisto"       
+## [17] "Leikkipaikka Museon puisto"           
+## [18] "Leikkipaikka Pajalahden puisto"       
+## [19] "Leikkipaikka Rikun puisto"            
+## [20] "Leikkipaikka Rukkilan puisto"
 {% endhighlight %}
 
 
@@ -333,10 +325,10 @@ names(search.puisto$results[[1]])
 ## [13] "www_url"                   "address_postal_full"      
 ## [15] "municipality"              "picture_url"              
 ## [17] "picture_caption"           "origin_last_modified_time"
-## [19] "connection_hash"           "services"                 
-## [21] "divisions"                 "keywords"                 
-## [23] "root_services"             "location"                 
-## [25] "object_type"               "score"
+## [19] "services"                  "divisions"                
+## [21] "keywords"                  "root_services"            
+## [23] "location"                  "object_type"              
+## [25] "score"
 {% endhighlight %}
 
 
@@ -345,13 +337,12 @@ names(search.puisto$results[[1]])
 # More results could be retrieved by specifying 'page=2' etc.
 {% endhighlight %}
 
-
 Function `get_linkedevents()` retrieves regional event data from the new [Linked Events API](http://api.hel.fi/linkedevents/v0.1/).
 
 
 {% highlight r %}
 # Searh for current events
-events <- get_linkedevents(query = "event")
+events <- get_linkedevents(query="event")
 # Get names for the first 20 results
 sapply(events$results, function(x) x$name$fi)
 {% endhighlight %}
@@ -396,10 +387,9 @@ names(events$results[[1]])
 ##  [7] "origin_id"           "custom_fields"       "image"              
 ## [10] "created_time"        "last_modified_time"  "date_published"     
 ## [13] "start_time"          "end_time"            "target_group"       
-## [16] "location_extra_info" "name"                "description"        
-## [19] "url"                 "@id"                 "@type"
+## [16] "name"                "location_extra_info" "url"                
+## [19] "description"         "@id"                 "@type"
 {% endhighlight %}
-
 
 
 Function `get_omakaupunki()` retrieves regional service and event data from the [Omakaupunki API](http://api.omakaupunki.fi/). However, the API needs a personal key, so no examples are given here.
@@ -411,7 +401,7 @@ Function `get_hri_stats()` retrieves data from the [Helsinki Region Infoshare st
 
 {% highlight r %}
 # Retrieve list of available data
-stats.list <- get_hri_stats(query = "")
+stats.list <- get_hri_stats(query="")
 # Show first results
 head(stats.list)
 {% endhighlight %}
@@ -433,13 +423,12 @@ head(stats.list)
 ##                         "aluesarjat_a03hki_astuot_rahoitus_huonelkm"
 {% endhighlight %}
 
-
 Specify a dataset to retrieve. The output is currently a three-dimensional array.
 
 
 {% highlight r %}
 # Retrieve a specific dataset
-stats.res <- get_hri_stats(query = stats.list[1])
+stats.res <- get_hri_stats(query=stats.list[1])
 # Show the structure of the results
 str(stats.res)
 {% endhighlight %}
@@ -453,7 +442,6 @@ str(stats.res)
 ##   ..$ aidinkieli: chr [1:4] "Kaikki äidinkielet" "Suomi ja saame" "Ruotsi" "Muu kieli"
 ##   ..$ alue      : chr [1:197] "091 Helsinki" "091 1 Eteläinen suurpiiri" "091 101 Vironniemen peruspiiri" "091 10 Kruununhaka" ...
 {% endhighlight %}
-
 
 The implementation will be updated and more examples will be added in the near future.
 
@@ -496,7 +484,6 @@ head(ec.res$data)
 {% endhighlight %}
 
 
-
 ## <a name="demography"></a> Demographic data
 
 Function `get_population_projection()` retrieves [population projection](http://www.hri.fi/fi/data/helsingin-ja-helsingin-seudun-vaestoennuste-sukupuolen-ja-ian-mukaan-2012-2050/) data for Helsinki and Helsinki region by age and gender.
@@ -520,7 +507,6 @@ head(pop.res$data[1:6])
 ## 5    Helsinki       2015         609373      286899 3535 3348
 ## 6    Helsinki       2016         614246      289334 3577 3395
 {% endhighlight %}
-
 
 
 ### Citation
@@ -555,7 +541,6 @@ Many thanks for all contributors! For more info, see:
 https://github.com/rOpenGov/helsinki
 {% endhighlight %}
 
-
 ### Session info
 
 
@@ -569,33 +554,32 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.3 (2014-03-06)
-## Platform: x86_64-apple-darwin10.8.0 (64-bit)
+## R version 3.1.0 (2014-04-10)
+## Platform: x86_64-pc-linux-gnu (64-bit)
 ## 
 ## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] helsinki_0.9.19 mapproj_1.2-2   maps_2.3-6      ggmap_2.3      
-##  [5] ggplot2_0.9.3.1 rgeos_0.3-4     maptools_0.8-29 gisfin_0.9.14  
-##  [9] rgdal_0.8-16    sp_1.0-14       knitr_1.5      
+## [1] helsinki_0.9.19 ggplot2_1.0.0   rgeos_0.3-4     maptools_0.8-29
+## [5] gisfin_0.9.15   rgdal_0.8-16    sp_1.0-15       knitr_1.6      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-10         coda_0.16-1         colorspace_1.2-4   
-##  [4] deldir_0.1-5        dichromat_2.0-0     digest_0.6.4       
-##  [7] evaluate_0.5.1      foreign_0.8-60      formatR_0.10       
-## [10] grid_3.0.3          gtable_0.1.2        labeling_0.2       
-## [13] lattice_0.20-27     LearnBayes_2.12     MASS_7.3-30        
-## [16] Matrix_1.1-2-2      munsell_0.4.2       nlme_3.1-115       
-## [19] plyr_1.8.1          png_0.1-7           proto_0.3-10       
-## [22] RColorBrewer_1.0-5  Rcpp_0.11.1         RCurl_1.95-4.1     
-## [25] reshape2_1.2.2      RgoogleMaps_1.2.0.5 rjson_0.2.13       
-## [28] RJSONIO_1.0-3       scales_0.2.3        spdep_0.5-71       
-## [31] splines_3.0.3       stringr_0.6.2       tools_3.0.3        
-## [34] XML_3.95-0.2
+##  [1] boot_1.3-11      coda_0.16-1      colorspace_1.2-4 deldir_0.1-5    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_0.10    
+##  [9] grid_3.1.0       gtable_0.1.2     labeling_0.2     lattice_0.20-29 
+## [13] LearnBayes_2.12  MASS_7.3-33      Matrix_1.1-3     munsell_0.4.2   
+## [17] nlme_3.1-117     plyr_1.8.1       proto_0.3-10     Rcpp_0.11.1     
+## [21] RCurl_1.95-4.1   reshape2_1.4     rjson_0.2.13     scales_0.2.4    
+## [25] spdep_0.5-71     splines_3.1.0    stringr_0.6.2    tools_3.1.0     
+## [29] XML_3.98-1.1
 {% endhighlight %}
-
 
