@@ -59,13 +59,13 @@ head(sotkanet.indicators)
 ## 4         7
 ## 5        74
 ## 6       127
-##                                                                            indicator.title.fi
-## 1  Mielenterveyden häiriöihin sairaalahoitoa saaneet 0 - 17-vuotiaat / 1 000 vastaavanikäistä
-## 2                   Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavanikäisestä väestöstä
-## 3 Somaattisen erikoissairaanhoidon hoitopäivät 75 vuotta täyttäneillä / 1000 vastaavanikäistä
-## 4                                                                 0 - 6-vuotiaat, % väestöstä
-## 5                                                      Yksinhuoltajaperheet, % lapsiperheistä
-## 6                                                                               Väestö 31.12.
+##                                                                             indicator.title.fi
+## 1   Mielenterveyden häiriöihin sairaalahoitoa saaneet 0 - 17-vuotiaat / 1 000 vastaavanikäistä
+## 2                    Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavanikäisestä väestöstä
+## 3 Somaattisen erikoissairaanhoidon hoitopäivät 75 vuotta täyttäneillä / 1 000 vastaavanikäistä
+## 4                                                                  0 - 6-vuotiaat, % väestöstä
+## 5                                                       Yksinhuoltajaperheet, % lapsiperheistä
+## 6                                                                                Väestö 31.12.
 ##   indicator.organization        indicator.organization.title.fi
 ## 1                      2 Terveyden ja hyvinvoinnin laitos (THL)
 ## 2                      2 Terveyden ja hyvinvoinnin laitos (THL)
@@ -165,7 +165,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData.png) 
+![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData-1.png) 
 
 
 ### Effect of municipality size
@@ -188,7 +188,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3.png) 
+![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3-1.png) 
 
 
 
@@ -259,34 +259,30 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.1.0 (2014-04-10)
-## Platform: x86_64-pc-linux-gnu (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sotkanet_0.9.05    rjson_0.2.13       RColorBrewer_1.0-5
-##  [4] sorvi_0.6.23       pxR_0.40.0         plyr_1.8.1        
-##  [7] RJSONIO_1.2-0.2    reshape2_1.4       stringr_0.6.2     
-## [10] reshape_0.8.5      helsinki_0.9.19    ggplot2_1.0.0     
-## [13] rgeos_0.3-4        maptools_0.8-29    gisfin_0.9.15     
-## [16] rgdal_0.8-16       sp_1.0-15          knitr_1.6         
+##  [1] sotkanet_0.9.05    rjson_0.2.14       RColorBrewer_1.0-5
+##  [4] plyr_1.8.1         sorvi_0.7.12       reshape_0.8.5     
+##  [7] helsinki_0.9.24    RCurl_1.95-4.3     bitops_1.0-6      
+## [10] ggplot2_1.0.0      rgeos_0.3-4        maptools_0.8-30   
+## [13] gisfin_0.9.16      rgdal_0.8-16       raster_2.3-12     
+## [16] sp_1.0-15          fmi_0.1.11         R6_2.0            
+## [19] knitr_1.8         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-11      coda_0.16-1      colorspace_1.2-4 deldir_0.1-5    
-##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_0.10    
-##  [9] grid_3.1.0       gtable_0.1.2     labeling_0.2     lattice_0.20-29 
-## [13] LearnBayes_2.12  MASS_7.3-33      Matrix_1.1-3     munsell_0.4.2   
-## [17] nlme_3.1-117     proto_0.3-10     Rcpp_0.11.1      RCurl_1.95-4.1  
-## [21] scales_0.2.4     spdep_0.5-71     splines_3.1.0    tools_3.1.0     
-## [25] XML_3.98-1.1
+##  [1] boot_1.3-13      coda_0.16-1      colorspace_1.2-4 deldir_0.1-6    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_1.0     
+##  [9] grid_3.1.2       gtable_0.1.2     labeling_0.3     lattice_0.20-29 
+## [13] LearnBayes_2.15  MASS_7.3-35      Matrix_1.1-4     munsell_0.4.2   
+## [17] nlme_3.1-118     parallel_3.1.2   proto_0.3-10     Rcpp_0.11.3     
+## [21] reshape2_1.4     rwfs_0.1.11      scales_0.2.4     spdep_0.5-77    
+## [25] splines_3.1.2    stringr_0.6.2    tools_3.1.2      XML_3.98-1.1
 {% endhighlight %}

@@ -4,10 +4,10 @@ layout: tutorial_page
 package_name: helsinki
 package_name_show: helsinki
 author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
-meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
+meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include", "the Real Estate Department (district maps)", "the Environmental Services Authority", "Service Map API", "Linked Events API and", "Helsinki Region Infoshare statistics API."]
 github_user: ropengov
-package_version: 0.9.19
-header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include the Real Estate Department", "and the Environmental Services Authority."]
+package_version: 0.9.24
+header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include", "the Real Estate Department (district maps)", "the Environmental Services Authority", "Service Map API", "Linked Events API and", "Helsinki Region Infoshare statistics API."]
 ---
 
 
@@ -18,6 +18,7 @@ library(knitr)
 opts_knit$set(base.dir = "vignettes") # Change the base dir where to save figures
 knit(input="vignettes/helsinki_tutorial.Rmd", output="vignettes/helsinki_tutorial.md")
 knit2html(input="vignettes/helsinki_tutorial.md", output="vignettes/helsinki_tutorial.html", options=c("use_xhtml","smartypants","mathjax","highlight_code"))
+file.remove("helsinki_tutorial.txt") # Fix to remove from the output
 ```
 
 
@@ -48,18 +49,12 @@ Helsinki Real Estate Department (HKK:n avointa dataa)
 [Service and event information](#servicemap)
 * [Helsinki region Service Map API](http://api.hel.fi/servicemap/v1/) (Pääkaupunkiseudun Palvelukartta)
 * [Helsinki Linked Event API](http://api.hel.fi/linkedevents/v0.1/)
-* [Omakaupunki](http://api.omakaupunki.fi/) (requires personal API key, no examples given)
+
 
 [Helsinki Region Infoshare statistics API](#hri_stats)
 * [Aluesarjat (original source)](http://www.aluesarjat.fi/) (regional time series data)
 * Source: [Helsinki Region Infoshare statistics API](http://dev.hel.fi/stats/)
 
-[Economic data](#economy)
-* [Taloudellisia tunnuslukuja](http://www.hri.fi/fi/data/paakaupunkiseudun-kuntien-taloudellisia-tunnuslukuja/) (economic indicators)
-
-[Demographic data](#demography)
-* [Väestöennuste 2012-2050](http://www.hri.fi/fi/data/helsingin-ja-helsingin-seudun-vaestoennuste-sukupuolen-ja-ian-mukaan-2012-2050/) (population projection 2012-2050)
- 
 
 List of potential data sources to be added to the package can be found [here](https://github.com/rOpenGov/helsinki/blob/master/vignettes/todo-datasets.md).
 
@@ -157,13 +152,12 @@ Function `get_linkedevents()` retrieves regional event data from the new [Linked
 # Searh for current events
 events <- get_linkedevents(query="event")
 # Get names for the first 20 results
-sapply(events$results, function(x) x$name$fi)
+sapply(events$data, function(x) x$name$fi)
 # See what data is given for the first event
-names(events$results[[1]])
+names(events$data[[1]])
 ```
 
 
-Function `get_omakaupunki()` retrieves regional service and event data from the [Omakaupunki API](http://api.omakaupunki.fi/). However, the API needs a personal key, so no examples are given here.
 
 ## <a name="hri_stats"></a> Helsinki Region Infoshare statistics API
 
@@ -186,29 +180,6 @@ str(stats.res)
 ```
 
 The implementation will be updated and more examples will be added in the near future.
-
-## <a name="economy"></a> Economic data
-
-Function `get_economic_indicators()` retrieves [economic indicator](http://www.hri.fi/fi/data/paakaupunkiseudun-kuntien-taloudellisia-tunnuslukuja/) data for Helsinki, Espoo, Vantaa and Kauniainen from years 1998-2010. 
-
-```{r econ_ind1, message=FALSE, warning=FALSE}
-# Retrieve data
-ec.res <- get_economic_indicators()
-# See first results
-head(ec.res$data)
-```
-
-
-## <a name="demography"></a> Demographic data
-
-Function `get_population_projection()` retrieves [population projection](http://www.hri.fi/fi/data/helsingin-ja-helsingin-seudun-vaestoennuste-sukupuolen-ja-ian-mukaan-2012-2050/) data for Helsinki and Helsinki region by age and gender.
-
-```{r population_projection, message=FALSE, warning=FALSE}
-# Retrieve data
-pop.res <- get_population_projection()
-# See first results
-head(pop.res$data[1:6])
-```
 
 
 ### Citation

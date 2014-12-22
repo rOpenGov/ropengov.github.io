@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.6.23
+package_version: 0.7.12
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -38,7 +38,6 @@ page](http://louhos.github.com/sorvi).
 
 [Finnish municipalities](#municipality) (Kuntatason informaatio)
 * [Land Survey Finland](#mml) (Maanmittauslaitos / MML)
-* [Statistics Finland](#statfi) (Tilastokeskus)  
 
 [ID conversion tools](#conversions)
 * [Municipality-Postal code conversions](#postalcodes) (Kunnat vs. postinumerot)  
@@ -100,45 +99,47 @@ head(tab)
 
 
 {% highlight text %}
-##          Province  Area Population PopulationDensity
-## 1         Uusimaa  9132    1550362             170.4
-## 2 Varsinais-Suomi 10664     457789              42.9
-## 3       Satakunta  7956     229360              28.8
-## 4      Kanta-Häme  5199     169952              32.7
-## 5       Pirkanmaa 12446     472181              37.9
-## 6     Päijät-Häme  5127     199235              38.9
+##          Province PopulationDensity
+## 1         Uusimaa             170.4
+## 2 Varsinais-Suomi              42.9
+## 3       Satakunta              28.8
+## 4      Kanta-Häme              32.7
+## 5       Pirkanmaa              37.9
+## 6     Päijät-Häme              38.9
 {% endhighlight %}
 
 ### <a name="provincetranslations"></a>Finnish-English translations
 
 **Finnish-English translations for province names** (we have not been able
-to solve all encoding problems yet; suggestions very welcome!):
+to solve all encoding problems yet; solutions welcome!):
 
 
 {% highlight r %}
 translations <- load_sorvi_data("translations")
-head(translations)
+head(as.matrix(translations))
 {% endhighlight %}
 
 
 
 {% highlight text %}
-##   Ã\u0085land Islands         South Karelia Southern Ostrobothnia 
-##          "Ahvenanmaa"      "EtelÃĪ-Karjala"    "EtelÃĪ-Pohjanmaa" 
-##      Southern Savonia                Kainuu       Tavastia Proper 
-##         "EtelÃĪ-Savo"              "Kainuu"         "Kanta-HÃĪme"
+##                       [,1]              
+## Ã\u0085land Islands   "Ahvenanmaa"      
+## South Karelia         "EtelÃĪ-Karjala"  
+## Southern Ostrobothnia "EtelÃĪ-Pohjanmaa"
+## Southern Savonia      "EtelÃĪ-Savo"     
+## Kainuu                "Kainuu"          
+## Tavastia Proper       "Kanta-HÃĪme"
 {% endhighlight %}
-
-
 
 
 ## <a name="municipality"></a>Municipality information
 
 Finnish municipality information is available through Statistics
-Finland (Tilastokeskus) and Land Survey Finland
-(Maanmittauslaitos). The row names for each data set are harmonized
-and can be used to match data sets from different sources, as
-different data sets may carry slightly different versions of certain
+Finland (Tilastokeskus; see
+[stafi](https://github.com/ropengov/statfi) package) and Land Survey
+Finland (Maanmittauslaitos). The row names for each data set are
+harmonized and can be used to match data sets from different sources,
+as different data sets may carry different versions of certain
 municipality names.
 
 ### <a name="mml"></a>Land Survey Finland (municipality information)
@@ -148,7 +149,7 @@ Source: [Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palve
 
 {% highlight r %}
 municipality.info.mml <- get_municipality_info_mml()
-municipality.info.mml[1:2,]
+print(municipality.info.mml[1:2,])
 {% endhighlight %}
 
 
@@ -172,57 +173,6 @@ municipality.info.mml[1:2,]
 ##                Maakunta.FI  Kunta.FI
 ## Äänekoski      Keski-Suomi Äänekoski
 ## Ähtäri    EtelÃ¤-Pohjanmaa    Ähtäri
-{% endhighlight %}
-
-### <a name="statfi"></a>Statistics Finland (municipality information)
-
-Source: [Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px)
-
-
-{% highlight r %}
-# Download Statfi municipality data
-municipality.info.statfi <- get_municipality_info_statfi()
-
-# List available information fields for municipalities
-names(municipality.info.statfi)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##  [1] "Alue"                                                                                                   
-##  [2] "Maapinta-ala, km2 1.1.2013"                                                                             
-##  [3] "Taajama-aste, % 1.1.2012"                                                                               
-##  [4] "Väkiluku 31.12.2013"                                                                                    
-##  [5] "Väkiluvun muutos, % 2012 - 2013"                                                                        
-##  [6] "0-14 -vuotiaiden osuus väestöstä, % 31.12.2013"                                                         
-##  [7] "15-64 -vuotiaiden osuus väestöstä, % 31.12.2013"                                                        
-##  [8] "65 vuotta täyttäneiden osuus väestöstä, % 31.12.2013"                                                   
-##  [9] "Ruotsinkielisten osuus väestöstä, % 31.12.2013"                                                         
-## [10] "Ulkomaiden kansalaisten osuus väestöstä, % 31.12.2013"                                                  
-## [11] "Kuntien välinen muuttovoitto/-tappio, henkilöä 2012"                                                    
-## [12] "Syntyneiden enemmyys, henkilöä 2012"                                                                    
-## [13] "Perheiden lukumäärä 31.12.2012"                                                                         
-## [14] "Valtionveronalaiset tulot, euroa/tulonsaaja  2011"                                                      
-## [15] "Asuntokuntien lukumäärä 31.12.2012"                                                                     
-## [16] "Vuokra-asunnossa asuvien asuntokuntien osuus, % 31.12.2012"                                             
-## [17] "Rivi- ja pientaloissa asuvien asuntokuntien osuus asuntokunnista, % 31.12.2012"                         
-## [18] "Kesämökkien lukumäärä 31.12.2012"                                                                       
-## [19] "Vähintään keskiasteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2012"              
-## [20] "Korkea-asteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2012"                      
-## [21] "Kunnassa olevien työpaikkojen lukumäärä 31.12.2011"                                                     
-## [22] "Työllisten osuus 18-74-vuotiaista, % 31.12.2012"                                                        
-## [23] "Työttömyysaste, % 31.12.2012"                                                                           
-## [24] "Kunnassa asuvan työllisen työvoiman määrä 31.12.2012"                                                   
-## [25] "Asuinkunnassaan työssäkäyvien osuus työllisestä työvoimasta, % 31.12. 2011"                             
-## [26] "Alkutuotannon työpaikkojen osuus, % 31.12.2011"                                                         
-## [27] "Jalostuksen työpaikkojen osuus, % 31.12.2011"                                                           
-## [28] "Palvelujen työpaikkojen osuus, % 31.12.2011"                                                            
-## [29] "Toimialaltaan tuntemattomien työpaikkojen osuus, % 31.12.2011"                                          
-## [30] "Taloudellinen huoltosuhde, työvoiman ulkopuolella tai työttömänä olevat yhtä työllistä kohti 31.12.2012"
-## [31] "Eläkkeellä olevien osuus väestöstä, % 31.12.2012"                                                       
-## [32] "Yritystoimipaikkojen lukumäärä 2012"                                                                    
-## [33] "Kunta"
 {% endhighlight %}
 
 
@@ -427,7 +377,7 @@ p <- regression_plot(Sepal.Length ~ Sepal.Width, iris)
 print(p)
 {% endhighlight %}
 
-![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline.png) 
+![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline-1.png) 
 
 
 
@@ -436,8 +386,6 @@ print(p)
 
 This work can be freely used, modified and distributed under the 
 [Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
-
-Kindly cite the work as follows
 
 
 {% highlight r %}
@@ -480,36 +428,32 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.1.0 (2014-04-10)
-## Platform: x86_64-pc-linux-gnu (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] RColorBrewer_1.0-5 sorvi_0.6.23       pxR_0.40.0        
-##  [4] plyr_1.8.1         RJSONIO_1.2-0.2    reshape2_1.4      
-##  [7] stringr_0.6.2      reshape_0.8.5      helsinki_0.9.19   
-## [10] ggplot2_1.0.0      rgeos_0.3-4        maptools_0.8-29   
-## [13] gisfin_0.9.15      rgdal_0.8-16       sp_1.0-15         
-## [16] knitr_1.6         
+##  [1] RColorBrewer_1.0-5 plyr_1.8.1         sorvi_0.7.12      
+##  [4] reshape_0.8.5      helsinki_0.9.24    RCurl_1.95-4.3    
+##  [7] bitops_1.0-6       ggplot2_1.0.0      rgeos_0.3-4       
+## [10] maptools_0.8-30    gisfin_0.9.16      rgdal_0.8-16      
+## [13] raster_2.3-12      sp_1.0-15          fmi_0.1.11        
+## [16] R6_2.0             knitr_1.8         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] boot_1.3-11      coda_0.16-1      colorspace_1.2-4 deldir_0.1-5    
-##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_0.10    
-##  [9] grid_3.1.0       gtable_0.1.2     labeling_0.2     lattice_0.20-29 
-## [13] LearnBayes_2.12  MASS_7.3-33      Matrix_1.1-3     munsell_0.4.2   
-## [17] nlme_3.1-117     proto_0.3-10     Rcpp_0.11.1      RCurl_1.95-4.1  
-## [21] rjson_0.2.13     scales_0.2.4     spdep_0.5-71     splines_3.1.0   
-## [25] tools_3.1.0      XML_3.98-1.1
+##  [1] boot_1.3-13      coda_0.16-1      colorspace_1.2-4 deldir_0.1-6    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_1.0     
+##  [9] grid_3.1.2       gtable_0.1.2     labeling_0.3     lattice_0.20-29 
+## [13] LearnBayes_2.15  MASS_7.3-35      Matrix_1.1-4     munsell_0.4.2   
+## [17] nlme_3.1-118     parallel_3.1.2   proto_0.3-10     Rcpp_0.11.3     
+## [21] reshape2_1.4     rjson_0.2.14     rwfs_0.1.11      scales_0.2.4    
+## [25] spdep_0.5-77     splines_3.1.2    stringr_0.6.2    tools_3.1.2     
+## [29] XML_3.98-1.1
 {% endhighlight %}
 
 

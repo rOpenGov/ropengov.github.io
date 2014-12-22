@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.6.23
+package_version: 0.7.12
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -38,7 +38,6 @@ page](http://louhos.github.com/sorvi).
 
 [Finnish municipalities](#municipality) (Kuntatason informaatio)
 * [Land Survey Finland](#mml) (Maanmittauslaitos / MML)
-* [Statistics Finland](#statfi) (Tilastokeskus)  
 
 [ID conversion tools](#conversions)
 * [Municipality-Postal code conversions](#postalcodes) (Kunnat vs. postinumerot)  
@@ -88,7 +87,7 @@ and in our [Rmarkdown blog](http://louhos.github.io/archive.html).
 
 Source: [Wikipedia](http://fi.wikipedia.org/wiki/V%C3%A4est%C3%B6tiheys)
 
-```{r municipality, message=FALSE, eval=TRUE}
+```{r municipality, warning=FALSE, message=FALSE, eval=TRUE}
 tab <- get_province_info_wikipedia()
 head(tab)
 ```
@@ -96,23 +95,22 @@ head(tab)
 ### <a name="provincetranslations"></a>Finnish-English translations
 
 **Finnish-English translations for province names** (we have not been able
-to solve all encoding problems yet; suggestions very welcome!):
+to solve all encoding problems yet; solutions welcome!):
 
 ```{r translate, message=FALSE, eval=TRUE}
 translations <- load_sorvi_data("translations")
-head(translations)
+head(as.matrix(translations))
 ```
-
-
 
 
 ## <a name="municipality"></a>Municipality information
 
 Finnish municipality information is available through Statistics
-Finland (Tilastokeskus) and Land Survey Finland
-(Maanmittauslaitos). The row names for each data set are harmonized
-and can be used to match data sets from different sources, as
-different data sets may carry slightly different versions of certain
+Finland (Tilastokeskus; see
+[stafi](https://github.com/ropengov/statfi) package) and Land Survey
+Finland (Maanmittauslaitos). The row names for each data set are
+harmonized and can be used to match data sets from different sources,
+as different data sets may carry different versions of certain
 municipality names.
 
 ### <a name="mml"></a>Land Survey Finland (municipality information)
@@ -121,19 +119,7 @@ Source: [Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palve
 
 ```{r municipalityMML, message=FALSE, warning=FALSE, eval=TRUE}
 municipality.info.mml <- get_municipality_info_mml()
-municipality.info.mml[1:2,]
-```
-
-### <a name="statfi"></a>Statistics Finland (municipality information)
-
-Source: [Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px)
-
-```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=TRUE}
-# Download Statfi municipality data
-municipality.info.statfi <- get_municipality_info_statfi()
-
-# List available information fields for municipalities
-names(municipality.info.statfi)
+print(municipality.info.mml[1:2,])
 ```
 
 
@@ -234,8 +220,6 @@ print(p)
 
 This work can be freely used, modified and distributed under the 
 [Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
-
-Kindly cite the work as follows
 
 ```{r citation, message=FALSE, eval=TRUE}
 citation("sorvi")

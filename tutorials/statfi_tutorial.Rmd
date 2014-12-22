@@ -6,7 +6,7 @@ package_name_show: statfi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki
 meta_description: Statistics Finland (Tilastokeskus) Open Data R Tools
 github_user: ropengov
-package_version: 0.9.7
+package_version: 0.9.83
 header_descripton: Statistics Finland (Tilastokeskus) Open Data R Tools
 ---
 
@@ -100,6 +100,19 @@ url <- "http://pxweb2.stat.fi/Database/StatFin/tul/tvt/2009/120_tvt_2009_2011-02
 df <- get_statfi(url)
 df[1:3,]
 ```
+
+### <a name="statfi"></a>Statistics Finland (municipality information)
+
+Source: [Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px)
+
+```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=TRUE}
+# Download Statfi municipality data
+municipality.info.statfi <- get_municipality_info_statfi()
+
+# List available information fields for municipalities
+names(municipality.info.statfi)
+```
+
 
 
 ## Licensing and Citations
