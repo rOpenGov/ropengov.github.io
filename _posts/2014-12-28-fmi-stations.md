@@ -1,4 +1,16 @@
+---
+layout: post
+title:  "fmi and FMI observation stations"
+date:   2014-12-28 09:00:00
+draft: false
+categories: general
 
+excerpt: "Using fmi package to access FMI weather observation stations data"
+
+author:
+  name: Joona Lehtomäki
+  image: joona.jpg
+---
 
 ## Preface
 
@@ -38,7 +50,7 @@ table:
 | snow | Snow depth | Snow cover | cm | instant | PT1M |
 | tday | Air temperature | Temperature | degC | avg | P1D |
 | tmax | Maximum temperature | Temperature | degC | max | PT24H |
-| tmin | Minimum temperature | Temperature | degC | min | PT24H |
+| tmin | Minimum temperature | Temperature | degC | min | PT24H |  
 
 So far so good, `rrday` and `tday` should do the trick. However, we still need
 to be able to query a specific weather station, for which we need some sort of
@@ -86,7 +98,7 @@ kiutakongas.station
 The convience methods in `fmi` took a little adjusting, but afterwards it is
 possible to use `FMISID` in the query paramaters. Following the `fmi` tutorial,
 it is now possible to do the following. **NOTE!** You will need to provide
-your own apiKey first:
+[your own apiKey](http://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services) first:
 
 
 {% highlight r %}
@@ -253,7 +265,7 @@ p + geom_line() + facet_wrap(~ location, ncol=1) + ylab("Temperature (C)\n") +
   xlab("\nDate") + custom.theme
 {% endhighlight %}
 
-![plot of chunk plot-temperature](figure/plot-temperature-1.png) 
+![plot of chunk plot-temperature](/figs/2014-12-28-fmi-stations/plot-temperature-1.png) 
 
 While we're at it, let's also plot the snowdepth:
 
@@ -263,7 +275,7 @@ p <- ggplot(dplyr::filter(dat, variable == "snow"), aes(x=time, y=measurement, c
 p + geom_line(size=1) + xlab("\nDate") + ylab("Snowdepth (cm)\n") + custom.theme
 {% endhighlight %}
 
-![plot of chunk plot-snowdepth](figure/plot-snowdepth-1.png) 
+![plot of chunk plot-snowdepth](/figs/2014-12-28-fmi-stations/plot-snowdepth-1.png) 
 
 Finally, let's take look at precipitation measurement values and their means:
 
@@ -274,7 +286,7 @@ p + geom_point(alpha=1/3) + stat_smooth(method="loess", size=1) + xlab("\nDate")
   ylab("Precipitation (mm)\n") + custom.theme
 {% endhighlight %}
 
-![plot of chunk plot-precipitation](figure/plot-precipitation-1.png) 
+![plot of chunk plot-precipitation](/figs/2014-12-28-fmi-stations/plot-precipitation-1.png) 
 
 That's it, a small demo on how to use `fmi` package for fetching observation
 station specific data.
