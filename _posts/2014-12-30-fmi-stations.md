@@ -1,8 +1,7 @@
 ---
 layout: post
 title:  "fmi and FMI observation stations"
-date:   2014-12-30 09:00:00
-draft: false
+date:   2014-12-30 07:00:00
 categories: general
 
 excerpt: "Using fmi package to access FMI weather observation stations data"
