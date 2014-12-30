@@ -39,7 +39,7 @@ Fortunately, method [getDailyWeather()](https://github.com/rOpenGov/fmi/blob/mas
 measurements (precipitation and temperature) as is, so no need to figure out the
 specific parameter values for the request. A 
 [little more digging](http://data.fmi.fi/fmi-apikey/cdc84a28-60b7-44c3-ad5d-442d34edc435/meta?observableProperty=observation&param=rrday,tday,snow,tmin,tmax&language=eng) 
-does reveal however more information for example on the units used to record the
+does reveal, however, more information for example on the units used to record the
 measurements. Hand picking the information from the XML reveals the following
 table:
 
@@ -170,7 +170,7 @@ get_weather_data <- function(apiKey, startDateTime, endDateTime, fmisid) {
 }
 {% endhighlight %}
 
-Using the above created function simplifies querying. For demonstration, let's
+Using the function above simplifies querying. For demonstration, let's
 get data for the whole year 2012:
 
 
@@ -215,7 +215,7 @@ head(kiuta.2012, 10)
 The measurements may contain NAs and values -1, which I suspect may also have
 something to do with missing values but can't say for sure.
 
-For comparisons sake, let's also get some data from Kaisaniemi (Helsinki)
+For comparison's sake, let's also get some data from Kaisaniemi (Helsinki)
 observation station:
 
 
@@ -250,7 +250,7 @@ dat <- rbind(kiuta.2012, kaisa.2012)
 
 First, lets plot the minimum (`tmin`), average (`tday`) and maximum (`tmax`) 
 temperature per day over year 2012. Plotting below uses 
-[a custom theme](theme.R) for `ggplot2`.
+[a custom theme](/figs/2014-12-30-fmi-stations/theme.R) for `ggplot2`.
 
 
 {% highlight r %}
@@ -273,7 +273,7 @@ p + geom_line(size=1) + xlab("\nDate") + ylab("Snowdepth (cm)\n") + custom.theme
 
 ![plot of chunk plot-snowdepth](/figs/2014-12-30-fmi-stations/plot-snowdepth-1.png) 
 
-Finally, let's take look at precipitation measurement values and their means:
+Finally, let's take a look at precipitation measurement values and their means:
 
 
 {% highlight r %}
