@@ -6,7 +6,7 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.24
+package_version: 0.7.12
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
@@ -15,49 +15,296 @@ header_descripton: Algorithms for Finnish Open Government Data
 Finnish open government data toolkit for R
 ===========
 
-This is an R package for Finnish open government data. New
-contributions are [welcome!](http://louhos.github.com/contact.html).
+This R package provides miscellaneous tools for Finnish open
+government data to complement other
+[rOpenGov](http://ropengov.github.io/projects) packages with a more
+specific scope. We also maintain a [todo list of further data
+sources](https://github.com/rOpenGov/sorvi/blob/master/vignettes/todo-datasets.md)
+to be added; your
+[contributions](http://louhos.github.com/contact.html) and [bug
+reports and other feedback](https://github.com/ropengov/sorvi) are
+welcome! For further information, see the [home
+page](http://louhos.github.com/sorvi).
 
-This work is part of the [rOpenGov](http://ropengov.github.com)
-project.
 
 
-## Installation
+## Available data sources and tools
 
-General users (CRAN release version):
+[Installation](#installation) (Asennus)  
+
+[Finnish provinces](#provinces) (Maakuntatason informaatio)  
+* [Basic province information](#provinceinfo) (Area, Population, Population Density)
+* [Finnish-English province name translations](#provincetranslations)  
+
+[Finnish municipalities](#municipality) (Kuntatason informaatio)
+* [Land Survey Finland](#mml) (Maanmittauslaitos / MML)
+
+[ID conversion tools](#conversions)
+* [Municipality-Postal code conversions](#postalcodes) (Kunnat vs. postinumerot)  
+* [Municipality name-ID conversions](#municipalityconversions) (Kunnat vs. kuntakoodit)
+* [Municipality-province conversions](#municipality2province) (Kunnat vs. maakunnat)
+
+[Finnish personal identification number (HETU)](#hetu) (Henkilotunnuksen kasittely)  
+
+[Visualization tools](#visualization) (Visualisointirutiineja)
+
+
+
+## <a name="installation"></a>Installation
+
+We assume you have installed [R](http://www.r-project.org/). If you
+use [RStudio](http://www.rstudio.com/ide/download/desktop), change the
+default encoding to UTF-8. Linux users should also install
+[CURL](http://curl.haxx.se/download.html).
+
+Install the stable release version in R:
 
 
 {% highlight r %}
 install.packages("sorvi")
-library(sorvi)
 {% endhighlight %}
 
-
-Developers (Github development version):
+Test the installation by loading the library:
 
 
 {% highlight r %}
-install.packages("devtools")
-library(devtools)
-install_github("sorvi", "ropengov")
 library(sorvi)
 {% endhighlight %}
 
-
-Further installation and development instructions can be found at the
-project [home page](http://ropengov.github.com/sorvi). 
+We also recommend setting the UTF-8 encoding:
 
 
-## Using the package
+{% highlight r %}
+Sys.setlocale(locale="UTF-8") 
+{% endhighlight %}
 
-For further usage
-examples, see [Louhos-blog](http://louhos.wordpress.com) and
-[Datawiki](https://github.com/louhos/sorvi/wiki/Data).
+Brief examples of the package tools are provided below. Further
+examples are available in [Louhos-blog](http://louhos.wordpress.com)
+and in our [Rmarkdown blog](http://louhos.github.io/archive.html).
 
 
-### Personal identification number (HETU)
+## <a name="provinces"></a>Province information (Maakunnat)
 
-Extracting information from a Finnish personal identification number:
+
+### <a name="provinceinfo"></a>Basic data
+
+Source: [Wikipedia](http://fi.wikipedia.org/wiki/V%C3%A4est%C3%B6tiheys)
+
+
+{% highlight r %}
+tab <- get_province_info_wikipedia()
+head(tab)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##          Province PopulationDensity
+## 1         Uusimaa             170.4
+## 2 Varsinais-Suomi              42.9
+## 3       Satakunta              28.8
+## 4      Kanta-Häme              32.7
+## 5       Pirkanmaa              37.9
+## 6     Päijät-Häme              38.9
+{% endhighlight %}
+
+### <a name="provincetranslations"></a>Finnish-English translations
+
+**Finnish-English translations for province names** (we have not been able
+to solve all encoding problems yet; solutions welcome!):
+
+
+{% highlight r %}
+translations <- load_sorvi_data("translations")
+head(as.matrix(translations))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##                       [,1]              
+## Ã\u0085land Islands   "Ahvenanmaa"      
+## South Karelia         "EtelÃĪ-Karjala"  
+## Southern Ostrobothnia "EtelÃĪ-Pohjanmaa"
+## Southern Savonia      "EtelÃĪ-Savo"     
+## Kainuu                "Kainuu"          
+## Tavastia Proper       "Kanta-HÃĪme"
+{% endhighlight %}
+
+
+## <a name="municipality"></a>Municipality information
+
+Finnish municipality information is available through Statistics
+Finland (Tilastokeskus; see
+[stafi](https://github.com/ropengov/statfi) package) and Land Survey
+Finland (Maanmittauslaitos). The row names for each data set are
+harmonized and can be used to match data sets from different sources,
+as different data sets may carry different versions of certain
+municipality names.
+
+### <a name="mml"></a>Land Survey Finland (municipality information)
+
+Source: [Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu). 
+
+
+{% highlight r %}
+municipality.info.mml <- get_municipality_info_mml()
+print(municipality.info.mml[1:2,])
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##           Kohderyhma Kohdeluokk AVI Maakunta Kunta
+## Äänekoski         71      84200   4       13   992
+## Ähtäri            71      84200   4       14   989
+##                                             AVI_ni1
+## Äänekoski Länsi- ja Sisä-Suomen aluehallintovirasto
+## Ähtäri    Länsi- ja Sisä-Suomen aluehallintovirasto
+##                                                      AVI_ni2
+## Äänekoski Regionförvaltningsverket i Västra och Inre Finland
+## Ähtäri    Regionförvaltningsverket i Västra och Inre Finland
+##                 Maaku_ni1         Maaku_ni2 Kunta_ni1 Kunta_ni2 Kieli_ni1
+## Äänekoski     Keski-Suomi Mellersta Finland Äänekoski       N_A     Suomi
+## Ähtäri    Etelä-Pohjanmaa Södra Österbotten    Ähtäri    Etseri     Suomi
+##           Kieli_ni2                                    AVI.FI Kieli.FI
+## Äänekoski       N_A Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
+## Ähtäri       Ruotsi Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
+##                Maakunta.FI  Kunta.FI
+## Äänekoski      Keski-Suomi Äänekoski
+## Ähtäri    EtelÃ¤-Pohjanmaa    Ähtäri
+{% endhighlight %}
+
+
+## <a name="conversions"></a>Conversions
+
+### <a name="postalcodes"></a>Postal codes vs. municipalities
+
+Source: [Wikipedia](http://fi.wikipedia.org/wiki/Luettelo_Suomen_postinumeroista_kunnittain). The municipality names are provided also in plain ascii without special characters:
+
+
+{% highlight r %}
+postal.code.table <- get_postal_code_info() 
+head(postal.code.table)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##   postal.code municipality municipality.ascii
+## 1       07230       Askola             Askola
+## 2       07500       Askola             Askola
+## 3       07510       Askola             Askola
+## 4       07530       Askola             Askola
+## 5       07580       Askola             Askola
+## 6       07590       Askola             Askola
+{% endhighlight %}
+
+
+### <a name="municipality2province"></a>Municipality-Province mapping
+
+**Map all municipalities to correponding provinces**
+
+
+{% highlight r %}
+m2p <- municipality_to_province() 
+head(m2p) # Just show the first ones
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##           Äänekoski              Ähtäri                Akaa 
+##       "Keski-Suomi"  "EtelÃ¤-Pohjanmaa"         "Pirkanmaa" 
+##            Alajärvi           Alavieska              Alavus 
+##  "EtelÃ¤-Pohjanmaa" "Pohjois-Pohjanmaa"  "EtelÃ¤-Pohjanmaa"
+{% endhighlight %}
+
+**Map selected municipalities to correponding provinces:**
+
+
+{% highlight r %}
+municipality_to_province(c("Helsinki", "Tampere", "Turku")) 
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##          Helsinki           Tampere             Turku 
+##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
+{% endhighlight %}
+
+**Speed up conversion with predefined info table:**
+
+
+{% highlight r %}
+m2p <- municipality_to_province(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
+head(m2p)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##          Helsinki           Tampere             Turku 
+##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
+{% endhighlight %}
+
+
+### <a name="municipalityconversions"></a>Municipality name-ID conversion
+
+**Municipality name to code**
+
+
+{% highlight r %}
+convert_municipality_codes(municipalities = c("Turku", "Tampere"))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##   Turku Tampere 
+##   "853"   "837"
+{% endhighlight %}
+
+**Municipality codes to names**
+
+
+{% highlight r %}
+convert_municipality_codes(ids = c(853, 837))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##       853       837 
+##   "Turku" "Tampere"
+{% endhighlight %}
+
+**Complete conversion table**
+
+
+{% highlight r %}
+municipality_ids <- convert_municipality_codes()
+head(municipality_ids) # just show the first entries
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##            id      name
+## Äänekoski 992 Äänekoski
+## Ähtäri    989    Ähtäri
+## Akaa      020      Akaa
+## Alajärvi  005  Alajärvi
+## Alavieska 009 Alavieska
+## Alavus    010    Alavus
+{% endhighlight %}
+
+
+
+## <a name="hetu"></a>Personal identification number (HETU)
+
+**Extract information from a Finnish personal identification number:**
 
 
 {% highlight r %}
@@ -99,12 +346,11 @@ hetu("111111-111C")
 ## [1] "hetu"
 {% endhighlight %}
 
-
-Validating Finnish personal identification number:
+**Validate Finnish personal identification number:**
 
 
 {% highlight r %}
-valid.hetu("010101-0101")  # TRUE/FALSE
+valid_hetu("010101-0101") # TRUE/FALSE
 {% endhighlight %}
 
 
@@ -114,399 +360,63 @@ valid.hetu("010101-0101")  # TRUE/FALSE
 {% endhighlight %}
 
 
-### Postal codes
 
-Get Finnish postal codes vs. municipalities table from Wikipedia
+## <a name="visualization"></a>Visualization tools
 
-
-{% highlight r %}
-postal.code.table <- GetPostalCodeInfo()
-head(postal.code.table)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##   postal.code municipality municipality.ascii
-## 1       07230       Askola             Askola
-## 2       07500       Askola             Askola
-## 3       07510       Askola             Askola
-## 4       07530       Askola             Askola
-## 5       07580       Askola             Askola
-## 6       07590       Askola             Askola
-{% endhighlight %}
-
-
-### IP Location
-
-Get geographic coordinates for a given IP-address from 
-http://www.datasciencetoolkit.org//ip2coordinates/
+Line fit with confidence smoothers (if any of the required libraries
+are missing, install them with the install.packages command in R):
 
 
 {% highlight r %}
-ip_location("137.224.252.10")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## [1] "51.9667015075684" "5.66669988632202"
-{% endhighlight %}
-
-
-
-### Municipality information
-
-Finnish municipality information is available through Population
-Registry (Vaestorekisterikeskus), Statistics Finland (Tilastokeskus)
-and Land Survey Finland (Maanmittauslaitos). We provide separate
-download routine for each data set. The row names are in harmonized
-format and can be used to match data sets from different sources, as
-different data sets may carry slightly different versions of certain
-municipality names. Examples for each case:
-
-Finnish municipality information from Land Survey Finland ([Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu)). 
-
-
-{% highlight r %}
-municipality.info.mml <- GetMunicipalityInfoMML()
-municipality.info.mml[1:2, ]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##           Kohderyhma Kohdeluokk AVI Maakunta Kunta
-## Äänekoski         71      84200   4       13   992
-## Ähtäri            71      84200   4       14   989
-##                                             AVI_ni1
-## Äänekoski Länsi- ja Sisä-Suomen aluehallintovirasto
-## Ähtäri    Länsi- ja Sisä-Suomen aluehallintovirasto
-##                                                      AVI_ni2
-## Äänekoski Regionförvaltningsverket i Västra och Inre Finland
-## Ähtäri    Regionförvaltningsverket i Västra och Inre Finland
-##                 Maaku_ni1         Maaku_ni2 Kunta_ni1 Kunta_ni2 Kieli_ni1
-## Äänekoski     Keski-Suomi Mellersta Finland Äänekoski       N_A     Suomi
-## Ähtäri    Etelä-Pohjanmaa Södra Österbotten    Ähtäri    Etseri     Suomi
-##           Kieli_ni2                                    AVI.FI Kieli.FI
-## Äänekoski       N_A Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
-## Ähtäri       Ruotsi Länsi- ja Sisä-Suomen aluehallintovirasto    Suomi
-##                Maakunta.FI  Kunta.FI
-## Äänekoski      Keski-Suomi Äänekoski
-## Ähtäri    EtelÃ¤-Pohjanmaa    Ähtäri
-{% endhighlight %}
-
-
-Get information of Finnish provinces from Statistics Finland ([Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px))
-
-
-{% highlight r %}
-municipality.info.statfi <- GetMunicipalityInfoStatFi()
-municipality.info.statfi[1:2, ]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##                Alue Maapinta-ala, km2 1.1.2013 Taajama-aste, % 1.1.2012
-## Äänekoski Äänekoski                        884                     76.1
-## Ähtäri       Ähtäri                        805                     61.9
-##           Väkiluku 31.12.2012 Väkiluvun muutos, % 2011 - 2012
-## Äänekoski               20265                            -0.3
-## Ähtäri                   6363                            -0.8
-##           0-14 -vuotiaiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                           17.4
-## Ähtäri                                              14.9
-##           15-64 -vuotiaiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                            61.1
-## Ähtäri                                               60.4
-##           65 vuotta täyttäneiden osuus väestöstä, % 31.12.2012
-## Äänekoski                                                 21.5
-## Ähtäri                                                    24.6
-##           Ruotsinkielisten osuus väestöstä, % 31.12.2012
-## Äänekoski                                            0.1
-## Ähtäri                                               0.1
-##           Ulkomaiden kansalaisten osuus väestöstä, % 31.12.2012
-## Äänekoski                                                   1.1
-## Ähtäri                                                      0.8
-##           Kuntien välinen muuttovoitto/-tappio, henkilöä 2012
-## Äänekoski                                                 -67
-## Ähtäri                                                    -35
-##           Syntyneiden enemmyys, henkilöä 2012
-## Äänekoski                                 -14
-## Ähtäri                                    -20
-##           Perheiden lukumäärä 31.12.2012
-## Äänekoski                           5570
-## Ähtäri                              1807
-##           Valtionveronalaiset tulot, euroa/tulonsaaja  2011
-## Äänekoski                                             23540
-## Ähtäri                                                21744
-##           Asuntokuntien lukumäärä 31.12.2012
-## Äänekoski                               9624
-## Ähtäri                                  2957
-##           Vuokra-asunnossa asuvien asuntokuntien osuus, % 31.12.2012
-## Äänekoski                                                       26.0
-## Ähtäri                                                          20.3
-##           Rivi- ja pientaloissa asuvien asuntokuntien osuus asuntokunnista, % 31.12.2012
-## Äänekoski                                                                           65.1
-## Ähtäri                                                                              86.8
-##           Kesämökkien lukumäärä 31.12.2012
-## Äänekoski                             2551
-## Ähtäri                                1354
-##           Vähintään keskiasteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2011
-## Äänekoski                                                                                      63.2
-## Ähtäri                                                                                         64.2
-##           Korkea-asteen tutkinnon suorittaneiden osuus 15 vuotta täyttäneistä, % 31.12.2011
-## Äänekoski                                                                              19.5
-## Ähtäri                                                                                 19.9
-##           Kunnassa olevien työpaikkojen lukumäärä 31.12.2011
-## Äänekoski                                               7972
-## Ähtäri                                                  2453
-##           Työllisten osuus 18-74-vuotiaista, % 31.12.2011
-## Äänekoski                                            54.2
-## Ähtäri                                               55.3
-##           Työttömyysaste, % 31.12.2011
-## Äänekoski                         15.5
-## Ähtäri                            11.3
-##           Kunnassa asuvan työllisen työvoiman määrä 31.12.2011
-## Äänekoski                                                 7679
-## Ähtäri                                                    2475
-##           Asuinkunnassaan työssäkäyvien osuus työllisestä työvoimasta, % 31.12. 2011
-## Äänekoski                                                                       77.3
-## Ähtäri                                                                          77.3
-##           Alkutuotannon työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                            2.8
-## Ähtäri                                               9.1
-##           Jalostuksen työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                         43.7
-## Ähtäri                                            27.7
-##           Palvelujen työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                        52.5
-## Ähtäri                                           62.0
-##           Toimialaltaan tuntemattomien työpaikkojen osuus, % 31.12.2011
-## Äänekoski                                                           1.0
-## Ähtäri                                                              1.2
-##           Taloudellinen huoltosuhde, työvoiman ulkopuolella tai työttömänä olevat yhtä työllistä kohti 31.12.2011
-## Äänekoski                                                                                                    1.65
-## Ähtäri                                                                                                       1.59
-##           Eläkkeellä olevien osuus väestöstä, % 31.12.2011
-## Äänekoski                                             28.1
-## Ähtäri                                                31.3
-##           Yritystoimipaikkojen lukumäärä 2012     Kunta
-## Äänekoski                                  NA Äänekoski
-## Ähtäri                                    478    Ähtäri
-{% endhighlight %}
-
-
-List the province for each municipality in Finland:
-
-{% highlight r %}
-
-# Specific municipalities
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"))
-head(m2p)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##          Helsinki           Tampere             Turku 
-##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
-{% endhighlight %}
-
-
-
-{% highlight r %}
-
-# All municipalities
-m2p <- FindProvince(municipality.info.statfi$Kunta)
-
-# Speeding up with predefined municipality info table:
-m2p <- FindProvince(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
-head(m2p)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##          Helsinki           Tampere             Turku 
-##         "Uusimaa"       "Pirkanmaa" "Varsinais-Suomi"
-{% endhighlight %}
-
-
-Convert municipality codes and names:
-
-{% highlight r %}
-municipality_ids <- ConvertMunicipalityCodes()
-head(municipality_ids)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##            id      name
-## Äänekoski 992 Äänekoski
-## Ähtäri    989    Ähtäri
-## Akaa      020      Akaa
-## Alajärvi  005  Alajärvi
-## Alavieska 009 Alavieska
-## Alavus    010    Alavus
-{% endhighlight %}
-
-
-Translate municipality names Finnish/English:
-
-
-{% highlight r %}
-translations <- LoadData("translations")
-head(translations)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##   Ã\u0085land Islands         South Karelia Southern Ostrobothnia 
-##          "Ahvenanmaa"      "EtelÃĪ-Karjala"    "EtelÃĪ-Pohjanmaa" 
-##      Southern Savonia                Kainuu       Tavastia Proper 
-##         "EtelÃĪ-Savo"              "Kainuu"         "Kanta-HÃĪme"
-{% endhighlight %}
-
-
-### Retrieve population register data
-
-Municipality-level population information from [Vaestorekisterikeskus](http://vrk.fi/default.aspx?docid=5127&site=3&id=0):
-
-
-{% highlight r %}
-df <- GetPopulationRegister()
-head(df)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##           Koodi     Kunta    Kommun  Male Female Total
-## Äänekoski   992 Äänekoski Äänekoski 10187  10121 20308
-## Ähtäri      989    Ähtäri    Etseri  3231   3222  6453
-## Akaa        020      Akaa      Akaa  8452   8637 17089
-## Alajärvi    005  Alajärvi  Alajärvi  5226   5214 10440
-## Alavieska   009 Alavieska Alavieska  1420   1350  2770
-## Alavus      010    Alavus    Alavus  4619   4634  9253
-{% endhighlight %}
-
-
-### Province information
-
-Get information of Finnish provinces from Wikipedia:
-
-
-{% highlight r %}
-tab <- GetProvinceInfoWikipedia()
-head(tab)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##          Province  Area Population PopulationDensity
-## 1         Uusimaa  9132    1550362             170.4
-## 2 Varsinais-Suomi 10664     457789              42.9
-## 3       Satakunta  7956     229360              28.8
-## 4      Kanta-Häme  5199     169952              32.7
-## 5       Pirkanmaa 12446     472181              37.9
-## 6     Päijät-Häme  5127     199235              38.9
-{% endhighlight %}
-
-
-### Company subsidies from the Finnish government
-
-Finnish broadcasting company YLE published a large data set on Finnish company subsidies ([(C) MOT 10.9.2012](http://ohjelmat.yle.fi/mot/10_9) over 15 years. See the site for more information; CC-BY-SA 3.0-license. 
-
-
-{% highlight r %}
-tuet <- GetMOTYritystuet()
-head(tuet)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##                         yritys   Y.tunnus vuosi maksettu.summa
-## 1        Aker Yards Oy (Turku)  0772017-4  2008       18000000
-## 2       STX Finland Oy (Rauma)  0772017-4  2010        3975000
-## 3    Uudenkaupungin Työvene Oy 1614238-8   2010         539210
-## 4       STX Finland Oy (Turku)  0772017-4  2011       11330550
-## 5 Arctech Helsinki Shipyard Oy  2366464-3  2011        1688000
-## 6       STX Finland Oy (Turku)  0772017-4  2011         731700
-##                                   tukimuoto       myöntäjä        maakunta
-## 1 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 2 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM       Satakunta
-## 3 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 4 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-## 5 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM         Uusimaa
-## 6 laivanrakennusteollisuuden innovaatiotuki Ely-keskus/TEM Varsinais-Suomi
-##   lainat  TOL1                                            TOL2 TOL.versio
-## 1     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 2     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 3     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 4     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 5     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-## 6     NA 30110  Laivojen ja kelluvien rakenteiden rakentaminen       2008
-##                                     Kommentti
-## 1 Sulautunut STX Finlandiin -> y-tunnus = STX
-## 2                                            
-## 3                                            
-## 4                                            
-## 5                                            
-## 6
-{% endhighlight %}
-
-
-
-### Visualization routines
-
-Line fit with confidence smoothers:
-
-
-{% highlight r %}
-library(sorvi)
+library(sorvi) 
+library(plyr)
+library(RColorBrewer)
+library(ggplot2)
 data(iris)
-p <- vwReg(Sepal.Length ~ Sepal.Width, iris)
+p <- regression_plot(Sepal.Length ~ Sepal.Width, iris) 
 print(p)
 {% endhighlight %}
 
-![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline.png) 
+![plot of chunk regressionline](../../figs/sorvi_tutorial/regressionline-1.png) 
 
 
-Plot matrix:
-
-
-{% highlight r %}
-mat <- rbind(c(1, 2, 3), c(1, 3, 1), c(4, 2, 2))
-pm <- PlotMatrix(mat, "twoway", midpoint = 2)
-{% endhighlight %}
-
-![plot of chunk unnamed-chunk-1](../../figs/sorvi_tutorial/unnamed-chunk-1.png) 
-
-{% highlight r %}
-
-# Plotting the scale sc <- PlotScale(pm$colors, pm$breaks)
-{% endhighlight %}
 
 
 ## Licensing and Citations
 
 This work can be freely used, modified and distributed under the 
-[Two-clause FreeBSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
+[Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
 
-Kindly cite the work, if appropriate, as 'Leo Lahti, Juuso Parkkinen
-ja Joona Lehtomaki (2011). sorvi - suomalainen avoimen datan
-tyokalupakki. URL: http://louhos.github.com/sorvi)'. A full list of
-authors and contributors and the relevant contact information is
-[here](http://louhos.github.com/contact).
+
+{% highlight r %}
+citation("sorvi")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## 
+## Kindly cite the sorvi R package as follows:
+## 
+##   (C) Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen,
+##   Einari Happonen and Jussi Paananen (rOpenGov 2011-2014).  sorvi:
+##   Finnish open government data toolkit for R.  URL:
+##   http://ropengov.github.com/sorvi
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Misc{,
+##     title = {sorvi: Finnish open government data toolkit for R},
+##     author = {Leo Lahti and Juuso Parkkinen and Joona Lehtomaki and Juuso Haapanen and Einari Happonen and Jussi Paananen},
+##     doi = {10.5281/zenodo.10280},
+##     year = {2011},
+##   }
+## 
+## Many thanks for all contributors! See:
+## http://louhos.github.com/contact.html
+{% endhighlight %}
 
 ## Session info
-
 
 This vignette was created with
 
@@ -518,34 +428,33 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-unknown-linux-gnu (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] RColorBrewer_1.0-5 ggplot2_0.9.3.1    XML_3.98-1.1      
-##  [4] pxR_0.29           stringr_0.6.2      reshape_0.8.4     
-##  [7] sp_1.0-14          plyr_1.8           sorvi_0.4.24      
-## [10] rjson_0.2.13       RCurl_1.95-4.1     bitops_1.0-6      
-## [13] knitr_1.5         
+##  [1] RColorBrewer_1.0-5 plyr_1.8.1         sorvi_0.7.12      
+##  [4] reshape_0.8.5      helsinki_0.9.24    RCurl_1.95-4.3    
+##  [7] bitops_1.0-6       ggplot2_1.0.0      rgeos_0.3-4       
+## [10] maptools_0.8-30    gisfin_0.9.16      rgdal_0.8-16      
+## [13] raster_2.3-12      sp_1.0-15          fmi_0.1.11        
+## [16] R6_2.0             knitr_1.8         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] formatR_0.10     grid_3.0.2       gtable_0.1.2     labeling_0.2    
-##  [9] lattice_0.20-24  MASS_7.3-29      munsell_0.4.2    proto_0.3-10    
-## [13] reshape2_1.2.2   scales_0.2.3     tools_3.0.2
+##  [1] boot_1.3-13      coda_0.16-1      colorspace_1.2-4 deldir_0.1-6    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_1.0     
+##  [9] grid_3.1.2       gtable_0.1.2     labeling_0.3     lattice_0.20-29 
+## [13] LearnBayes_2.15  MASS_7.3-35      Matrix_1.1-4     munsell_0.4.2   
+## [17] nlme_3.1-118     parallel_3.1.2   proto_0.3-10     Rcpp_0.11.3     
+## [21] reshape2_1.4     rjson_0.2.14     rwfs_0.1.11      scales_0.2.4    
+## [25] spdep_0.5-77     splines_3.1.2    stringr_0.6.2    tools_3.1.2     
+## [29] XML_3.98-1.1
 {% endhighlight %}
-
 
 
 

@@ -1,0 +1,203 @@
+---
+title: helsinki vignette
+layout: tutorial_page
+package_name: helsinki
+package_name_show: helsinki
+author: Juuso Parkkinen, Leo Lahti, Joona Lehtomaki
+meta_description: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include", "the Real Estate Department (district maps)", "the Environmental Services Authority", "Service Map API", "Linked Events API and", "Helsinki Region Infoshare statistics API."]
+github_user: ropengov
+package_version: 0.9.24
+header_descripton: ["Tools for accessing various open data sources in the Helsinki", "region in Finland. Current data sources include", "the Real Estate Department (district maps)", "the Environmental Services Authority", "Service Map API", "Linked Events API and", "Helsinki Region Infoshare statistics API."]
+---
+
+
+
+```{r knit, eval=FALSE, echo=FALSE}
+# Hot to knit this document into .md and .html
+library(knitr)
+opts_knit$set(base.dir = "vignettes") # Change the base dir where to save figures
+knit(input="vignettes/helsinki_tutorial.Rmd", output="vignettes/helsinki_tutorial.md")
+knit2html(input="vignettes/helsinki_tutorial.md", output="vignettes/helsinki_tutorial.html", options=c("use_xhtml","smartypants","mathjax","highlight_code"))
+file.remove("helsinki_tutorial.txt") # Fix to remove from the output
+```
+
+
+helsinki - tutorial
+===========
+
+This R package provides tools to access open data from the Helsinki region in Finland
+as part of the [rOpenGov](http://ropengov.github.io) project.
+
+For contact information and source code, see the [github page](https://github.com/rOpenGov/helsinki). 
+
+## Available data sources
+
+[Helsinki region district maps](#aluejakokartat) (Helsingin seudun aluejakokartat)
+* Aluejakokartat: kunta, pien-, suur-, tilastoalueet (Helsinki region district maps)
+* Äänestysaluejako: (Helsinki region election district maps)
+* Source: [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/)
+
+Helsinki Real Estate Department (HKK:n avointa dataa)
+* Spatial data from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/) availabe in the [gisfin](https://github.com/rOpenGov/gisfin) package, see [gisfin tutorial](https://github.com/rOpenGov/gisfin/blob/master/vignettes/gisfin_tutorial.md) for examples
+
+[Helsinki region environmental services](#hsy) (HSY:n avointa dataa)
+* Väestötietoruudukko (population grid)
+* Rakennustietoruudukko (building information grid)
+* SeutuRAMAVA (building land resource information(?))
+* Source: [Helsingin seudun ympäristöpalvelut, HSY](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx)
+
+[Service and event information](#servicemap)
+* [Helsinki region Service Map API](http://api.hel.fi/servicemap/v1/) (Pääkaupunkiseudun Palvelukartta)
+* [Helsinki Linked Event API](http://api.hel.fi/linkedevents/v0.1/)
+
+
+[Helsinki Region Infoshare statistics API](#hri_stats)
+* [Aluesarjat (original source)](http://www.aluesarjat.fi/) (regional time series data)
+* Source: [Helsinki Region Infoshare statistics API](http://dev.hel.fi/stats/)
+
+
+List of potential data sources to be added to the package can be found [here](https://github.com/rOpenGov/helsinki/blob/master/vignettes/todo-datasets.md).
+
+## Installation
+
+Release version for general users:
+
+```{r install, eval=FALSE}
+install.packages("helsinki")
+```
+
+Development version for developers:
+
+```{r install2, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("helsinki", "ropengov")
+```
+
+Load package.
+
+```{r load, message=FALSE, warning=FALSE, results='hide'}
+library(helsinki)
+```
+
+## <a name="aluejakokartat"></a>Helsinki region district maps
+
+Helsinki region district maps (Helsingin seudun aluejakokartat) and election maps (äänestysalueet) from [Helsingin kaupungin Kiinteistövirasto (HKK)](http://ptp.hel.fi/avoindata/) are available in the helsinki package with `data(aluejakokartat)`. The data are available as both spatial object (`sp`) and data frame (`df`). These are preprocessed in the [gisfin](https://github.com/rOpenGov/gisfin) package, and more examples can be found in the [gisfin tutorial](https://github.com/rOpenGov/gisfin/blob/master/vignettes/gisfin_tutorial.md). 
+
+```{r aluejako_data, message=FALSE}
+# Load aluejakokartat and study contents
+data(aluejakokartat)
+str(aluejakokartat, m=2)
+```
+
+
+## <a name="hsy"></a> Helsinki region environmental services
+
+Retrieve data from [Helsingin seudun ympäristöpalvelut (HSY)](http://www.hsy.fi/seututieto/kaupunki/paikkatiedot/Sivut/Avoindata.aspx) with `get_hsy()`.
+
+### Population grid 
+
+Population grid (väestötietoruudukko) with 250m x 250m grid size in year 2013 contains the number of people in different age groups. The most rarely populated grids are left out (0-4 persons), and grids with less than 99 persons are censored with '99' to guarantee privacy.
+
+```{r hsy_vaesto, message=FALSE, warning=FALSE}
+sp.vaesto <- get_hsy(which.data="Vaestotietoruudukko", which.year=2013)
+head(sp.vaesto@data)
+```
+
+
+### Helsinki building information
+
+Building information grid (rakennustietoruudukko) in Helsinki region on grid-level (500m x 500m): building counts (lukumäärä), built area (kerrosala), usage (käyttötarkoitus), and region
+efficiency (aluetehokkuus).
+
+```{r hsy_rakennus, message=FALSE, warning=FALSE}
+sp.rakennus <- get_hsy(which.data="Rakennustietoruudukko", which.year=2013)  
+head(sp.rakennus@data)
+```
+
+### Helsinki building area capacity
+
+Building area capacity per municipal region (kaupunginosittain summattua tietoa rakennusmaavarannosta). Plot with number of buildlings with `spplot()`.
+
+```{r hsy_ramava, message=FALSE, warning=FALSE}
+sp.ramava <- get_hsy(which.data="SeutuRAMAVA_tila", which.year=2013)  
+head(sp.ramava@data)
+# Values with less than five units are given as 999999999, set those to zero
+sp.ramava@data[sp.ramava@data==999999999] <- 0
+# Plot number of buildings for each region
+spplot(sp.ramava, zcol="RAKLKM", main="Number of buildings in each 'tilastoalue'", col.regions=colorRampPalette(c('blue', 'gray80', 'red'))(100))
+```
+
+
+## <a name="servicemap"></a>Service and event information
+
+Function `get_servicemap()` retrieves regional service data from the new [Service Map API](http://api.hel.fi/servicemap/v1/), that contains data from the [Service Map](http://dev.hel.fi/servicemap/).
+
+```{r servicemap, message=FALSE, warning=FALSE}
+# Search for "puisto" (park) (specify q="query")
+search.puisto <- get_servicemap(query="search", q="puisto")
+# Study results
+str(search.puisto, m=1)
+# A lot of results found (count > 1000)
+# Get names for the first 20 results
+sapply(search.puisto$results, function(x) x$name$fi)
+# See what data is given for one service
+names(search.puisto$results[[1]])
+# More results could be retrieved by specifying 'page=2' etc.
+```
+
+Function `get_linkedevents()` retrieves regional event data from the new [Linked Events API](http://api.hel.fi/linkedevents/v0.1/).
+
+```{r linkedevents, message=FALSE, warning=FALSE}
+# Searh for current events
+events <- get_linkedevents(query="event")
+# Get names for the first 20 results
+sapply(events$data, function(x) x$name$fi)
+# See what data is given for the first event
+names(events$data[[1]])
+```
+
+
+
+## <a name="hri_stats"></a> Helsinki Region Infoshare statistics API
+
+Function `get_hri_stats()` retrieves data from the [Helsinki Region Infoshare statistics API](http://dev.hel.fi/stats/).
+
+```{r hri_stats1, message=FALSE, warning=FALSE}
+# Retrieve list of available data
+stats.list <- get_hri_stats(query="")
+# Show first results
+head(stats.list)
+```
+
+Specify a dataset to retrieve. The output is currently a three-dimensional array.
+
+```{r hri_stats2, message=FALSE, warning=FALSE}
+# Retrieve a specific dataset
+stats.res <- get_hri_stats(query=stats.list[1])
+# Show the structure of the results
+str(stats.res)
+```
+
+The implementation will be updated and more examples will be added in the near future.
+
+
+### Citation
+
+**Citing the data:** See `help()` to get citation information for each data source individually.
+
+**Citing the R package:**
+
+```{r citation, comment=NA}
+citation("helsinki")
+```
+
+### Session info
+
+
+This vignette was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+

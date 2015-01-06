@@ -3,7 +3,7 @@ layout: post
 title:  "rQog in action"
 date:   2013-12-06 18:53:45
 categories: general
-draft: true
+draft: false
 
 excerpt: "This post will demostrate the use of rQog-package"
 
@@ -25,8 +25,30 @@ Basic data has a limited selection of most common indicators incluidng totally 1
 
 {% highlight r %}
 library(rQog)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error: there is no package called 'rQog'
+{% endhighlight %}
+
+
+
+{% highlight r %}
 dat <- getQogBasic(country = c("Russia","China","India","Brazil"), # country,countries
               indicator=c("undp_hdi","fh_polity2")) # indicator(s)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error: could not find function "getQogBasic"
+{% endhighlight %}
+
+
+
+{% highlight r %}
 library(ggplot2)
 ggplot(dat, aes(x=year,y=value,color=cname)) + 
   geom_point() + geom_line() +
@@ -38,10 +60,11 @@ ggplot(dat, aes(x=year,y=value,color=cname)) +
   theme(legend.position="none")
 {% endhighlight %}
 
-![center](/figs/2013-12-06-rqog-examples/ExampleBasic.png) 
 
 
-
+{% highlight text %}
+## Error: object 'dat' not found
+{% endhighlight %}
 
 
 

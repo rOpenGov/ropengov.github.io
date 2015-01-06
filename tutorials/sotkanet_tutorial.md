@@ -6,7 +6,7 @@ package_name_show: sotkanet
 author: Leo Lahti, Einari Happonen, Juuso Parkkinen, Joona Lehtomaki
 meta_description: Sotkanet API R Tools
 github_user: ropengov
-package_version: 0.9.02
+package_version: 0.9.05
 header_descripton: Sotkanet API R Tools
 ---
 
@@ -28,7 +28,6 @@ install.packages("sotkanet")
 library(sotkanet)
 {% endhighlight %}
 
-
 Development version for developers:
 
 
@@ -39,14 +38,13 @@ install_github("sotkanet", "ropengov")
 library(sotkanet)
 {% endhighlight %}
 
-
 ### Listing available indicators
 
 List available Sotkanet indicators:
 
 
 {% highlight r %}
-library(sotkanet)
+library(sotkanet) 
 sotkanet.indicators <- SotkanetIndicators(type = "table")
 head(sotkanet.indicators)
 {% endhighlight %}
@@ -61,13 +59,13 @@ head(sotkanet.indicators)
 ## 4         7
 ## 5        74
 ## 6       127
-##                                                                            indicator.title.fi
-## 1  Mielenterveyden häiriöihin sairaalahoitoa saaneet 0 - 17-vuotiaat / 1 000 vastaavanikäistä
-## 2                   Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavanikäisestä väestöstä
-## 3 Somaattisen erikoissairaanhoidon hoitopäivät 75 vuotta täyttäneillä / 1000 vastaavanikäistä
-## 4                                                                 0 - 6-vuotiaat, % väestöstä
-## 5                                                      Yksinhuoltajaperheet, % lapsiperheistä
-## 6                                                                               Väestö 31.12.
+##                                                                             indicator.title.fi
+## 1   Mielenterveyden häiriöihin sairaalahoitoa saaneet 0 - 17-vuotiaat / 1 000 vastaavanikäistä
+## 2                    Toimeentulotukea saaneet 25 - 64-vuotiaat, % vastaavanikäisestä väestöstä
+## 3 Somaattisen erikoissairaanhoidon hoitopäivät 75 vuotta täyttäneillä / 1 000 vastaavanikäistä
+## 4                                                                  0 - 6-vuotiaat, % väestöstä
+## 5                                                       Yksinhuoltajaperheet, % lapsiperheistä
+## 6                                                                                Väestö 31.12.
 ##   indicator.organization        indicator.organization.title.fi
 ## 1                      2 Terveyden ja hyvinvoinnin laitos (THL)
 ## 2                      2 Terveyden ja hyvinvoinnin laitos (THL)
@@ -76,7 +74,6 @@ head(sotkanet.indicators)
 ## 5                      3                          Tilastokeskus
 ## 6                      3                          Tilastokeskus
 {% endhighlight %}
-
 
 List geographical regions with available indicators:
 
@@ -106,7 +103,6 @@ head(sotkanet.regions)
 {% endhighlight %}
 
 
-
 ### Querying SOTKAnet indicators
 
 Get the [indicator 10013](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hakusivu/metadata?type=I&indicator=10013) from Finland (Suomi) for 1990-2012 (Eurostat employment statistics youth unemployment), and plot a graph:
@@ -114,8 +110,10 @@ Get the [indicator 10013](http://uusi.sotkanet.fi/portal/page/portal/etusivu/hak
 
 {% highlight r %}
 # Get indicator data
-dat <- GetDataSotkanet(indicators = 10013, years = 1990:2012, genders = c("female", 
-    "male", "total"), region.category = "EUROOPPA", region = "Suomi")
+dat <- GetDataSotkanet(indicators = 10013, years = 1990:2012, 
+       		       genders = c('female', 'male', 'total'), 
+		       region.category = "EUROOPPA", 
+		       region = "Suomi")
 
 # Investigate the first lines in the data
 head(dat)
@@ -150,17 +148,16 @@ head(dat)
 
 
 {% highlight r %}
-
 # Pick indicator name
 indicator.name <- as.character(unique(dat$indicator.title.fi))
 indicator.source <- as.character(unique(dat$indicator.organization.title.fi))
 
 # Visualize
-library(ggplot2, quietly = TRUE)
-theme_set(theme_bw(20))
-p <- ggplot(dat, aes(x = year, y = primary.value, group = gender, color = gender))
-p <- p + geom_line() + ggtitle(paste(indicator.name, indicator.source, sep = " / "))
-p <- p + xlab("Year") + ylab("Value")
+library(ggplot2, quietly=TRUE)
+theme_set(theme_bw(20)); 
+p <- ggplot(dat, aes(x = year, y = primary.value, group = gender, color = gender)) 
+p <- p + geom_line() + ggtitle(paste(indicator.name, indicator.source, sep = " / ")) 
+p <- p + xlab("Year") + ylab("Value") 
 p <- p + theme(title = element_text(size = 10))
 p <- p + theme(axis.title.x = element_text(size = 20))
 p <- p + theme(axis.title.y = element_text(size = 20))
@@ -168,8 +165,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData.png) 
-
+![plot of chunk sotkanetData](../../figs/sotkanet_tutorial/sotkanetData-1.png) 
 
 
 ### Effect of municipality size
@@ -179,13 +175,12 @@ Smaller municipalities have more random variation.
 
 {% highlight r %}
 selected.inds <- c(127, 178)
-dat <- GetDataSotkanet(indicators = selected.inds, years = 2011, genders = c("total"))
+dat <- GetDataSotkanet(indicators = selected.inds, years = 2011, genders = c('total'))
 datf <- dat[, c("region.title.fi", "indicator.title.fi", "primary.value")]
-dw <- reshape(datf, idvar = "region.title.fi", timevar = "indicator.title.fi", 
-    direction = "wide")
+dw <- reshape(datf, idvar = "region.title.fi", timevar = "indicator.title.fi", direction = "wide")
 names(dw) <- c("Municipality", "Population", "Migration")
 p <- ggplot(dw, aes(x = log10(Population), y = Migration)) + geom_point(size = 3)
-p <- p + ggtitle("Migration vs. population size")
+p <- p + ggtitle("Migration vs. population size") 
 p <- p + theme(title = element_text(size = 15))
 p <- p + theme(axis.title.x = element_text(size = 20))
 p <- p + theme(axis.title.y = element_text(size = 20))
@@ -193,8 +188,7 @@ p <- p + theme(legend.title = element_text(size = 15))
 print(p)
 {% endhighlight %}
 
-![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3.png) 
-
+![plot of chunk sotkanetVisu3](../../figs/sotkanet_tutorial/sotkanetVisu3-1.png) 
 
 
 
@@ -207,21 +201,18 @@ use. Save the data on your local disk for further work.
 
 {% highlight r %}
 # These indicators have problems with R routines:
-probematic.indicators <- c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 
-    2033, 2050, 3386, 3443)
+probematic.indicators <- c(1575, 1743, 1826, 1861, 1882, 1924, 1952, 2000, 2001, 2033, 2050, 3386, 3443)
 
 # Get data for all indicators
 datlist <- list()
 for (ind in setdiff(sotkanet.indicators$indicator, probematic.indicators)) {
-    datlist[[as.character(ind)]] <- GetDataSotkanet(indicators = ind, years = 1990:2013, 
-        genders = c("female", "male", "total"))
+  datlist[[as.character(ind)]] <- GetDataSotkanet(indicators = ind, years = 1990:2013, genders = c('female', 'male', 'total'))
 }
 
-# Combine tables (this may require considerable time and memory for the full
-# data set)
+# Combine tables (this may require considerable time and memory 
+# for the full data set)
 dat <- do.call("rbind", datlist)
 {% endhighlight %}
-
 
 For further usage examples, see
 [Louhos-blog](http://louhos.wordpress.com), and
@@ -268,31 +259,30 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.0.2 (2013-09-25)
-## Platform: x86_64-unknown-linux-gnu (64-bit)
+## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] methods   stats     graphics  grDevices utils     datasets  base     
 ## 
 ## other attached packages:
-##  [1] sotkanet_0.9.02    RColorBrewer_1.0-5 ggplot2_0.9.3.1   
-##  [4] XML_3.98-1.1       pxR_0.29           stringr_0.6.2     
-##  [7] reshape_0.8.4      sp_1.0-14          plyr_1.8          
-## [10] sorvi_0.4.24       rjson_0.2.13       RCurl_1.95-4.1    
-## [13] bitops_1.0-6       knitr_1.5         
+##  [1] sotkanet_0.9.05    rjson_0.2.14       RColorBrewer_1.0-5
+##  [4] plyr_1.8.1         sorvi_0.7.12       reshape_0.8.5     
+##  [7] helsinki_0.9.24    RCurl_1.95-4.3     bitops_1.0-6      
+## [10] ggplot2_1.0.0      rgeos_0.3-4        maptools_0.8-30   
+## [13] gisfin_0.9.16      rgdal_0.8-16       raster_2.3-12     
+## [16] sp_1.0-15          fmi_0.1.11         R6_2.0            
+## [19] knitr_1.8         
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] colorspace_1.2-4 dichromat_2.0-0  digest_0.6.4     evaluate_0.5.1  
-##  [5] formatR_0.10     grid_3.0.2       gtable_0.1.2     labeling_0.2    
-##  [9] lattice_0.20-24  MASS_7.3-29      munsell_0.4.2    proto_0.3-10    
-## [13] reshape2_1.2.2   scales_0.2.3     tools_3.0.2
+##  [1] boot_1.3-13      coda_0.16-1      colorspace_1.2-4 deldir_0.1-6    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_1.0     
+##  [9] grid_3.1.2       gtable_0.1.2     labeling_0.3     lattice_0.20-29 
+## [13] LearnBayes_2.15  MASS_7.3-35      Matrix_1.1-4     munsell_0.4.2   
+## [17] nlme_3.1-118     parallel_3.1.2   proto_0.3-10     Rcpp_0.11.3     
+## [21] reshape2_1.4     rwfs_0.1.11      scales_0.2.4     spdep_0.5-77    
+## [25] splines_3.1.2    stringr_0.6.2    tools_3.1.2      XML_3.98-1.1
 {% endhighlight %}
-

@@ -6,3 +6,7 @@ _site/
 cache/
 .Rhistory
 .tags*
+.RData
+*~
+.Rproj.user
+.sass-cache

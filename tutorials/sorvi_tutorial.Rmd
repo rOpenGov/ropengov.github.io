@@ -6,43 +6,233 @@ package_name_show: sorvi
 author: Leo Lahti, Juuso Parkkinen, Joona Lehtomaki, Juuso Haapanen, Jussi, Paananen, Einari Happonen
 meta_description: Algorithms for Finnish Open Government Data
 github_user: ropengov
-package_version: 0.4.24
+package_version: 0.7.12
 header_descripton: Algorithms for Finnish Open Government Data
 ---
 
-### Väestörekisteritietojen visualisointi
 
-Tämä esimerkki hakee Suomen kuntarajat ja vaestorekisterin asukaslukutiedot kunnittain, ja laskee sekä visualisoi sukupuolten suhteellisen osuuden eri kunnissa Suomen kartalla. Lähde: [Louhos-blogi](https://louhos.wordpress.com/2011/10/09/r-paketti-avoimen-suomi-datan-louhintaan/).
 
-```{r popreg-2, message=FALSE, warning=FALSE, fig.width=8, fig.height=8, eval=FALSE}
-library(sorvi)
+Finnish open government data toolkit for R
+===========
 
-# hae suomen kartta ja kuntarajat gadm-muodossa
-library(gisfi)
-gadm <- GetGADM("FIN_adm", "Kunta")
+This R package provides miscellaneous tools for Finnish open
+government data to complement other
+[rOpenGov](http://ropengov.github.io/projects) packages with a more
+specific scope. We also maintain a [todo list of further data
+sources](https://github.com/rOpenGov/sorvi/blob/master/vignettes/todo-datasets.md)
+to be added; your
+[contributions](http://louhos.github.com/contact.html) and [bug
+reports and other feedback](https://github.com/ropengov/sorvi) are
+welcome! For further information, see the [home
+page](http://louhos.github.com/sorvi).
 
-# vaestorekisterin asukasluvut kunnittain
-vrek <- GetPopulationRegister()
 
-# Liita vaestorekisterin tiedot karttaobjektiin ja
-# aseta nollaan asukasluku kunnissa joiden osalta se ei ole tiedossa
-gadm$asukkaita <- log10(rowSums(vrek[gadm$Kunta, c("Miehet", "Naiset")]))
-gadm$asukkaita[is.na(gadm$asukkaita)] <- 0
-# Laske myos sukupuolten suhteellinen osuus
-gadm$miehet.osuus <- vrek[gadm$Kunta, "Miehet"]/vrek[gadm$Kunta, "Yhteensa"]
-gadm$naiset.osuus <- vrek[gadm$Kunta, "Naiset"]/vrek[gadm$Kunta, "Yhteensa"]
-# Aseta arvoon 50% miesten/naisten osuus
-# kunnissa joiden osalta vakiluku ei ole tiedossa
-gadm$miehet.osuus[is.na(gadm$miehet.osuus)] <- 0.5
-gadm$naiset.osuus[is.na(gadm$naiset.osuus)] <- 0.5
 
-# paletin rajapisteet
-varname <- "naiset.osuus"
-interval <- max(abs(gadm[[varname]] - 0.5))
-at <- seq(0.5 - interval, 0.5 + interval, length = 100)
+## Available data sources and tools
 
-# Piirra Suomen kartta varitettyna naisten suhteellisen osuuden nojalla
-q <- PlotShape(gadm, varname, type = "twoway",
-     		     at = at, main = "Naiset Suomen kunnissa")
+[Installation](#installation) (Asennus)  
+
+[Finnish provinces](#provinces) (Maakuntatason informaatio)  
+* [Basic province information](#provinceinfo) (Area, Population, Population Density)
+* [Finnish-English province name translations](#provincetranslations)  
+
+[Finnish municipalities](#municipality) (Kuntatason informaatio)
+* [Land Survey Finland](#mml) (Maanmittauslaitos / MML)
+
+[ID conversion tools](#conversions)
+* [Municipality-Postal code conversions](#postalcodes) (Kunnat vs. postinumerot)  
+* [Municipality name-ID conversions](#municipalityconversions) (Kunnat vs. kuntakoodit)
+* [Municipality-province conversions](#municipality2province) (Kunnat vs. maakunnat)
+
+[Finnish personal identification number (HETU)](#hetu) (Henkilotunnuksen kasittely)  
+
+[Visualization tools](#visualization) (Visualisointirutiineja)
+
+
+
+## <a name="installation"></a>Installation
+
+We assume you have installed [R](http://www.r-project.org/). If you
+use [RStudio](http://www.rstudio.com/ide/download/desktop), change the
+default encoding to UTF-8. Linux users should also install
+[CURL](http://curl.haxx.se/download.html).
+
+Install the stable release version in R:
+
+```{r install, eval=FALSE}
+install.packages("sorvi")
 ```
+
+Test the installation by loading the library:
+
+```{r test, message=FALSE, warning=FALSE, eval=TRUE}
+library(sorvi)
+```
+
+We also recommend setting the UTF-8 encoding:
+
+```{r locale, eval=FALSE}
+Sys.setlocale(locale="UTF-8") 
+```
+
+Brief examples of the package tools are provided below. Further
+examples are available in [Louhos-blog](http://louhos.wordpress.com)
+and in our [Rmarkdown blog](http://louhos.github.io/archive.html).
+
+
+## <a name="provinces"></a>Province information (Maakunnat)
+
+
+### <a name="provinceinfo"></a>Basic data
+
+Source: [Wikipedia](http://fi.wikipedia.org/wiki/V%C3%A4est%C3%B6tiheys)
+
+```{r municipality, warning=FALSE, message=FALSE, eval=TRUE}
+tab <- get_province_info_wikipedia()
+head(tab)
+```
+
+### <a name="provincetranslations"></a>Finnish-English translations
+
+**Finnish-English translations for province names** (we have not been able
+to solve all encoding problems yet; solutions welcome!):
+
+```{r translate, message=FALSE, eval=TRUE}
+translations <- load_sorvi_data("translations")
+head(as.matrix(translations))
+```
+
+
+## <a name="municipality"></a>Municipality information
+
+Finnish municipality information is available through Statistics
+Finland (Tilastokeskus; see
+[stafi](https://github.com/ropengov/statfi) package) and Land Survey
+Finland (Maanmittauslaitos). The row names for each data set are
+harmonized and can be used to match data sets from different sources,
+as different data sets may carry different versions of certain
+municipality names.
+
+### <a name="mml"></a>Land Survey Finland (municipality information)
+
+Source: [Maanmittauslaitos, MML](http://www.maanmittauslaitos.fi/aineistot-palvelut/latauspalvelut/avoimien-aineistojen-tiedostopalvelu). 
+
+```{r municipalityMML, message=FALSE, warning=FALSE, eval=TRUE}
+municipality.info.mml <- get_municipality_info_mml()
+print(municipality.info.mml[1:2,])
+```
+
+
+## <a name="conversions"></a>Conversions
+
+### <a name="postalcodes"></a>Postal codes vs. municipalities
+
+Source: [Wikipedia](http://fi.wikipedia.org/wiki/Luettelo_Suomen_postinumeroista_kunnittain). The municipality names are provided also in plain ascii without special characters:
+
+```{r postalcodes, message=FALSE, warning=FALSE, eval=TRUE}
+postal.code.table <- get_postal_code_info() 
+head(postal.code.table)
+```
+
+
+### <a name="municipality2province"></a>Municipality-Province mapping
+
+**Map all municipalities to correponding provinces**
+
+```{r province2, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+m2p <- municipality_to_province() 
+head(m2p) # Just show the first ones
+```  
+
+**Map selected municipalities to correponding provinces:**
+
+```{r province6, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+municipality_to_province(c("Helsinki", "Tampere", "Turku")) 
+```  
+
+**Speed up conversion with predefined info table:**
+
+```{r province7, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+m2p <- municipality_to_province(c("Helsinki", "Tampere", "Turku"), municipality.info.mml)
+head(m2p)
+```  
+
+
+### <a name="municipalityconversions"></a>Municipality name-ID conversion
+
+**Municipality name to code**
+
+```{r province3, message=FALSE, echo=TRUE, eval=TRUE}
+convert_municipality_codes(municipalities = c("Turku", "Tampere"))
+```  
+
+**Municipality codes to names**
+
+```{r province4, message=FALSE, echo=TRUE, eval=TRUE}
+convert_municipality_codes(ids = c(853, 837))
+```  
+
+**Complete conversion table**
+
+```{r province5, message=FALSE, echo=TRUE, eval=TRUE}
+municipality_ids <- convert_municipality_codes()
+head(municipality_ids) # just show the first entries
+```
+
+
+
+## <a name="hetu"></a>Personal identification number (HETU)
+
+**Extract information from a Finnish personal identification number:**
+
+```{r hetu, message=FALSE}
+library(sorvi)
+hetu("111111-111C")
+```
+
+**Validate Finnish personal identification number:**
+
+```{r hetu2, fig.message=FALSE}
+valid_hetu("010101-0101") # TRUE/FALSE
+```
+
+
+
+## <a name="visualization"></a>Visualization tools
+
+Line fit with confidence smoothers (if any of the required libraries
+are missing, install them with the install.packages command in R):
+
+```{r regressionline, message=FALSE, eval=TRUE, fig.width=10, fig.height=5}
+library(sorvi) 
+library(plyr)
+library(RColorBrewer)
+library(ggplot2)
+data(iris)
+p <- regression_plot(Sepal.Length ~ Sepal.Width, iris) 
+print(p)
+```
+
+
+
+
+## Licensing and Citations
+
+This work can be freely used, modified and distributed under the 
+[Two-clause BSD license](http://en.wikipedia.org/wiki/BSD\_licenses).
+
+```{r citation, message=FALSE, eval=TRUE}
+citation("sorvi")
+```
+
+## Session info
+
+This vignette was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+
+
+
 
