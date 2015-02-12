@@ -27,7 +27,7 @@ namespace :site do
     urls = read_projects()
 
     urls.each do |title, url|
-        
+
       # Download the repo zip to a tempdir
       Dir.mktmpdir do |tmp|
         Dir.chdir tmp
@@ -76,10 +76,10 @@ namespace :site do
             end
           end
 
-          # Stop execution if DESCRIPTION could not be found
+          # Stop execution or warn if DESCRIPTION could not be found
           if description.nil?
-            puts 'Could not find a DESCRIPTION file, exiting'
-            exit 1
+            puts 'Could not find a DESCRIPTION file for #{zip_path}'
+            # exit 1
           end
 
         # Move back to the site dir
@@ -168,6 +168,10 @@ namespace :site do
         project["bugreports"] = description["BugReports"]
       end
 
+      if not(description["Status"].nil?)
+        project["status"] = description["Status"]
+      end
+
       project["category"] = "ropengov"
 
     end
@@ -184,30 +188,32 @@ namespace :site do
     projects = {}
 
     puts "Scanning package DESCRIPTION files in GitHub..."
-
     project_files.each do |project_file|
+
       content = YAML.load_file(project_file)
+
       if all
         projects[project_file] = content
-      else
-        if content['category'] == 'ropengov'
-          if content['github']
-            gh_user = parse_github_user(content['github'])
-            if find_description(content['title'], gh_user)
-              puts "  DESCRIPTION file found for #{content['title']}"
-              content['description'] = true
+      else 
+        if not(content.nil?)
+          if content['category'] == 'ropengov'
+            if content['github']
+              gh_user = parse_github_user(content['github'])
+              if find_description(content['title'], gh_user)
+                puts "  DESCRIPTION file found for #{content['title']}"
+                content['description'] = true
+              else
+                puts "  No DESCRIPTION file found for #{content['title']}"
+                content['description'] = false
+              end
+              projects[project_file] = content
             else
-              puts "  No DESCRIPTION file found for #{content['title']}"
-              content['description'] = false
+              puts "  No GitHub URL defined for #{content['title']}"
             end
-            projects[project_file] = content
-          else
-            puts "  No GitHub URL defined for #{content['title']}"
           end
         end
       end
     end
-
     if projects.length == 0
       fail "No projects found in " + File.join(Dir.pwd, '_projects')
     else
@@ -217,12 +223,10 @@ namespace :site do
 
 
   def read_projects()
-
     require 'yaml'
     puts "Scanning package URLs..."
     urls = YAML.load_file('_projects/master.list')
     return(urls)
-
   end
 
 
@@ -330,8 +334,8 @@ namespace :projects do
           # layout: package_page
           # package_name: sotkanet
           # package_name_show: sotkanet
-          # author: Leo Lahti
-          # meta_description: Sotkanet API R tools
+          # author: My Name
+          # meta_description: R tools
           # github_user: ropengov
           # package_version: 0.9.01
           # header_descripton: Sotkanet API R tools

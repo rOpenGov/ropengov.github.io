@@ -1,5 +1,53 @@
 ---
+bibliographica: https://github.com/rOpenGov/bibliographica
+estc: https://github.com/rOpenGov/estc
+finpar: https://github.com/rOpenGov/finpar
+enigma: https://github.com/rOpenGov/enigma
+helsinki: https://github.com/rOpenGov/helsinki
+rustfare: https://github.com/rOpenGov/rustfare
 sorvi: https://github.com/rOpenGov/sorvi
 sotkanet: https://github.com/rOpenGov/sotkanet
 statfi: https://github.com/rOpenGov/statfi
+gisfin: https://github.com/rOpenGov/gisfin
+pxweb: https://github.com/rOpenGov/pxweb
+template: https://github.com/rOpenGov/template
+rsunlight: https://github.com/rOpenGov/rsunlight
+rqog: https://github.com/rOpenGov/rqog
+rwfs: https://github.com/rOpenGov/rwfs
+eurostat: https://github.com/rOpenGov/eurostat
+fennica: https://github.com/rOpenGov/fennica
+fmi: https://github.com/rOpenGov/fmi
+RPublica: https://github.com/rOpenGov/RPublica
+election: https://github.com/rOpenGov/election
+sweSCB: https://github.com/rOpenGov/sweSCB
+psData: https://github.com/rOpenGov/psData
+pollstR: https://github.com/rOpenGov/pollstR
+rtimes: https://github.com/rOpenGov/rtimes
+recalls: https://github.com/rOpenGov/recalls
+federalregister: https://github.com/rOpenGov/federalregister
+dkstat: https://github.com/rOpenGov/dkstat
+datavaalit: https://github.com/rOpenGov/datavaalit
+mpg: https://github.com/rOpenGov/mpg
+usbroadband: https://github.com/rOpenGov/usbroadband
 ---
+
+#RWaPo: https://github.com/rOpenGov/RWaPo
+
+# Related packages where we have entries
+#countrycode  
+#naep    
+#quandl           
+#datamart     
+#Grazwahl2012  
+#osmar   
+#replicaX     
+#SmarterPoland  
+#timeline
+#pisa
+#tsdbi
+#iodp          
+#unitedstates
+#geocode      
+#pvsR    
+#ropensecretsapi  
+#WDI
