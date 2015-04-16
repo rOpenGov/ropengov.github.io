@@ -1,18 +1,70 @@
 ---
-layout: post
-title:  "eurostat-package published"
-date:   2014-08-25 21:53:45
-categories: general
-draft: true
-
-excerpt: "This post will demostrate the use of eurostat-package"
-
+title: "eurostat-package submitted for CRAN"
 author:
-  name: Markus Kainu
   image: markus.jpg
+  name: Markus Kainu
+date: "2015-04-12 21:53:45"
+excerpt: This post will demostrate the use of eurostat-package
+layout: post
+draft: false
+categories: general
 ---
 
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(list(echo=FALSE,eval=TRUE,cache=TRUE,warning=FALSE,message=FALSE,fig.height=6,fig.width=8))
+
+```
+
+
 ## Introduction
+
+
+
+**Closed issues**
+
+Fix cran error
+Unit tests
+Eurostat open data portal?
+Conflicting value column name
+Rename grepEurostatTOC to search_eurostat_data?
+Way to clear a cache
+Startup message
+label_eurostat
+.env
+Base url
+URLS changed
+The bulk download URL will change
+Factor levels in Eurostat order enhancement
+reurostat
+The format of the time column in the get_eurostat output enhancement
+get_eurostat: separate_{tidyr} with convert = TRUE converts T to TRUE instead of TOTAL bug
+contact email for eurostat
+Implement cache
+getEurostatDictionary fails to read "table_dic" properly
+UTF8 encoding problems with statfi data in Windows 
+
+**Open issues**
+
+Datasets with mixed time format get confused dates bug
+Use read_tsv from readr instead of read.table enhancement
+Cache file should record time_format argument on the name enhancement
+get_eurostat
+Vignette TOC 
+
+
+
+
+
+### Installing package
+
+As package has been submitted to CRAN it can be installed with 
+
+```{r, eval=FALSE}
+install.packages("eurostat")
+```
+
 
 
 ### Working with regional level data from Eurostat
@@ -29,21 +81,20 @@ dat$cntry <- substr(dat$geo, 1,2)
 # Create the variable for proper countrynames using countryname-package
 library(countrycode)
 dat$countryname <- countrycode(dat$cntry, "iso2c", "country.name")
+# convert time column from Date to numeric
+dat$time <-  as.numeric(format(dat$time, format="%Y"))
+
+
 library(ggplot2)
-# convert time column from factor to numeric
-dat$time <- as.numeric(levels(dat$time))[dat$time]
-ggplot(dat, aes(x=time,y=value,
-group=geo,
-color=cntry)) +
-geom_point() + geom_line() +
-geom_text(data=merge(dat,
-aggregate(time ~ geo, dat, max),
-by=c("time","geo")),
-aes(x=time, y = value, label=geo),
-hjust=-0.5,vjust=-1,size=3) +
-coord_cartesian(xlim=c(2000:2014)) +
-labs(x="Year",
-y="Disposable income of private households (€ per year)")
+p <- ggplot(dat, aes(x=time,y=values,group=geo,color=cntry))
+p <- p + geom_point() + geom_line()
+p <- p + geom_text(data=merge(dat, aggregate(time ~ geo, dat, max), 
+                              by=c("time","geo")), 
+                   aes(x=time, y = values, label=geo), hjust=-0.5,vjust=-1,size=3)
+p <- p + coord_cartesian(xlim=c(2000:2014))
+p <- p + labs(x="Year", y="Disposable income of private households (€ per year)")
+p
+
 ```
 
 #### Adding region names
@@ -62,66 +113,77 @@ datl$cntry <- cntry
 # use countrycode-package to convert them to country names
 library(countrycode)
 datl$cntry <- countrycode(datl$cntry, "iso2c", "country.name")
-# plot the data using country facets
-library(ggplot2)
-# convert time column from factor to numeric
-datl$time <- as.numeric(levels(datl$time))[datl$time]
+
+# convert time column from Date to numeric
+datl$time <-  as.numeric(format(datl$time, format="%Y"))
 # subset the countries
 datl2 <- datl[datl$cntry %in% c("Austria","Belgium","Bulgaria","Czech Republic"),]
-ggplot(datl2,
-aes(x=time,y=value,
-group=geo)) +
-geom_point(color="grey") + geom_line(color="grey") +
-geom_text(data=merge(datl2,
-aggregate(time ~ geo, datl2, max),
-by=c("time","geo")),
-aes(x=time, y = value, label=geo),
-vjust=1,size=3) +
-coord_cartesian(xlim=c(2000:2014)) +
-facet_wrap(~cntry, scales = "free", ncol = 1) +
-labs(x="Year",
-y="Disposable income of private households (€ per year)")
+
+# plot the data using country facets
+library(ggplot2)
+p <- ggplot(datl2,aes(x=time,y=values,group=geo))
+p <- p + geom_point(color="grey") + geom_line(color="grey")
+p <- p + geom_text(data=merge(datl2, aggregate(time ~ geo, datl2, max), 
+                              by=c("time","geo")), 
+                   aes(x=time, y = values, label=geo), vjust=1,size=3)
+p <- p + coord_cartesian(xlim=c(2000:2014))
+p <- p + facet_wrap(~cntry, scales = "free", ncol = 1)
+p <- p + labs(x="Year",y="Disposable income of private households (€ per year)")
+p
 ```
 
 ## Mapping the household incomes at NUTS2 level
-In the following exercise we are plotting household income data from Eurostat on map from three different years. In addition to downloading and manipulating data from EUROSTAT, you will learn how to access and use spatial shapefiles of Europe published by EUROSTAT at [Administrative units / Statistical units](http://epp.eurostat.ec.europa.eu/portal/page/portal/gisco_Geographical_information_maps/popups/references/administrative_units_statistical_units_1).
+
+In the following exercise we are plotting household income data from Eurostat on map from three different years. In addition to downloading and manipulating data from EUROSTAT, you will learn how to access and use spatial shapefiles of Europe published by EUROSTAT at [Administrative units / Statistical units](http://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units).
+
 ### Retrieving and manipulating the data tabular data from Eurostat
+
 First, we shall retrieve the nuts2-level figures of variable `tgs00026` (Disposable income of private households by NUTS 2 regions) and manipulate the extract the information for creating `unit` and `geo` variables.
+
 ```{r eurostat_map0, warning=FALSE, message=FALSE}
 library(eurostat)
-df <- get_eurostat_raw("tgs00026")
-names(df) <- c("xx", 2011:2000)
-df$unit <- lapply(strsplit(as.character(df$xx), ","), "[", 2)
-df$geo <- lapply(strsplit(as.character(df$xx), ","), "[", 3)
+df <- get_eurostat("tgs00026")
+# convert time column from Date to numeric
+df$time <-  as.numeric(format(df$time, format="%Y"))
+# subset time to have data for 2000, 2005 and 2011
+df <- df[df$time %in% c(2000,2005,2011),]
+# convert the data into wide format
+library(tidyr)
+dw <- spread(df, time, values)
 ```
+
 ### Retrieving and manipulating the spatial data from GISCO
+
 Second, we will download the zipped shapefile in 1:60 million scale from year 2010 and subset it at the level of NUTS2.
+
 ```{r eurostat_map1, warning=FALSE, message=FALSE}
 # Load the GISCO shapefile
-download.file("http://epp.eurostat.ec.europa.eu/cache/GISCO/geodatafiles/NUTS_2010_60M_SH.zip",
-destfile="NUTS_2010_60M_SH.zip")
+download.file("http://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/NUTS_2010_60M_SH.zip", destfile="NUTS_2010_60M_SH.zip")
 # unzip
 unzip("NUTS_2010_60M_SH.zip")
 library(rgdal)
 # read into SpatialPolygonsDataFrame
-map <- readOGR(dsn = "./NUTS_2010_60M_SH/data", layer = "NUTS_RG_60M_2010")
+map <- readOGR(dsn = "./NUTS_2010_60M_SH/NUTS_2010_60M_SH/data", layer = "NUTS_RG_60M_2010")
 # subset the spatialpolygondataframe at NUTS2-level
 map_nuts2 <- subset(map, STAT_LEVL_ == 2)
 ```
+
 ### Merge the tabular data with spatial data into single SpatialPolygonDataFrame
+
 Third, we will make the both datas of same lenght, give then identical rownames and then merge the tabular data with the spatial data.
+
 ```{r eurostat_map2, warning=FALSE, message=FALSE}
 # dim show how many regions are in the spatialpolygondataframe
 dim(map_nuts2)
 # dim show how many regions are in the data.frame
-dim(df)
+dim(dw)
 # Spatial dataframe has 467 rows and attribute data 275.
 # We need to make attribute data to have similar number of rows
 NUTS_ID <- as.character(map_nuts2$NUTS_ID)
 VarX <- rep(NA, 316)
 dat <- data.frame(NUTS_ID,VarX)
 # then we shall merge this with Eurostat data.frame
-dat2 <- merge(dat,df,by.x="NUTS_ID",by.y="geo", all.x=TRUE)
+dat2 <- merge(dat,dw,by.x="NUTS_ID",by.y="geo", all.x=TRUE)
 ## merge this manipulated attribute data with the spatialpolygondataframe
 ## rownames
 row.names(dat2) <- dat2$NUTS_ID
@@ -134,8 +196,11 @@ library(maptools)
 dat2$NUTS_ID <- NULL
 shape <- spCbind(map_nuts2, dat2)
 ```
+
 ### Fortify the shapefile into data.frame and ready for ggplot-plotting
+
 As we are using ggplot2-package for plotting, we have to fortify the `SpatialPolygonDataFrame` into regular `data.frame`-class. As we have income data from several years, we have to also melt the data into long format for plotting.
+
 ```{r eurostat_map3, warning=FALSE, message=FALSE}
 ## fortify spatialpolygondataframe into data.frame
 library(ggplot2)
@@ -148,53 +213,41 @@ map.df <- merge(map.points, shape, by = "id")
 #
 # (variable with numerical names got X-prefix during the spCbind-merge,
 # therefore the X-prefix in variable names)
-library(reshape2)
+library(tidyr)
 # lets convert unit variable (that is a list) into character
 map.df$unit <- as.character(map.df$unit)
-map.df.l <- melt(data = map.df,
-                 id.vars = c("id","long","lat","group","NUTS_ID"),
-                 measure.vars = c("X2000","X2001","X2002",
-                                  "X2003","X2004","X2005",
-                                  "X2006","X2007","X2008",
-                                  "X2009","X2010","X2011"))
+map.df.l <- gather(map.df, "year", "value", 15:17)
 # year variable (variable) is class string and type X20xx.
 # Lets remove the X and convert it to numerical
 library(stringr)
-map.df.l$variable <- str_replace_all(map.df.l$variable, "X","")
-map.df.l$variable <- factor(map.df.l$variable)
-map.df.l$variable <- as.numeric(levels(map.df.l$variable))[map.df.l$variable]
+map.df.l$year <- str_replace_all(map.df.l$year, "X","")
+map.df.l$year <- factor(map.df.l$year)
+map.df.l$year <- as.numeric(levels(map.df.l$year))[map.df.l$year]
 ```
+
 ### And finally the plot using ggplot2
+
 Map shows the distribution of *disposable income of private households* at NUTS2 level and the color coding is done so that middle of the scale (white color) is the median count from that particular year. **It is important to note that it is not the median income of European households, but the median of the NUTS2-level aggregates**
+
 ```{r eurostat_map4, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(scales)
-# lets choose only three years
-map.df.l <- map.df.l[map.df.l$variable == c(2000,2005,2011), ]
 # years for for loop
-years <- unique(map.df.l$variable)
+years <- unique(map.df.l$year)
+
 for (year in years) {
-median_in_data <- median(map.df.l[map.df.l$variable == year,]$value, na.rm = TRUE)
-print(ggplot(data=map.df.l[map.df.l$variable == year,],
-             aes(long,lat,group=group)) +
-        geom_polygon(aes(fill = value),
-                     colour="white",
-                     size=.2) +
-        geom_polygon(data = map.df.l, aes(long,lat),
-                     fill=NA,
-                     colour="white",
-                     size = 0.1) +
-        scale_fill_gradient2(low="#d8b365",
-                             high="#5ab4ac",
-                             midpoint=median_in_data) +
-        coord_map(project="orthographic", xlim=c(-22,34),
-                  ylim=c(35,70)) +
-        labs(title = paste0("Year ",
-                            year,
-                            ". Median of \n regional incomes (tgs00026) is ",
-                            median_in_data))
-      )
-}
+  
+  median_in_data <- median(map.df.l[map.df.l$year == year,]$value, na.rm = TRUE)
+  
+  p <- ggplot(data=map.df.l[map.df.l$year == year,], aes(long,lat,group=group))
+  p <- p + geom_polygon(aes(fill = value),colour="white",size=.2)
+  p <- p + geom_polygon(data = map.df.l, aes(long,lat),fill=NA,colour="white",size = 0.1)
+  p <- p + scale_fill_gradient2(low="#d8b365",high="#5ab4ac",midpoint=median_in_data)
+  p <- p + coord_map(project="orthographic", xlim=c(-22,34), ylim=c(35,70))
+  p <- p + labs(title = paste0("Year ",year,". Median of \n regional incomes (tgs00026) is ",median_in_data))
+  print(p)
+  }
+
 ```
 
 
