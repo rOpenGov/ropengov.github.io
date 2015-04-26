@@ -48,9 +48,27 @@ lapply(PACKAGES, require, character.only=T)
 
 In this exercise we use indicator [`tgs00026`](http://ec.europa.eu/eurostat/en/web/products-datasets/-/TGS00026), (*Disposable income of private households by NUTS 2 regions*) from Eurostat. Most indicators in Eurostat database are of *country-year* -type,  however, some indicators have data also at lower level of regional breakdown, as `tgs00026` at [NUTS2](http://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics)-level. (See more information on regional classification [here](http://ec.europa.eu/eurostat/ramon/nomenclatures/index.cfm?TargetUrl=DSP_GEN_DESC_VIEW_NOHDR&StrNom=NUTS_33&StrLanguageCode=EN)).
 
+## Searching and downloading data from Eurostat
+
+Though we have already picked the data for following demonstrations you can search the available variables using `search_eurostat`-function. Data for *tables* resides in *Datasets* that are in *folders*. You can specify in the function whether you want to look for *table*, *dataset* or a *folder*.
+
+```{r}
+results <- search_eurostat("disposable income", type = "dataset")
+# print the first 6 rows
+kable(head(results))
+```
+
+Or you can also download the whole table of contents of the database with `get_eurostat_toc`-function. In both cases the *values* in column `code` should be used to download a selected dataset.
+
+```{r}
+toc <- get_eurostat_toc()
+# print the first 6 rows
+kable(head(toc))
+```
+
 ## Downloading and plotting time-series data at the NUTS2 regional level
 
-First we download the data and convert the time column into numeric format.
+However, we are interested in the disposable household income and first we download the data and convert the time column into numeric format.
 
 ```{r eurostat_region_data, warning=FALSE, message=FALSE, echo=TRUE}
 library(eurostat)
@@ -310,12 +328,17 @@ for (year in years) {
 }
 ```
 
-We are done! That was a small exercise on how to use the main functions in `eurostat`-package. Hope you find the package useful in your work. All contributions are warmly welcome at: <https://github.com/ropengov/eurostat>
+We are done! That was a small exercise on how to use the main functions in `eurostat`-package. Hope you find the package useful in your work. All contributions are warmly welcome at: <https://github.com/ropengov/eurostat>. And, when using the packages please cite accordingly.
+
+```{r}
+citation("eurostat")
+```
+
+
 
 
 ```{r}
 sessionInfo() 
-
 ```
 
 
