@@ -48,7 +48,7 @@ lapply(PACKAGES, require, character.only=T)
 
 In this exercise we use indicator [`tgs00026`](http://ec.europa.eu/eurostat/en/web/products-datasets/-/TGS00026), (*Disposable income of private households by NUTS 2 regions*) from Eurostat. Most indicators in Eurostat database are of *country-year* -type,  however, some indicators have data also at lower level of regional breakdown, as `tgs00026` at [NUTS2](http://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics)-level. (See more information on regional classification [here](http://ec.europa.eu/eurostat/ramon/nomenclatures/index.cfm?TargetUrl=DSP_GEN_DESC_VIEW_NOHDR&StrNom=NUTS_33&StrLanguageCode=EN)).
 
-## Time-series at the regional level
+## Downloading and plotting time-series data at the NUTS2 regional level
 
 First we download the data and convert the time column into numeric format.
 
@@ -90,9 +90,9 @@ p <- p + guides(color = guide_legend(title = "Country",
 p
 ```
 
-### Labelling the data using function
+### Labelling the data
 
-Function `label_eurostat` provides a straighforward way to convert the codes in data into more meaningful labels. `label_eurostat` requires data be in default format with no added columns. 
+Function `label_eurostat` provides a straighforward way to convert the codes in data into more meaningful labels. `label_eurostat` requires data be in "default format"" with no added columns. 
 
 ```{r}
 #First, remove the cntry and countrycode columns that were added manually
@@ -144,7 +144,7 @@ lapply(PACKAGES, require, character.only=T)
 ```
 
 
-### Retrieving and manipulating the data tabular data from Eurostat
+### Downloading and manipulating the tabular data
 
 First, we shall retrieve the nuts2-level figures of variable `tgs00026` (Disposable income of private households by NUTS 2 regions) and manipulate the extract the information for creating `unit` and `geo` variables.
 
@@ -160,7 +160,7 @@ library(tidyr)
 dw <- spread(df, time, values)
 ```
 
-### Retrieving and manipulating the spatial
+### Downloading and manipulating the spatial data
 
 Second, we will download the zipped shapefile in 1:60 million scale from year 2010 and subset it at the level of NUTS2.
 
@@ -176,7 +176,7 @@ map <- readOGR(dsn = "./NUTS_2010_60M_SH/NUTS_2010_60M_SH/data", layer = "NUTS_R
 map_nuts2 <- subset(map, STAT_LEVL_ == 2)
 ```
 
-### Merge the tabular data with spatial data into single SpatialPolygonDataFrame
+### Joining tabular data with spatial data
 
 Third, we will make the both datas of same lenght, give then identical rownames and then merge the tabular data with the spatial data.
 
@@ -205,7 +205,7 @@ dat2$NUTS_ID <- NULL
 shape <- spCbind(map_nuts2, dat2)
 ```
 
-### Fortify the shapefile into data.frame and ready for ggplot2-plotting
+### Preparing the data for ggplot2-plotting
 
 As we are using ggplot2-package for plotting, we have to fortify the `SpatialPolygonDataFrame` into regular `data.frame`-class. As we have income data from several years, we have to also `gather` the data into long format for plotting.
 
@@ -233,7 +233,7 @@ map.df.l$year <- factor(map.df.l$year)
 map.df.l$year <- as.numeric(levels(map.df.l$year))[map.df.l$year]
 ```
 
-### And finally the plot using ggplot2
+### Plotting the maps using ggplot2
 
 Breaks in the map are set at equal intervals between yearly regional maximun and minimun values.
 
