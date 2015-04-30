@@ -1,10 +1,10 @@
 ---
-title: "Search, download and manipulate Eurostat data with eurostat-package"
+title: "Searching, downloading and manipulating Eurostat data with R"
 author:
   image: markus.jpg
   name: Markus Kainu
-date: "2015-04-25 12:53:45"
-excerpt: New package submitted for CRAN
+date: "2015-05-01 12:53:45"
+excerpt: New package eurostat released in CRAN
 layout: post
 draft: false
 categories: general
@@ -19,13 +19,13 @@ opts_chunk$set(list(echo=TRUE,eval=TRUE,cache=TRUE,warning=FALSE,message=FALSE,f
 
 ## Introduction
 
-We have recently submitted a new package `eurostat` for [CRAN](http://cran.r-project.org/). To install the package:
+We have published a new package `eurostat` in [CRAN](http://cran.r-project.org/). To install the package in R, use:
 
 ```{r, eval=FALSE}
 install.packages("eurostat")
 ```
 
-Eurostat package is based on [SmarterPoland](http://cran.r-project.org/web/packages/SmarterPoland/index.html)-package, which functions have been revised, renamed and complemented with few new functions. eurostat-package has the following functions:
+The eurostat package is based on the [SmarterPoland](http://cran.r-project.org/web/packages/SmarterPoland/index.html) package, which was revised and expanded with new functionality. The new eurostat package includes the following functions:
 
 
 ```{r, echo=TRUE}
@@ -33,7 +33,7 @@ kable(as.data.frame(ls("package:eurostat")))
 ```
 
 
-This blog post will walk you through the basic functionalities of the package. To reproduce the examples, please run the following code to install the required packages.
+This blog post will walk you through the basic functionalities of the package. To reproduce the examples, run the following code to install the required dependencies.
 
 
 ```{r, eval=FALSE, echo=TRUE}
@@ -110,17 +110,22 @@ p
 
 ### Labelling the data
 
-Function `label_eurostat` provides a straighforward way to convert the codes in data into more meaningful labels. `label_eurostat` requires data be in "default format"" with no added columns. 
+Function `label_eurostat` provides a straighforward way to convert the codes in data into more meaningful labels. The `label_eurostat` function requires that the data is in the "default format" with no added columns. First, check unlabeled example data:
 
-```{r}
-#First, remove the cntry and countrycode columns that were added manually
+```{r labeling}
+# First, remove the cntry and countrycode columns that were added manually
 cntry_cols <- dat[ , names(dat) %in% c("cntry","countryname")]
 dat <- dat[ , !names(dat) %in% c("cntry","countryname")]
+# Unlabeled data
+kable(head(dat))
+```
+
+Labeling the data based on definitions from dictionary:
+
+```{r labeling2}
 # apply the definitions from dictionary
 datl <- label_eurostat(dat)
-# Unlabelled data
-kable(head(dat))
-# Labelled data
+# Labeled data
 kable(head(datl))
 # Bind the country name columns back to the labelled data 
 datl2 <- cbind(datl,cntry_cols)
@@ -223,7 +228,7 @@ dat2$NUTS_ID <- NULL
 shape <- spCbind(map_nuts2, dat2)
 ```
 
-### Preparing the data for ggplot2-plotting
+### Preparing the data for ggplot2 visualization
 
 As we are using ggplot2-package for plotting, we have to fortify the `SpatialPolygonDataFrame` into regular `data.frame`-class. As we have income data from several years, we have to also `gather` the data into long format for plotting.
 
@@ -328,7 +333,7 @@ for (year in years) {
 }
 ```
 
-We are done! That was a small exercise on how to use the main functions in `eurostat`-package. Hope you find the package useful in your work. All contributions are warmly welcome at: <https://github.com/ropengov/eurostat>. And, when using the packages please cite accordingly.
+We are done! That was a small exercise on how to use the main functions in the `eurostat`-package. We hope you find the package useful! All suggestions, bug reports, and contributions are warmly welcome at: <https://github.com/ropengov/eurostat>. When using the packages, please cite accordingly:
 
 ```{r}
 citation("eurostat")

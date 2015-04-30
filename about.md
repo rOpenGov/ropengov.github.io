@@ -5,9 +5,11 @@ layout: page
 About rOpenGov
 ==============
 
-[rOpenGov](http://ropengov.github.io) is a community-driven ecosystem of [R](http://cran.r-project.org/) packages for open government data and computational social sciences.
+[rOpenGov](http://ropengov.github.io) is an ecosystem of [R](http://cran.r-project.org/) packages focused on computational social sciences and digital humanities.
 
-More specifically, rOpenGov community is a group of independent package developers working with and/or interested in open goverment data analytics. rOpenGov acts as a loose umbrella for independent [projects]({{ site.url }}/projects) dedicated to open data streams relevant for computational social sciences and providing R-bases tools to access and analyze these information sources. Project was officially launched in 2013 and is maintained by a core team. Currently we are finishing up project infrastructure and actively encourage for [new contributions]({{ site.url }}/contribute).
+We are a community of independent package developers working with and/or interested in open goverment data analytics and related topics. The [projects]({{ site.url }}/projects) provide R tools to access and analyze these information sources. 
+
+Project was officially launched in 2013 and is maintained by a core team. Currently we are finishing up project infrastructure and actively encourage for [new contributions]({{ site.url }}/contribute).
 
 Rapidly emerging governmental and other open data streams provide new opportunities for social sciences, data journalism, and citizen participation across the globe. So far - however - computational tools dealing with these resources have mostly been lacking. We aim at building a scalable software ecosystem which has potential to revolutionize the field. We hope to build on lessons learned from similar initiatives in other fields such as [Bioconductor](http://www.bioconductor.org) and [rOpenSci](http://ropensci.org).
 
