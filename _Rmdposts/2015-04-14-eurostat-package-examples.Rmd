@@ -7,7 +7,7 @@ date: "2015-05-01 12:53:45"
 excerpt: New package eurostat released in CRAN
 layout: post
 draft: false
-categories: general
+categories: R
 ---
 
  
