@@ -29,25 +29,26 @@ The eurostat package is based on the [SmarterPoland](http://cran.r-project.org/w
 
 {% highlight r %}
 library(eurostat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(eurostat): there is no package called 'eurostat'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 kable(as.data.frame(ls("package:eurostat")))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in as.environment(pos): no item called "package:eurostat" on the search list
-{% endhighlight %}
+|ls("package:eurostat") |
+|:----------------------|
+|clean_eurostat_cache   |
+|eurotime2date          |
+|eurotime2num           |
+|get_eurostat           |
+|get_eurostat_dic       |
+|getEurostatDictionary  |
+|get_eurostat_toc       |
+|getEurostatTOC         |
+|grepEurostatTOC        |
+|label_eurostat         |
+|label_eurostat_tables  |
+|label_eurostat_vars    |
+|search_eurostat        |
 
 
 This blog post will walk you through the basic functionalities of the package. To reproduce the examples, run the following code to install the required dependencies.
@@ -73,52 +74,38 @@ Though we have already picked the data for following demonstrations you can sear
 
 {% highlight r %}
 results <- search_eurostat("disposable income", type = "dataset")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "search_eurostat"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # print the first 6 rows
 kable(head(results))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in head(results): object 'results' not found
-{% endhighlight %}
+|     |title                                                                                                               |code        |type    |last.update.of.data |last.table.structure.change |data.start |data.end |values |
+|:----|:-------------------------------------------------------------------------------------------------------------------|:-----------|:-------|:-------------------|:---------------------------|:----------|:--------|:------|
+|1820 |Share of housing cost in disposable income by level of activity limitation, sex and age                             |hlth_dhc050 |dataset |16.10.2014          |                            |2005       |2012     |NA     |
+|3526 |Gini coefficient of equivalised disposable income (source: SILC)                                                    |ilc_di12    |dataset |12.03.2015          |16.02.2015                  |1995       |2014     |NA     |
+|3527 |Gini coefficient of equivalised disposable income before social transfers (pensions included in social transfers)   |ilc_di12b   |dataset |12.03.2015          |16.02.2015                  |2003       |2014     |NA     |
+|3528 |Gini coefficient of equivalised disposable income before social transfers (pensions excluded from social transfers) |ilc_di12c   |dataset |12.03.2015          |16.02.2015                  |2003       |2014     |NA     |
 
 Or you can also download the whole table of contents of the database with `get_eurostat_toc`-function. In both cases the *values* in column `code` should be used to download a selected dataset.
 
 
 {% highlight r %}
 toc <- get_eurostat_toc()
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "get_eurostat_toc"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # print the first 6 rows
 kable(head(toc))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in head(toc): object 'toc' not found
-{% endhighlight %}
+|title                                                    |code      |type    |last.update.of.data |last.table.structure.change |data.start |data.end |values |
+|:--------------------------------------------------------|:---------|:-------|:-------------------|:---------------------------|:----------|:--------|:------|
+|Database by themes                                       |data      |folder  |                    |                            |           |         |NA     |
+|General and regional statistics                          |general   |folder  |                    |                            |           |         |NA     |
+|European and national indicators for short-term analysis |euroind   |folder  |                    |                            |           |         |NA     |
+|Business and consumer surveys (source: DG ECFIN)         |ei_bcs    |folder  |                    |                            |           |         |NA     |
+|Consumer surveys (source: DG ECFIN)                      |ei_bcs_cs |folder  |                    |                            |           |         |NA     |
+|Consumers - monthly data                                 |ei_bsco_m |dataset |29.04.2015          |29.04.2015                  |1985M01    |2015M04  |NA     |
 
 ## Downloading and plotting time-series data at the NUTS2 regional level
 
@@ -127,102 +114,30 @@ However, we are interested in the disposable household income and first we downl
 
 {% highlight r %}
 library(eurostat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(eurostat): there is no package called 'eurostat'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Clean the cache first
 clean_eurostat_cache()
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "clean_eurostat_cache"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Download the income variable
 dat <- get_eurostat("tgs00026", time_format = "raw")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "get_eurostat"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Extract the information on country in question. (First two character in region string mark the country)
 dat$cntry <- substr(dat$geo, 1,2)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in substr(dat$geo, 1, 2): object 'dat' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Create the variable for proper countrynames using countryname-package
 library(countrycode)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(countrycode): there is no package called 'countrycode'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 dat$countryname <- countrycode(dat$cntry, "iso2c", "country.name")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "countrycode"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # convert time column from Date to numeric
 dat$time <- eurotime2num(dat$time)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "eurotime2num"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 kable(head(dat))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in head(dat): object 'dat' not found
-{% endhighlight %}
+|indic_na |unit     |geo  | time| values|cntry |countryname |
+|:--------|:--------|:----|----:|------:|:-----|:-----------|
+|B6N_U    |PPCS_HAB |AT11 | 2000|  13900|AT    |Austria     |
+|B6N_U    |PPCS_HAB |AT12 | 2000|  15600|AT    |Austria     |
+|B6N_U    |PPCS_HAB |AT13 | 2000|  17300|AT    |Austria     |
+|B6N_U    |PPCS_HAB |AT21 | 2000|  14100|AT    |Austria     |
+|B6N_U    |PPCS_HAB |AT22 | 2000|  14400|AT    |Austria     |
+|B6N_U    |PPCS_HAB |AT31 | 2000|  14900|AT    |Austria     |
 
 Then we plot the data at the regional level and color the lines using country names derived from [`countrycode`](http://cran.r-project.org/web/packages/countrycode/index.html)-package.
 
@@ -231,93 +146,23 @@ Then we plot the data at the regional level and color the lines using country na
 {% highlight r %}
 library(ggplot2)
 p <- ggplot(dat, aes(x=time,y=values,group=geo,color=countryname))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in ggplot(dat, aes(x = time, y = values, group = geo, color = countryname)): object 'dat' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + geom_point() + geom_line()
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Add the region names at the end of each line
 p <- p + geom_text(data=merge(dat, aggregate(time ~ geo, dat, max), 
                               by=c("time","geo")), 
                    aes(x=time, y = values, label=geo), hjust=-0.5,vjust=-1,size=3)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + labs(x="Year", y="Disposable income of private households (€ per year)")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Place the legend with country names on top in three rows
 p <- p + theme(legend.direction = "horizontal", legend.position = "top")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + guides(color = guide_legend(title = "Country",
                                      title.position = "top", 
                                      title.hjust=.5,
                                      nrow=3,
                                      byrow=TRUE))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
+![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-7-1.png) 
 
 ### Labelling the data
 
@@ -327,38 +172,21 @@ Function `label_eurostat` provides a straighforward way to convert the codes in 
 {% highlight r %}
 # First, remove the cntry and countrycode columns that were added manually
 cntry_cols <- dat[ , names(dat) %in% c("cntry","countryname")]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'dat' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 dat <- dat[ , !names(dat) %in% c("cntry","countryname")]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'dat' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Unlabeled data
 kable(head(dat))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in head(dat): object 'dat' not found
-{% endhighlight %}
+|indic_na |unit     |geo  | time| values|
+|:--------|:--------|:----|----:|------:|
+|B6N_U    |PPCS_HAB |AT11 | 2000|  13900|
+|B6N_U    |PPCS_HAB |AT12 | 2000|  15600|
+|B6N_U    |PPCS_HAB |AT13 | 2000|  17300|
+|B6N_U    |PPCS_HAB |AT21 | 2000|  14100|
+|B6N_U    |PPCS_HAB |AT22 | 2000|  14400|
+|B6N_U    |PPCS_HAB |AT31 | 2000|  14900|
 
 Labeling the data based on definitions from dictionary:
 
@@ -366,26 +194,20 @@ Labeling the data based on definitions from dictionary:
 {% highlight r %}
 # apply the definitions from dictionary
 datl <- label_eurostat(dat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "label_eurostat"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Labeled data
 kable(head(datl))
 {% endhighlight %}
 
 
 
-{% highlight text %}
-## Error in head(datl): object 'datl' not found
-{% endhighlight %}
+|indic_na                      |unit                                                                |geo              | time| values|
+|:-----------------------------|:-------------------------------------------------------------------|:----------------|----:|------:|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Burgenland (AT)  | 2000|  13900|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Niederösterreich | 2000|  15600|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Wien             | 2000|  17300|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Kärnten          | 2000|  14100|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Steiermark       | 2000|  14400|
+|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Oberösterreich   | 2000|  14900|
 
 
 
@@ -394,114 +216,27 @@ kable(head(datl))
 datl2 <- cbind(datl,cntry_cols)
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in cbind(datl, cntry_cols): object 'datl' not found
-{% endhighlight %}
-
 For clarity, we plot first four countries in alphabetical order in their own facets with region names.
 
 
 {% highlight r %}
 # subset the first 4 countries in albhabetical order
 datl3 <- datl2[datl2$countryname %in% sort(unique(datl2$countryname))[1:4],]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'datl2' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # plot the data using country facets
 library(ggplot2)
 p <- ggplot(datl3,aes(x=time,y=values,group=geo))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in ggplot(datl3, aes(x = time, y = values, group = geo)): object 'datl3' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + geom_point(color="grey") + geom_line(color="grey")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + geom_text(data=merge(datl3, aggregate(time ~ geo, datl3, max), 
                               by=c("time","geo")), 
                    aes(x=time, y = values, label=geo), vjust=1,size=3)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + coord_cartesian(xlim=c(min(datl2$time):max(datl2$time)+3))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + facet_wrap(~countryname, scales = "free", ncol = 1)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p <- p + labs(title=paste0(unique(datl3$indic_na),"\n(",unique(datl3$unit),")"),
                 x="Year",y="Disposable income of private households (€ per year)")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 p
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'p' not found
-{% endhighlight %}
+![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-8-1.png) 
 
 ## Mapping the household incomes at NUTS2 level
 
@@ -528,64 +263,14 @@ First, we shall retrieve the nuts2-level figures of variable `tgs00026` (Disposa
 
 {% highlight r %}
 library(eurostat)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in library(eurostat): there is no package called 'eurostat'
-{% endhighlight %}
-
-
-
-{% highlight r %}
 df <- get_eurostat("tgs00026", time_format = "raw")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "get_eurostat"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # convert time column from Date to numeric
 df$time <- eurotime2num(df$time)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "eurotime2num"
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # subset time to have data for 2000, 2005 and 2011
 df <- df[df$time %in% c(2000,2005,2011),]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in df$time: object of type 'closure' is not subsettable
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # spread the data into wide format
 library(tidyr)
 dw <- spread(df, time, values)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in UseMethod("spread_"): no applicable method for 'spread_' applied to an object of class "function"
 {% endhighlight %}
 
 ### Downloading and manipulating the spatial data
@@ -645,7 +330,7 @@ dim(dw)
 
 
 {% highlight text %}
-## Error in eval(expr, envir, enclos): object 'dw' not found
+## [1] 275   6
 {% endhighlight %}
 
 
@@ -658,67 +343,17 @@ VarX <- rep(NA, 316)
 dat <- data.frame(NUTS_ID,VarX)
 # then we shall merge this with Eurostat data.frame
 dat2 <- merge(dat,dw,by.x="NUTS_ID",by.y="geo", all.x=TRUE)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in merge(dat, dw, by.x = "NUTS_ID", by.y = "geo", all.x = TRUE): error in evaluating the argument 'y' in selecting a method for function 'merge': Error: object 'dw' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 ## merge this manipulated attribute data with the spatialpolygondataframe
 ## rownames
 row.names(dat2) <- dat2$NUTS_ID
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'dat2' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 row.names(map_nuts2) <- as.character(map_nuts2$NUTS_ID)
 ## order data
 dat2 <- dat2[order(row.names(dat2)), ]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'dat2' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map_nuts2 <- map_nuts2[order(row.names(map_nuts2)), ]
 ## join
 library(maptools)
 dat2$NUTS_ID <- NULL
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in dat2$NUTS_ID <- NULL: object 'dat2' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 shape <- spCbind(map_nuts2, dat2)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in spCbind(map_nuts2, dat2): error in evaluating the argument 'x' in selecting a method for function 'spCbind': Error: object 'dat2' not found
 {% endhighlight %}
 
 ### Preparing the data for ggplot2 visualization
@@ -731,41 +366,8 @@ As we are using ggplot2-package for plotting, we have to fortify the `SpatialPol
 library(ggplot2)
 library(rgeos)
 shape$id <- rownames(shape@data)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in rownames(shape@data): object 'shape' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map.points <- fortify(shape, region = "id")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in fortify(shape, region = "id"): object 'shape' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map.df <- merge(map.points, shape, by = "id")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in merge(map.points, shape, by = "id"): error in evaluating the argument 'x' in selecting a method for function 'merge': Error: object 'map.points' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # As we want to plot map faceted by years from 2003 to 2011
 # we have to melt it into long format
 
@@ -774,63 +376,13 @@ map.df <- merge(map.points, shape, by = "id")
 library(tidyr)
 # lets convert unit variable (that is a list) into character
 map.df$unit <- as.character(map.df$unit)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'map.df' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map.df.l <- gather(map.df, "year", "value", 15:17)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in setNames(as.list(seq_along(vars)), vars): object 'map.df' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # year variable (variable) is class string and type X20xx.
 # Lets remove the X and convert it to numerical
 library(stringr)
 map.df.l$year <- str_replace_all(map.df.l$year, "X","")
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in check_string(string): object 'map.df.l' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map.df.l$year <- factor(map.df.l$year)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in factor(map.df.l$year): object 'map.df.l' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 map.df.l$year <- as.numeric(levels(map.df.l$year))[map.df.l$year]
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in levels(map.df.l$year): object 'map.df.l' not found
 {% endhighlight %}
 
 ### Plotting the maps using ggplot2
@@ -873,17 +425,7 @@ categories <- function(x, cat=5) {
 
 # years for for loop
 years <- unique(map.df.l$year)
-{% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in unique(map.df.l$year): object 'map.df.l' not found
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # Loop over the three years
 for (year in years) {
   
@@ -893,7 +435,7 @@ for (year in years) {
   plot_map$value_cat <- categories(plot_map$value)
   
   p <- ggplot(data=plot_map, aes(long,lat,group=group))
-  p <- p + geom_polygon(data = map.df.l, aes(long,lat),fill=NA,colour="white",size = .7)
+  p <- p + geom_polygon(data = map.df.l, aes(long,lat),fill=NA,colour="white",size = 1)
   p <- p + geom_polygon(aes(fill = value_cat),colour="white",size=.2)
   p <- p + scale_fill_manual(values=c("Dim Grey","#d7191c","#fdae61","#ffffbf","#a6d96a","#1a9641")) 
   p <- p + coord_map(project="orthographic", xlim=c(-22,34), ylim=c(35,70))
@@ -921,11 +463,7 @@ for (year in years) {
 }
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): object 'years' not found
-{% endhighlight %}
+![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-1.png) ![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-2.png) ![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-3.png) 
 
 We are done! That was a small exercise on how to use the main functions in the `eurostat`-package. We hope you find the package useful! All suggestions, bug reports, and contributions are warmly welcome at: <https://github.com/ropengov/eurostat>. When using the packages, please cite accordingly:
 
@@ -937,7 +475,21 @@ citation("eurostat")
 
 
 {% highlight text %}
-## Error in citation("eurostat"): package 'eurostat' not found
+## 
+## Kindly cite the eurostat R package as follows:
+## 
+##   (C) Leo Lahti, Przemyslaw Biecek, Janne Huovari and Markus Kainu
+##   2014-2015. eurostat R package URL:
+##   https://github.com/rOpenGov/eurostat
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Misc{,
+##     title = {eurostat R package},
+##     author = {Leo Lahti and Przemyslaw Biecek and Janne Huovari and Markus Kainu},
+##     year = {2014},
+##     url = {https://github.com/rOpenGov/eurostat},
+##   }
 {% endhighlight %}
 
 
@@ -952,13 +504,13 @@ sessionInfo()
 
 {% highlight text %}
 ## R version 3.2.0 (2015-04-16)
-## Platform: x86_64-unknown-linux-gnu (64-bit)
-## Running under: Ubuntu 14.10
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 14.04.2 LTS
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_GB.UTF-8   
 ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
@@ -968,17 +520,18 @@ sessionInfo()
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] scales_0.2.4    stringr_0.6.2   rgeos_0.3-8     maptools_0.8-34
-## [5] rgdal_0.9-2     sp_1.0-17       tidyr_0.2.0     ggplot2_1.0.1  
-## [9] knitr_1.9      
+##  [1] dplyr_0.4.1      mapproj_1.2-2    maps_2.3-9       scales_0.2.4    
+##  [5] stringr_1.0.0    rgeos_0.3-8      maptools_0.8-36  rgdal_0.9-2     
+##  [9] sp_1.1-0         tidyr_0.2.0      ggplot2_1.0.1    countrycode_0.18
+## [13] eurostat_1.0.16  knitr_1.10      
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.11.5      magrittr_1.5     MASS_7.3-40      munsell_0.4.2   
-##  [5] colorspace_1.2-6 lattice_0.20-31  plyr_1.8.2       dplyr_0.4.1     
+##  [1] Rcpp_0.11.6      magrittr_1.5     MASS_7.3-39      munsell_0.4.2   
+##  [5] colorspace_1.2-6 lattice_0.20-31  highr_0.5        plyr_1.8.2      
 ##  [9] tools_3.2.0      parallel_3.2.0   gtable_0.1.2     DBI_0.3.1       
-## [13] lazyeval_0.1.10  digest_0.6.8     assertthat_0.1   reshape2_1.4.1  
-## [17] formatR_1.2      codetools_0.2-11 evaluate_0.7     foreign_0.8-63  
-## [21] proto_0.3-10
+## [13] lazyeval_0.1.10  assertthat_0.1   digest_0.6.8     reshape2_1.4.1  
+## [17] formatR_1.2      codetools_0.2-11 evaluate_0.7     labeling_0.3    
+## [21] stringi_0.4-1    foreign_0.8-63   proto_0.3-10
 {% endhighlight %}
 
 

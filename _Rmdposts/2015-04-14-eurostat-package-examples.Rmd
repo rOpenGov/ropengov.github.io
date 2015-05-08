@@ -306,7 +306,7 @@ for (year in years) {
   plot_map$value_cat <- categories(plot_map$value)
   
   p <- ggplot(data=plot_map, aes(long,lat,group=group))
-  p <- p + geom_polygon(data = map.df.l, aes(long,lat),fill=NA,colour="white",size = .7)
+  p <- p + geom_polygon(data = map.df.l, aes(long,lat),fill=NA,colour="white",size = 1)
   p <- p + geom_polygon(aes(fill = value_cat),colour="white",size=.2)
   p <- p + scale_fill_manual(values=c("Dim Grey","#d7191c","#fdae61","#ffffbf","#a6d96a","#1a9641")) 
   p <- p + coord_map(project="orthographic", xlim=c(-22,34), ylim=c(35,70))
