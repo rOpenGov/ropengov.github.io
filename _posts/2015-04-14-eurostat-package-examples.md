@@ -28,6 +28,18 @@ The eurostat package is based on the [SmarterPoland](http://cran.r-project.org/w
 
 
 {% highlight r %}
+library(eurostat)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in library(eurostat): there is no package called 'eurostat'
+{% endhighlight %}
+
+
+
+{% highlight r %}
 kable(as.data.frame(ls("package:eurostat")))
 {% endhighlight %}
 

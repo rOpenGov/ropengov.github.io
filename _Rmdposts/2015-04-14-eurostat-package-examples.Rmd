@@ -29,6 +29,7 @@ The eurostat package is based on the [SmarterPoland](http://cran.r-project.org/w
 
 
 ```{r, echo=TRUE}
+library(eurostat)
 kable(as.data.frame(ls("package:eurostat")))
 ```
 
