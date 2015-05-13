@@ -6,7 +6,7 @@ inc:
   about_image:  open-gov-cover.jpg
   logo:         logo.png
 
-  # Fields for feed.links.xml
+  # Fields for feed.xml
   name:		rOpenGov
   description:  "rOpenGov blog"  		
   url:		ropengov.github.io
@@ -37,13 +37,10 @@ inc:
     gplus:      true
     hn:         true
 
-
- # Analytics     
+  # Analytics     
   analytics:
     google: 
-      # eg. 'UA-123-12'
       id:       'UA-44262937-1'
-
 
   # Google Fonts
   # eg. 'Droid+Sans:400,700|Droid+Serif:400,700'
@@ -132,3 +129,4 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
+
