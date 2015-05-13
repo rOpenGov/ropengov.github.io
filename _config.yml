@@ -1,10 +1,15 @@
 inc:
   # Blog Information
   title:        "rOpenGov"
-  subtitle:     "R Ecosystem for Open Government Data and Computational Social Science"
+  subtitle:     "Algorithms for Computational Social Science and Digital Humanities"
   cover_image:  open-gov-cover.jpg
   about_image:  open-gov-cover.jpg
   logo:         logo.png
+
+  # Fields for feed.links.xml
+  name:		rOpenGov
+  description:  "rOpenGov blog"  		
+  url:		ropengov.github.io
 
   # Company information
   company:      rOpenGov
