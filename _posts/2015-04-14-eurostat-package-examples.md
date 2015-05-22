@@ -82,10 +82,10 @@ kable(head(results))
 
 |     |title                                                                                                               |code        |type    |last.update.of.data |last.table.structure.change |data.start |data.end |values |
 |:----|:-------------------------------------------------------------------------------------------------------------------|:-----------|:-------|:-------------------|:---------------------------|:----------|:--------|:------|
-|1820 |Share of housing cost in disposable income by level of activity limitation, sex and age                             |hlth_dhc050 |dataset |16.10.2014          |                            |2005       |2012     |NA     |
-|3526 |Gini coefficient of equivalised disposable income (source: SILC)                                                    |ilc_di12    |dataset |12.03.2015          |16.02.2015                  |1995       |2014     |NA     |
-|3527 |Gini coefficient of equivalised disposable income before social transfers (pensions included in social transfers)   |ilc_di12b   |dataset |12.03.2015          |16.02.2015                  |2003       |2014     |NA     |
-|3528 |Gini coefficient of equivalised disposable income before social transfers (pensions excluded from social transfers) |ilc_di12c   |dataset |12.03.2015          |16.02.2015                  |2003       |2014     |NA     |
+|1857 |Share of housing cost in disposable income by level of activity limitation, sex and age                             |hlth_dhc050 |dataset |16.10.2014          |                            |2005       |2012     |NA     |
+|3563 |Gini coefficient of equivalised disposable income (source: SILC)                                                    |ilc_di12    |dataset |18.05.2015          |16.02.2015                  |1995       |2014     |NA     |
+|3564 |Gini coefficient of equivalised disposable income before social transfers (pensions included in social transfers)   |ilc_di12b   |dataset |18.05.2015          |16.02.2015                  |2003       |2014     |NA     |
+|3565 |Gini coefficient of equivalised disposable income before social transfers (pensions excluded from social transfers) |ilc_di12c   |dataset |18.05.2015          |16.02.2015                  |2003       |2014     |NA     |
 
 Or you can also download the whole table of contents of the database with `get_eurostat_toc`-function. In both cases the *values* in column `code` should be used to download a selected dataset.
 
@@ -520,17 +520,17 @@ sessionInfo()
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] dplyr_0.4.1      mapproj_1.2-2    maps_2.3-9       scales_0.2.4    
-##  [5] stringr_1.0.0    rgeos_0.3-8      maptools_0.8-36  rgdal_0.9-2     
-##  [9] sp_1.1-0         tidyr_0.2.0      ggplot2_1.0.1    countrycode_0.18
-## [13] eurostat_1.0.16  knitr_1.10      
+##  [1] mapproj_1.2-2    maps_2.3-9       scales_0.2.4     stringr_1.0.0   
+##  [5] rgeos_0.3-8      maptools_0.8-36  rgdal_0.9-2      sp_1.1-0        
+##  [9] tidyr_0.2.0      ggplot2_1.0.1    countrycode_0.18 eurostat_1.0.16 
+## [13] knitr_1.10.5    
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.11.6      magrittr_1.5     MASS_7.3-39      munsell_0.4.2   
-##  [5] colorspace_1.2-6 lattice_0.20-31  highr_0.5        plyr_1.8.2      
-##  [9] tools_3.2.0      parallel_3.2.0   gtable_0.1.2     DBI_0.3.1       
-## [13] lazyeval_0.1.10  assertthat_0.1   digest_0.6.8     reshape2_1.4.1  
-## [17] formatR_1.2      codetools_0.2-11 evaluate_0.7     labeling_0.3    
+##  [5] lattice_0.20-31  colorspace_1.2-6 highr_0.5        plyr_1.8.2      
+##  [9] dplyr_0.4.1      tools_3.2.0      parallel_3.2.0   gtable_0.1.2    
+## [13] DBI_0.3.1        lazyeval_0.1.10  digest_0.6.8     assertthat_0.1  
+## [17] reshape2_1.4.1   formatR_1.2      evaluate_0.7     labeling_0.3    
 ## [21] stringi_0.4-1    foreign_0.8-63   proto_0.3-10
 {% endhighlight %}
 
