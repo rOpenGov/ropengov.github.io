@@ -1,0 +1,73 @@
+---
+title: "Reproducible posters with R, LaTeX, tikz and Sweave"
+author:
+  image: leo.jpg
+  name: Leo Lahti and Juuso Parkkinen
+date: "2015-06-07 12:00:00"
+excerpt: ICCSS 2015
+layout: post
+draft: false
+categories: R
+---
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(list(echo=TRUE,eval=TRUE,cache=FALSE,warning=FALSE,message=FALSE,fig.height=10,fig.width=10))
+```
+
+rOpenGov is all about reproducible research, so preparing a
+**reproducible poster** became our mission after having the chance to
+present at [International Conference on Computational Social Science
+(ICCSS 2015)](http://iccss2015.eu/index.html) in Helsinki, June 8-11,
+2015 (poster 36 in Monday session 15:30-17:00).
+
+We blended R code and output with the standard poster contents. The
+poster sources download data with our [eurostat R
+package](http://github.com/rOpenGov/eurostat) and automatically
+generates the final figures and the overall layout.
+
+
+Whereas several ready-made layouts, such as
+[baposter](http://www.brian-amberg.de/uni/poster/),
+[beamerposter](https://github.com/deselaers/latex-beamerposter),
+[tikzposter](http://www.ctan.org/pkg/tikzposter),
+[latextemplates.com](www.latextemplates.com/cat/conference-posters)
+and [other
+options](http://tex.stackexchange.com/questions/341/how-to-create-posters-using-latex)
+were available and could be useful for fast poster design, they also
+limit the available options as the graphical elements are laid out as
+tightly defined text boxes. This is not suitable for all purposes, and
+mixing ready-made styles with free design is potentially confusing. I
+also bumped into some problems in incorporating R code with some of
+these templates.
+
+Therefore we ended up using the plain 
+[LaTeX](http://www.latex-project.org/)/[tikz](http://sourceforge.net/projects/pgf/)
+combination which allows reproducible design of arbitrary poster
+layouts and schematic figures, as well as automated numbering of
+figures and references. The
+[R](http://www.r-project.org)/[Sweave](https://www.statistik.lmu.de/~leisch/Sweave/)
+allows incorporation of R code and output (figures, tables, text). The
+[a0poster
+style](http://www.ctan.org/tex-archive/macros/latex/contrib/a0poster)
+provided appropriate font sizes and other LaTeX utilities for
+posters. If you are a frequent LaTeX user, we warmly recommend
+familiarizing with [tikz](http://www.texample.net/tikz/). For further
+details, see the [poster
+sources](https://github.com/rOpenGov/poster/blob/master/2015-ICCSS/poster.Rnw).
+
+
+To reproduce [the A0 poster
+(PDF)](https://github.com/rOpenGov/poster/blob/master/2015-ICCSS/poster.pdf),
+clone the [rOpenGov poster
+repository](https://github.com/rOpenGov/poster) and run the following
+commands in R:
+
+```{r, echo=TRUE, eval=FALSE}
+library(knitr)
+knit2pdf("poster/2015-ICCSS/poster.Rnw")
+```
+
+
+[jekyll-gh]: https://github.com/mojombo/jekyll
+[jekyll]:    http://jekyllrb.com
