@@ -11,6 +11,7 @@ About rOpenGov
 
 We are a community of independent package developers interested in open goverment data analytics and related topics. The project was initiated in 2010 and is maintained by a core team. A number of independent **package authors** have [contributed projects]({{ site.url }}/projects) that are actively maintained by their developers. Currently we are finishing up project infrastructure and welcome [new contributions]({{ site.url }}/contribute). For general support on individual packages, [get in touch with the community]({{ site.url }}/contribute). The **core team** maintains the infrastructure and actively contributes to package development. The core team members are [Leo Lahti](http://www.iki.fi/Leo.Lahti), [Juuso Parkkinen](http://ouzor.github.io/), [Joona Lehtomäki](https://github.com/jlehtoma), and [Markus Kainu](https://github.com/muuankarski).
 
+Check out [R-bloggers](http://www.r-bloggers.com/) for other cool blog posts on R analytics!
 
 ### Mission
 
