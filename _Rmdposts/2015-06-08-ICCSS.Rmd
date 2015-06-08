@@ -1,7 +1,7 @@
 ---
 title: "Reproducible posters with R, LaTeX, tikz and Sweave"
 author:
-  image: leo.jpg
+  image: 201506-poster.png
   name: Leo Lahti and Juuso Parkkinen
 date: "2015-06-07 12:00:00"
 excerpt: ICCSS 2015
