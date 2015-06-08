@@ -68,7 +68,7 @@ library(knitr)
 knit2pdf("poster/2015-ICCSS/poster.Rnw")
 ```
 
-![poster](/figs/201506-poster.png)
+![poster](/figs/2015-06-08-ICCSS/201506-poster.png)
 
 [jekyll-gh]: https://github.com/mojombo/jekyll
 [jekyll]:    http://jekyllrb.com
