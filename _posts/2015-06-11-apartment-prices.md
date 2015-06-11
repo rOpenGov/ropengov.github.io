@@ -1,15 +1,23 @@
 ---
-title:  "A hierarchical model of Finnish apartment prices"
+title: "A hierarchical model of Finnish apartment prices"
 author:
-  image: joona.jpg
   name: Janne Sinkkonen
-date: "2015-06-11 12:00:00"
+date: "2015-06-11 00:00:00"
 excerpt: Probabilistic programming approach to understand regional trends in apartment prices in Finland
 layout: post
 draft: false
 categories: R
 ---
 
+<!-- for latex/mathjax equations -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 Basing on open data from [Statistics Finland](http://www.stat.fi/index_en.html), we at [Reaktor](http://reaktor.com/datascience) modelled Finnish apartment prices and their trends, on the zip-code level, during 2005--2014.  Estimates from the model are available as an [interactive visualization](http://kannattaakokauppa.fi/#/en/).
 
@@ -64,7 +72,7 @@ Note that the model produces price and trend estimates even for areas with no ap
 
 ## Model
 
-Of the past sales, the model has yearly (geometric) average per location, and the associated number of sales, if these are not censored ($n<6$). The latter scales the variance of the mean as an estimator of the population mean. Population mean is here the hypothetical mean of all potential *apartment sales* on the areas. Of course all apartments are not sold at the same rate, so mean is biased towards prices of the apartments that are sold more often. 
+Of the past sales, the model has yearly (geometric) average per location, and the associated number of sales, if these are not censored ($$n<6$$). The latter scales the variance of the mean as an estimator of the population mean. Population mean is here the hypothetical mean of all potential *apartment sales* on the areas. Of course all apartments are not sold at the same rate, so mean is biased towards prices of the apartments that are sold more often. 
 
 Sparseness of the data is a problem especially for estimates of temporal price changes, and also for comparison of areas. Predictive covariates for the zip code areas are therefore valuable. A quite extensive set of demographic variables is available in the [Paavo data](http://www.stat.fi/tup/rajapintapalvelut/paavo.html), but of these the model so far has only the population density included. It is probably the most predictive of the covariates, although not necessarily causal from the economics point of view.
 
@@ -74,18 +82,21 @@ Temporal change of prices is as interesting as their overall level. The model co
 
 In total, there are three parameters on the zip code level affecting log-scale prices: price level, its trend, and change of trend. On the next geographic hierarchy level three other parameters appear: the influences of (logarithmic) population density on price, trend and its change. These six parameters, three plus their interactions with population density, appear also on upper hierarchy levels. On each hierarchy level, the model has multinormal priors for the three or six parameters, and hyperpriors for the variance and covariance of the multinormal distribution. The covariances bind different parameters together, so that for example price level helps the estimation of price trend, or the influence of population density. 
 
-In summary, the lowest level of the model for the log prices is
+In summary, the lowest level of the model for the log prices is  
+
 $$
 \log h_{it} = 
        \beta_{i1} + \beta_{i2} t + \beta_{i3} t^2 + \beta_{i’4}d_i + \beta_{i’5}d_i\,t + \beta_{i’6}d_i\,t^2, 
-$$
+$$  
+
 $$
 \log y_{it} \sim 
 \textrm{t}\,\left(\log h_{it}, \, \sqrt{\sigma^2_y + \frac{\sigma^2_w}{n_{it}}}, \, \nu\right)\,,
-$$
-where $i$ refers to the zip code area, $t$ is time, $\beta$ are coefficients specific to the zip code $i$, $i’$ is the first prefix hierarchy level of the zip code (population density parameters are constant within each $i’$-area), $t()$ is the t-distribution, $\sigma_y$ is standard deviation of the underlying (log) price levels over years, $\sigma_w$ standar deviation of the prices within the measurement unit (year $\times$ zip), and $\nu$ the degrees of freedom of the residual t-distribution. Note that the linear model is for log-scale prices. The complete model is best described  by the [source code](https://github.com/reaktor/Neliohinnat/blob/master/source/m4.stan). 
+$$  
 
-Estimate for $\nu$ is around 6.5, that is, residuals are with a bit heavier tails than normal. From the covariance parameters (*Omega* in the source) one sees that price level and trend correlate at the lowest level ($r$=0,28), as do trend change and price level ($r$=0,43). So price differences between areas have been growing during the last ten years, probably due to urbanisation, a global trend. 
+where $$i$$ refers to the zip code area, $$t$$ is time, $$\beta$$ are coefficients specific to the zip code $$i$$, $$i’$$ is the first prefix hierarchy level of the zip code (population density parameters are constant within each $$i’$$-area), $$t()$$ is the t-distribution, $$\sigma_y$$ is standard deviation of the underlying (log) price levels over years, $$\sigma_w$$ standar deviation of the prices within the measurement unit (year $$\times$$ zip), and $$\nu$$ the degrees of freedom of the residual t-distribution. Note that the linear model is for log-scale prices. The complete model is best described  by the [source code](https://github.com/reaktor/Neliohinnat/blob/master/source/m4.stan). 
+
+Estimate for $$\nu$$ is around 6.5, that is, residuals are with a bit heavier tails than normal. From the covariance parameters (*Omega* in the source) one sees that price level and trend correlate at the lowest level ($$r$$=0,28), as do trend change and price level ($$r$$=0,43). So price differences between areas have been growing during the last ten years, probably due to urbanisation, a global trend. 
 
 Plotting area-wise prices and its changes against population density, one sees the expected correlation: remote areas are loosing in the sense of price, trend *and* trend change. 
 
