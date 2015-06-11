@@ -19,9 +19,9 @@ categories: R
   })();
 </script>
 
-Basing on open data from [Statistics Finland](http://www.stat.fi/index_en.html), we at [Reaktor](http://reaktor.com/datascience) modelled Finnish apartment prices and their trends, on the zip-code level, during 2005--2014.  Estimates from the model are available as an [interactive visualization](http://kannattaakokauppa.fi/#/en/).
+Basing on open data from [Statistics Finland](http://www.stat.fi/index_en.html), we at [Reaktor](http://reaktor.com/datascience) modelled Finnish apartment prices and their trends on zip-code level, in the years 2005–2014. Estimates from the model are available as an [interactive visualization](http://kannattaakokauppa.fi/#/en/).
 
-## Why model 
+## Why do (statistical) modeling?
 
 The original price data consists of local (geometric) mean sales prices per year. The number of sales is available as well. If there are less than six sales, the mean price is censored. 
 
