@@ -1,0 +1,63 @@
+---
+title: "Digital humanities with R"
+author:
+  image: logo.png
+  name: Leo Lahti and Mikko Tolonen
+date: "2015-06-12 12:00:00"
+excerpt: Paris Digital Humanities Workshop
+layout: post
+draft: false
+categories: R 
+---
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(list(echo=TRUE,eval=TRUE,cache=FALSE,warning=FALSE,message=FALSE,fig.height=10,fig.width=10))
+```
+
+Digital humanities is one of the fields where reproducible research is
+now becoming increasingly popular. We got an opportunity to highlight the
+latest advancement in this field in Paris [Digital Humanities
+event](http://dhdhi.hypotheses.org/2428), June 12 at [Deutsches
+Historische Institut Paris](http://www.dhi-paris.fr/).
+
+The 'digital humanities lab' is an interactive experiment where the
+audience actively participates in designing the analysis of massive
+library catalogues. In particular, we focused on publishing activity
+in the early modern period by mining the [British Library ESTC
+catalogue
+1470-1800](http://estc.bl.uk/F/?func=file&file_name=login-bl-estc). To
+facilitate this interactive session, we prepared reproducible
+presentation slides with
+[Rmarkdown](http://rmarkdown.rstudio.com/). To be completed in the
+workshop, carrying out data analysis on-the-fly together with the
+audience. To reproduce the preliminary slides (we will complete them during the
+workshop!), clone the [rOpenGov slide
+repository](https://github.com/rOpenGov/slides) and run the following
+commands in R:
+
+```{r, echo=TRUE, eval=FALSE}
+library(rmarkdown)
+render("slides/20150612-Paris/20150611-Paris.Rmd")
+```
+
+Unfortunately the ESTC data itself is not public, so we could not
+share it. The slides and source code are fully reproducible, however,
+so you can modify the template for your own purposes and check out our
+summaries of the ESTC data collection at our [estc
+site](https://github.com/rOpenGov/estc). You may also like to read the
+related [excellent blog
+post]((http://douglasduhaime.com/blog/mapping-the-early-english-book-trade))
+of Douglas Duhaime on the same data set.
+
+We used a combination of [RStudio](http://www.rstudio.com/) and the
+[estc](http://github.com/rOpenGov/estc) and
+[bibliographica](http://github.com/rOpenGov/bibliographica) R packages
+that are designed for bibliographic data analysis. Combined with the
+vast analytical capabilities of the R statistical ecosystem, these
+custom tools for digital humanities provide a rapid development
+toolkit for reproducible research of historical document collections.
+
+
+[jekyll-gh]: https://github.com/mojombo/jekyll
+[jekyll]:    http://jekyllrb.com
