@@ -50,8 +50,8 @@ inc:
 
 source:      .
 destination: ./_site
-plugins:     ./_plugins
-layouts:     ./_layouts
+plugins_dir:     ./_plugins
+layouts_dir:     ./_layouts
 include:     ['.htaccess', '.travis.yml']
 exclude:     ['Rakefile', 'Gemfile', 'Gemfile.lock','CNAME', '*.sublime-workspace',
               '*.sublime-project']
@@ -66,8 +66,8 @@ highlighter: pygments
 relative_permalinks: true
 
 permalink:     pretty
-paginate_path: 'page:num'
-paginate: 10
+#paginate_path: 'page:num'
+#paginate: 10
 
 markdown:      kramdown
 textile_ext:   textile
@@ -99,7 +99,7 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  use_coderay: false
+  enable_coderay: false
 
   coderay:
     coderay_wrap: div

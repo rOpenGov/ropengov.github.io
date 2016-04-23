@@ -36,12 +36,17 @@ kable(as.data.frame(ls("package:eurostat")))
 
 |ls("package:eurostat") |
 |:----------------------|
+|candidate_countries    |
 |clean_eurostat_cache   |
+|dic_order              |
+|ea_countries           |
+|efta_countries         |
+|eu_countries           |
 |eurotime2date          |
 |eurotime2num           |
 |get_eurostat           |
 |get_eurostat_dic       |
-|getEurostatDictionary  |
+|get_eurostat_json      |
 |get_eurostat_toc       |
 |getEurostatTOC         |
 |grepEurostatTOC        |
@@ -82,10 +87,10 @@ kable(head(results))
 
 |     |title                                                                                                               |code        |type    |last.update.of.data |last.table.structure.change |data.start |data.end |values |
 |:----|:-------------------------------------------------------------------------------------------------------------------|:-----------|:-------|:-------------------|:---------------------------|:----------|:--------|:------|
-|1857 |Share of housing cost in disposable income by level of activity limitation, sex and age                             |hlth_dhc050 |dataset |16.10.2014          |                            |2005       |2012     |NA     |
-|3563 |Gini coefficient of equivalised disposable income (source: SILC)                                                    |ilc_di12    |dataset |18.05.2015          |16.02.2015                  |1995       |2014     |NA     |
-|3564 |Gini coefficient of equivalised disposable income before social transfers (pensions included in social transfers)   |ilc_di12b   |dataset |18.05.2015          |16.02.2015                  |2003       |2014     |NA     |
-|3565 |Gini coefficient of equivalised disposable income before social transfers (pensions excluded from social transfers) |ilc_di12c   |dataset |18.05.2015          |16.02.2015                  |2003       |2014     |NA     |
+|1995 |Share of housing cost in disposable income by level of activity limitation, sex and age                             |hlth_dhc050 |dataset |17.07.2015          |17.07.2015                  |2005       |2013     |NA     |
+|3804 |Gini coefficient of equivalised disposable income (source: SILC)                                                    |ilc_di12    |dataset |21.04.2016          |23.02.2016                  |1995       |2015     |NA     |
+|3805 |Gini coefficient of equivalised disposable income before social transfers (pensions included in social transfers)   |ilc_di12b   |dataset |21.04.2016          |23.02.2016                  |2003       |2015     |NA     |
+|3806 |Gini coefficient of equivalised disposable income before social transfers (pensions excluded from social transfers) |ilc_di12c   |dataset |21.04.2016          |23.02.2016                  |2003       |2015     |NA     |
 
 Or you can also download the whole table of contents of the database with `get_eurostat_toc`-function. In both cases the *values* in column `code` should be used to download a selected dataset.
 
@@ -105,7 +110,7 @@ kable(head(toc))
 |European and national indicators for short-term analysis |euroind   |folder  |                    |                            |           |         |NA     |
 |Business and consumer surveys (source: DG ECFIN)         |ei_bcs    |folder  |                    |                            |           |         |NA     |
 |Consumer surveys (source: DG ECFIN)                      |ei_bcs_cs |folder  |                    |                            |           |         |NA     |
-|Consumers - monthly data                                 |ei_bsco_m |dataset |29.04.2015          |29.04.2015                  |1985M01    |2015M04  |NA     |
+|Consumers - monthly data                                 |ei_bsco_m |dataset |30.03.2016          |30.03.2016                  |1985M01    |2016M03  |NA     |
 
 ## Downloading and plotting time-series data at the NUTS2 regional level
 
@@ -130,14 +135,14 @@ kable(head(dat))
 
 
 
-|indic_na |unit     |geo  | time| values|cntry |countryname |
-|:--------|:--------|:----|----:|------:|:-----|:-----------|
-|B6N_U    |PPCS_HAB |AT11 | 2000|  13900|AT    |Austria     |
-|B6N_U    |PPCS_HAB |AT12 | 2000|  15600|AT    |Austria     |
-|B6N_U    |PPCS_HAB |AT13 | 2000|  17300|AT    |Austria     |
-|B6N_U    |PPCS_HAB |AT21 | 2000|  14100|AT    |Austria     |
-|B6N_U    |PPCS_HAB |AT22 | 2000|  14400|AT    |Austria     |
-|B6N_U    |PPCS_HAB |AT31 | 2000|  14900|AT    |Austria     |
+|unit     |na_item |geo  | time| values|cntry |countryname |
+|:--------|:-------|:----|----:|------:|:-----|:-----------|
+|PPCS_HAB |B6N     |AT11 | 2003|  15500|AT    |Austria     |
+|PPCS_HAB |B6N     |AT12 | 2003|  16600|AT    |Austria     |
+|PPCS_HAB |B6N     |AT13 | 2003|  17500|AT    |Austria     |
+|PPCS_HAB |B6N     |AT21 | 2003|  15500|AT    |Austria     |
+|PPCS_HAB |B6N     |AT22 | 2003|  15600|AT    |Austria     |
+|PPCS_HAB |B6N     |AT31 | 2003|  15900|AT    |Austria     |
 
 Then we plot the data at the regional level and color the lines using country names derived from [`countrycode`](http://cran.r-project.org/web/packages/countrycode/index.html)-package.
 
@@ -162,7 +167,7 @@ p <- p + guides(color = guide_legend(title = "Country",
 p
 {% endhighlight %}
 
-![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-7-1.png) 
+![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-7-1.png)
 
 ### Labelling the data
 
@@ -179,14 +184,14 @@ kable(head(dat))
 
 
 
-|indic_na |unit     |geo  | time| values|
-|:--------|:--------|:----|----:|------:|
-|B6N_U    |PPCS_HAB |AT11 | 2000|  13900|
-|B6N_U    |PPCS_HAB |AT12 | 2000|  15600|
-|B6N_U    |PPCS_HAB |AT13 | 2000|  17300|
-|B6N_U    |PPCS_HAB |AT21 | 2000|  14100|
-|B6N_U    |PPCS_HAB |AT22 | 2000|  14400|
-|B6N_U    |PPCS_HAB |AT31 | 2000|  14900|
+|unit     |na_item |geo  | time| values|
+|:--------|:-------|:----|----:|------:|
+|PPCS_HAB |B6N     |AT11 | 2003|  15500|
+|PPCS_HAB |B6N     |AT12 | 2003|  16600|
+|PPCS_HAB |B6N     |AT13 | 2003|  17500|
+|PPCS_HAB |B6N     |AT21 | 2003|  15500|
+|PPCS_HAB |B6N     |AT22 | 2003|  15600|
+|PPCS_HAB |B6N     |AT31 | 2003|  15900|
 
 Labeling the data based on definitions from dictionary:
 
@@ -200,14 +205,14 @@ kable(head(datl))
 
 
 
-|indic_na                      |unit                                                                |geo              | time| values|
-|:-----------------------------|:-------------------------------------------------------------------|:----------------|----:|------:|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Burgenland (AT)  | 2000|  13900|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Niederösterreich | 2000|  15600|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Wien             | 2000|  17300|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Kärnten          | 2000|  14100|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Steiermark       | 2000|  14400|
-|Disposable income, net (uses) |Purchasing power standard based on final consumption per inhabitant |Oberösterreich   | 2000|  14900|
+|unit                                                                |na_item                |geo              | time| values|
+|:-------------------------------------------------------------------|:----------------------|:----------------|----:|------:|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Burgenland (AT)  | 2003|  15500|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Niederösterreich | 2003|  16600|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Wien             | 2003|  17500|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Kärnten          | 2003|  15500|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Steiermark       | 2003|  15600|
+|Purchasing power standard based on final consumption per inhabitant |Disposable income, net |Oberösterreich   | 2003|  15900|
 
 
 
@@ -236,7 +241,7 @@ p <- p + labs(title=paste0(unique(datl3$indic_na),"\n(",unique(datl3$unit),")"),
 p
 {% endhighlight %}
 
-![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-8-1.png) 
+![center](/figs/2015-04-14-eurostat-package-examples/unnamed-chunk-8-1.png)
 
 ## Mapping the household incomes at NUTS2 level
 
@@ -291,10 +296,7 @@ map <- readOGR(dsn = "./NUTS_2010_60M_SH/NUTS_2010_60M_SH/data", layer = "NUTS_R
 
 
 {% highlight text %}
-## OGR data source with driver: ESRI Shapefile 
-## Source: "./NUTS_2010_60M_SH/NUTS_2010_60M_SH/data", layer: "NUTS_RG_60M_2010"
-## with 1920 features
-## It has 4 fields
+## Error in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv, : Cannot open file
 {% endhighlight %}
 
 
@@ -302,6 +304,12 @@ map <- readOGR(dsn = "./NUTS_2010_60M_SH/NUTS_2010_60M_SH/data", layer = "NUTS_R
 {% highlight r %}
 # subset the spatialpolygondataframe at NUTS2-level
 map_nuts2 <- subset(map, STAT_LEVL_ == 2)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in subset(map, STAT_LEVL_ == 2): object 'map' not found
 {% endhighlight %}
 
 ### Joining tabular data with spatial data
@@ -317,7 +325,7 @@ dim(map_nuts2)
 
 
 {% highlight text %}
-## [1] 316   4
+## Error in eval(expr, envir, enclos): object 'map_nuts2' not found
 {% endhighlight %}
 
 
@@ -330,7 +338,7 @@ dim(dw)
 
 
 {% highlight text %}
-## [1] 275   6
+## [1] 298   5
 {% endhighlight %}
 
 
@@ -339,21 +347,115 @@ dim(dw)
 # Spatial dataframe has 467 rows and attribute data 275.
 # We need to make attribute data to have similar number of rows
 NUTS_ID <- as.character(map_nuts2$NUTS_ID)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'map_nuts2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 VarX <- rep(NA, 316)
 dat <- data.frame(NUTS_ID,VarX)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in data.frame(NUTS_ID, VarX): object 'NUTS_ID' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # then we shall merge this with Eurostat data.frame
 dat2 <- merge(dat,dw,by.x="NUTS_ID",by.y="geo", all.x=TRUE)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in fix.by(by.x, x): 'by' must specify a uniquely valid column
+{% endhighlight %}
+
+
+
+{% highlight r %}
 ## merge this manipulated attribute data with the spatialpolygondataframe
 ## rownames
 row.names(dat2) <- dat2$NUTS_ID
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'dat2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 row.names(map_nuts2) <- as.character(map_nuts2$NUTS_ID)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'map_nuts2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 ## order data
 dat2 <- dat2[order(row.names(dat2)), ]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'dat2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map_nuts2 <- map_nuts2[order(row.names(map_nuts2)), ]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'map_nuts2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 ## join
 library(maptools)
 dat2$NUTS_ID <- NULL
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in dat2$NUTS_ID <- NULL: object 'dat2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 shape <- spCbind(map_nuts2, dat2)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in spCbind(map_nuts2, dat2): error in evaluating the argument 'obj' in selecting a method for function 'spCbind': Error: object 'map_nuts2' not found
 {% endhighlight %}
 
 ### Preparing the data for ggplot2 visualization
@@ -366,8 +468,41 @@ As we are using ggplot2-package for plotting, we have to fortify the `SpatialPol
 library(ggplot2)
 library(rgeos)
 shape$id <- rownames(shape@data)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in rownames(shape@data): object 'shape' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map.points <- fortify(shape, region = "id")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in fortify(shape, region = "id"): object 'shape' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map.df <- merge(map.points, shape, by = "id")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in merge(map.points, shape, by = "id"): error in evaluating the argument 'x' in selecting a method for function 'merge': Error: object 'map.points' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # As we want to plot map faceted by years from 2003 to 2011
 # we have to melt it into long format
 
@@ -376,13 +511,63 @@ map.df <- merge(map.points, shape, by = "id")
 library(tidyr)
 # lets convert unit variable (that is a list) into character
 map.df$unit <- as.character(map.df$unit)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'map.df' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map.df.l <- gather(map.df, "year", "value", 15:17)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in is.data.frame(x): object 'map.df' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # year variable (variable) is class string and type X20xx.
 # Lets remove the X and convert it to numerical
 library(stringr)
 map.df.l$year <- str_replace_all(map.df.l$year, "X","")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in stri_replace_all_regex(string, pattern, replacement, vectorize_all = vec, : object 'map.df.l' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map.df.l$year <- factor(map.df.l$year)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in factor(map.df.l$year): object 'map.df.l' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 map.df.l$year <- as.numeric(levels(map.df.l$year))[map.df.l$year]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in levels(map.df.l$year): object 'map.df.l' not found
 {% endhighlight %}
 
 ### Plotting the maps using ggplot2
@@ -425,7 +610,17 @@ categories <- function(x, cat=5) {
 
 # years for for loop
 years <- unique(map.df.l$year)
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in unique(map.df.l$year): object 'map.df.l' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # Loop over the three years
 for (year in years) {
   
@@ -463,7 +658,11 @@ for (year in years) {
 }
 {% endhighlight %}
 
-![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-1.png) ![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-2.png) ![center](/figs/2015-04-14-eurostat-package-examples/eurostat_map4-3.png) 
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'years' not found
+{% endhighlight %}
 
 We are done! That was a small exercise on how to use the main functions in the `eurostat`-package. We hope you find the package useful! All suggestions, bug reports, and contributions are warmly welcome at: <https://github.com/ropengov/eurostat>. When using the packages, please cite accordingly:
 
@@ -478,15 +677,15 @@ citation("eurostat")
 ## 
 ## Kindly cite the eurostat R package as follows:
 ## 
-##   (C) Leo Lahti, Przemyslaw Biecek, Janne Huovari and Markus Kainu
-##   2014-2015. eurostat R package URL:
+##   (C) Leo Lahti, Janne Huovari, Markus Kainu, Przemyslaw Biecek
+##   2014-2016. eurostat R package URL:
 ##   https://github.com/rOpenGov/eurostat
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
 ##   @Misc{,
 ##     title = {eurostat R package},
-##     author = {Leo Lahti and Przemyslaw Biecek and Janne Huovari and Markus Kainu},
+##     author = {Leo Lahti and Janne Huovari and Markus Kainu and Przemyslaw Biecek},
 ##     year = {2014},
 ##     url = {https://github.com/rOpenGov/eurostat},
 ##   }
@@ -503,14 +702,14 @@ sessionInfo()
 
 
 {% highlight text %}
-## R version 3.2.0 (2015-04-16)
+## R version 3.2.3 (2015-12-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 14.04.2 LTS
+## Running under: Ubuntu 16.04 LTS
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
 ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
@@ -520,18 +719,18 @@ sessionInfo()
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] mapproj_1.2-2    maps_2.3-9       scales_0.2.4     stringr_1.0.0   
-##  [5] rgeos_0.3-8      maptools_0.8-36  rgdal_0.9-2      sp_1.1-0        
-##  [9] tidyr_0.2.0      ggplot2_1.0.1    countrycode_0.18 eurostat_1.0.16 
-## [13] knitr_1.10.5    
+##  [1] scales_0.4.0         stringr_1.0.0        rgeos_0.3-17        
+##  [4] maptools_0.8-39      rgdal_1.1-3          sp_1.2-2            
+##  [7] tidyr_0.4.1          ggplot2_2.1.0        countrycode_0.18    
+## [10] eurostat_1.2.21.9003 knitr_1.12.3        
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.11.6      magrittr_1.5     MASS_7.3-39      munsell_0.4.2   
-##  [5] lattice_0.20-31  colorspace_1.2-6 highr_0.5        plyr_1.8.2      
-##  [9] dplyr_0.4.1      tools_3.2.0      parallel_3.2.0   gtable_0.1.2    
-## [13] DBI_0.3.1        lazyeval_0.1.10  digest_0.6.8     assertthat_0.1  
-## [17] reshape2_1.4.1   formatR_1.2      evaluate_0.7     labeling_0.3    
-## [21] stringi_0.4-1    foreign_0.8-63   proto_0.3-10
+##  [1] Rcpp_0.12.4      magrittr_1.5     munsell_0.4.3    colorspace_1.2-6
+##  [5] lattice_0.20-33  R6_2.1.2         highr_0.5.1      plyr_1.8.3      
+##  [9] dplyr_0.4.3      tools_3.2.3      parallel_3.2.3   gtable_0.2.0    
+## [13] DBI_0.3.1        lazyeval_0.1.10  assertthat_0.1   digest_0.6.9    
+## [17] formatR_1.3      evaluate_0.8.3   labeling_0.3     stringi_1.0-1   
+## [21] foreign_0.8-66
 {% endhighlight %}
 
 
