@@ -46,10 +46,11 @@ inc:
 
   # Setup your fonts, colors etc at _assets/stylesheets/main.scss
 
+gems: [jekyll-paginate, pygments]
 source:      .
 destination: ./_site
-plugins:     ./_plugins
-layouts:     ./_layouts
+plugins_dir:     ./_plugins
+layouts_dir:     ./_layouts
 include:     ['.htaccess', '.travis.yml']
 exclude:     ['Rakefile', 'Gemfile', 'Gemfile.lock','CNAME', '*.sublime-workspace',
               '*.sublime-project']
@@ -60,8 +61,6 @@ future:      false
 show_drafts: nil
 limit_posts: 0
 highlighter: pygments
-
-relative_permalinks: true
 
 permalink:     pretty
 paginate_path: 'page:num'
@@ -97,7 +96,7 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  use_coderay: false
+  enable_coderay: false
 
   coderay:
     coderay_wrap: div
