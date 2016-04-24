@@ -8,13 +8,13 @@ inc:
 
   # Fields for feed.xml
   name:		rOpenGov
-  description:  "rOpenGov blog"  		
+  description:  "rOpenGov blog"
   url:		ropengov.github.io
 
   # Company information
   company:      rOpenGov
   url:          ropengov.github.io
-  facebook:     
+  facebook:
   twitter:      ropengov
   gplus:        '101183822199340201470'
   about:        about
@@ -22,8 +22,8 @@ inc:
   contribute:   contribute
 
   # Product Information
-  product_link: 
-  tagline:      
+  product_link:
+  tagline:
 
   # Comments
   disqus:
@@ -37,9 +37,9 @@ inc:
     gplus:      true
     hn:         true
 
-  # Analytics     
+  # Analytics
   analytics:
-    google: 
+    google:
       id:       'UA-44262937-1'
 
   # Google Fonts
@@ -65,8 +65,8 @@ limit_posts: 0
 highlighter: pygments
 
 permalink:     pretty
-#paginate_path: 'page:num'
-#paginate: 10
+paginate_path: 'page:num'
+paginate: 10
 
 markdown:      kramdown
 textile_ext:   textile
@@ -128,4 +128,3 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
-
