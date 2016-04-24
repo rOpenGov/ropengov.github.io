@@ -149,7 +149,7 @@ article {
 
     img {
         max-width:100%;
-        margin:1em 0;
+        margin:0em 0;
     }
 
 
@@ -181,19 +181,19 @@ article {
 
     pre {
         border: 0;
-        padding: 1.5em 3em;
-        margin:0 0em 1.5em;
+        padding: .3em .3em;
+        margin:0 0em .5em;
         background: whitesmoke;
         border: 0;
         border-radius: 2px;
         border-bottom:1px solid #eee;
         width:100%;
-        font-size:0.8em;
+        font-size:0.9em;
         overflow-x: auto;
         display:block;
         
         code {
-            font-size:0.8em;
+            font-size:0.9em;
             border:0;
         }
     }
@@ -244,5 +244,61 @@ article {
             box-shadow:0 2px 5px rgba(0,0,0,0.5);
         }
     }
+    
+    table {
+    	border-collapse: collapse;
+    	border-spacing: 0;
+        line-height: 1.4em;
+    	font-size: 0.9em;
+    	/*font-family: monospace;*/
+
+    }
+    .views-table, table {
+    	margin-left: 2px;
+    	margin-bottom: 10px;
+    	/*width: 1300px;*/
+    }
+    tr {
+    	line-height: 1.2em;
+    	border-bottom: #9e9e9e thin solid;
+    }
+    tr:last-child {
+    	line-height: 1.2em;
+    }
+    th {
+    	margin: 5px 0 5px 0;
+    	padding: 0 5px 0 5px;
+    /*	border-right: #9e9e9e thin solid; */
+    	text-align: left;
+    	border-bottom: #9e9e9e thin solid;
+    }
+    th:last-child {
+    	margin: 5px 0 5px 0;
+    	padding: 0 5px 0 5px;
+    /*	border-right: #9e9e9e thin solid; */
+    	text-align: left;
+    }
+    th:first-child {
+    	margin: 5px 0 5px 0;
+    	padding: 0 5px 0 5px;
+    /*	border: #9e9e9e thin solid; */
+    }
+    tbody tr {
+    	line-height: 1.2em;
+    /*	border-left: #9e9e9e thin solid; */
+    }
+    tbody tr:nth-child(odd) {
+    	line-height: 1.2em;
+    	background-color: #F3F5F5;
+    }
+    td {
+    	padding: 0 5px 0 5px;
+    /*	border-right: #9e9e9e thin solid; */
+    }
+    td:last-child {
+    	padding: 0 5px 0 5px;
+    }
+    
+
 
 }

@@ -1,3 +1,4 @@
+
 require "rubygems"
 require "tmpdir"
 
@@ -160,8 +161,8 @@ namespace :site do
 
       project["github"] = url
 
-      if not(description["URL.CRAN"].nil?)
-        project["cran"] = description["URL.CRAN"]
+      if not(description["URLCRAN"].nil?)
+        project["cran"] = description["URLCRAN"]
       end
 
       if not(description["BugReports"].nil?)

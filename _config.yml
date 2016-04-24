@@ -1,10 +1,15 @@
 inc:
   # Blog Information
   title:        "rOpenGov"
-  subtitle:     "R Ecosystem for Open Government Data and Computational Social Science"
+  subtitle:     "Algorithms for Computational Social Science and Digital Humanities"
   cover_image:  open-gov-cover.jpg
   about_image:  open-gov-cover.jpg
   logo:         logo.png
+
+  # Fields for feed.xml
+  name:		rOpenGov
+  description:  "rOpenGov blog"  		
+  url:		ropengov.github.io
 
   # Company information
   company:      rOpenGov
@@ -32,13 +37,10 @@ inc:
     gplus:      true
     hn:         true
 
-
- # Analytics     
+  # Analytics     
   analytics:
     google: 
-      # eg. 'UA-123-12'
       id:       'UA-44262937-1'
-
 
   # Google Fonts
   # eg. 'Droid+Sans:400,700|Droid+Serif:400,700'
@@ -63,8 +65,8 @@ limit_posts: 0
 highlighter: pygments
 
 permalink:     pretty
-paginate_path: 'page:num'
-paginate: 10
+#paginate_path: 'page:num'
+#paginate: 10
 
 markdown:      kramdown
 textile_ext:   textile
@@ -126,3 +128,4 @@ assets:
   cache: false
   gzip: [ text/css, application/javascript ]
   debug: false
+

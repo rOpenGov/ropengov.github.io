@@ -1,0 +1,264 @@
+---
+title: "Shakespeare! Cervantes! 400! A statistical analysis of the early modern printing of the Bard and Don Quixote"
+author: "Leo Lahti and Mikko Tolonen"
+date: "2016-04-23 12:00:00"
+excerpt: Shakespeare 400 years !
+layout: post
+draft: false
+categories: R
+---
+
+ 
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(list(echo=TRUE,eval=TRUE,cache=FALSE,warning=FALSE,message=FALSE,fig.height=10,fig.width=10))
+
+load("Shakespeare400.RData")
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(bibliographica)
+library(sorvi)
+theme_set(theme_bw(20))
+```
+
+We are a team of an early modern intellectual historian ([Mikko
+Tolonen](https://twitter.com/mikko_tolonen)) and a computational
+scientist and bioinformatician ([Leo
+Lahti](http://www.iki.fi/Leo.Lahti)). Often on Friday nights we skype
+to discuss digital humanities, a field that nicely combines our mutual
+interests in science and philosophy. Today’s task was to do something
+to celebrate the 400th anniversary of Shakespeare & Cervantes.
+
+We decided to build on our peculiar interest in [library
+catalogues](https://www.liberquarterly.eu/article/10.18352/lq.10112/)
+by focusing on [CERL Heritage of the Printed Book Catalogue
+(HPB)](https://www.cerl.org/resources/hpb/main) and [British Library’s
+English Short-Title Catalogue
+(ESTC)](http://estc.bl.uk/F/?func=file&file_name=login-bl-estc). We
+then carried out a brief but revealing analysis concerning the early
+modern publishing (1593-1800) of Shakespeare and Cervantes. Check
+below for some graphs that we wanted to share as you might also find
+them interesting.
+
+In the ESTC and CERL catalogues, we have metadata on roughly 0.5 and 5
+million documents, respectively, between 1470-1800. With a combination
+of [automated](https://github.com/rOpenGov/estc) and manual data
+processing, we identified `r nrow(tabs$Shakespeare)` documents for
+Shakespeare (ESTC `r sum(tabs$Shakespeare$source == "estc")`;
+CERL `r sum(tabs$Shakespeare$source == "cerl")`), and `r nrow(tabs$Cervantes)`
+documents for Cervantes (ESTC
+`r sum(tabs$Cervantes$source == "estc")`; CERL `r sum(tabs$Cervantes$source == "cerl")`). All
+illustrations are based on the combined data from these two catalogues
+unless otherwise mentioned.
+
+
+### Relative publishing activity: Shakespeare
+
+One thing that we have learned about author lives when analysing publishing activity is that printing usually ends (more rapidly than you think) when the author kicks the bucket. That is, death is the end of popularity. Well, obviously this is not the case for Shakespeare. But do note that the new rise in publishing Shakespeare (based on ESTC data) begins in the 1730s with the input of the famous Tonson publishing house (see also Shakespeare publisher timeline below). The first graph illustrates the fraction of titles from Shakespeare relative to all other publishing activity in the ESTC catalogue.
+
+```{r shakespeare-versusother, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, fig.width=10, fig.height=5, out.width="700px"}
+theme_set(theme_bw(20))
+
+# Shakespeare fraction of overall title count
+# as function of time
+dfs <- df.preprocessed
+auth <- "Shakespeare"
+d <- NULL
+  dfs$author2 <- dfs$author %in% my.authors[[auth]]
+  d <- dfs %>% group_by(publication_decade) %>%
+	 summarize(freq = 100 * mean(author2, na.rm = T),
+	 	   author = auth,
+		   n = sum(author2, na.rm = T)
+	 )
+d$author <- factor(d$author)
+
+# Visualize timeline
+p <- ggplot(d, aes(x = publication_decade, y = freq)) +
+       #geom_bar(stat = "identity", position = "stack", color = "black") +
+       geom_line() +
+       geom_point(aes(size = n)) +              
+       xlab("Publication Decade") +
+       ylab("Fraction of all titles (%)") +
+       scale_fill_grey() +
+       guides(fill = guide_legend("Author")) # +
+       #ggtitle("Relative publishing activity")
+print(p)
+```
+
+
+### Shakespeare play categories
+ 
+We classified Shakespeare’s plays into tragedies, comedies and
+histories. Besides the 1730s peak, histories seem to be less popular
+than comedies and tragedies when published as single plays. Another
+observation: early 18th-century seems to be a more “tragedy-driven”
+era compared to few decades later in the high-Enlightenment when we
+witness the new rise of comedies. 
+
+
+```{r shakespeare-tragedyvscomedy, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, fig.width=10, fig.height=5, out.width="700px"}
+auth <- "Shakespeare"
+df <- tabs[[auth]]
+df$publication_decade <- floor(df$publication_year/10) * 10 # 1790: 1790-1799
+types = c("Tragedy", "Comedy", "History")
+dfs <- df %>% filter(type %in% types) %>%
+              group_by(publication_decade, type) %>%
+              tally()
+dfs$type <- factor(dfs$type, levels = types)
+
+# Visualize the timeline
+p <- ggplot(dfs, aes(x = publication_decade, y = n, fill = type)) +
+       geom_bar(stat = "identity", position = "stack", color = "black") +
+       xlab("Publication Decade") +
+       ylab("Title Count") +
+       scale_fill_grey() +
+       guides(fill = guide_legend("Category")) 
+       # ggtitle(paste(auth, "plays"))       
+print(p)
+```
+
+
+### Shakespeare title popularity
+ 
+No real surprises here. Collected works and plays are of course an important source to access Shakespeare. But in the Top-5 list of single plays Hamlet, Romeo and Juliet, Macbeth and Othello are where you might expect to find them. Perhaps slightly surprising is that Julius Caesar beats Merchant of Venice and Merry Wives of Windsor. 
+
+
+```{r shakespeare-titles, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, fig.show="hold", out.width="400px", fig.height=13, fig.width=6}
+for (auth in names(my.authors)) {
+  p <- top_plot(tabs[[auth]], "title", ntop = length(unique(tabs[[auth]]$title)))
+  p <- p + ggtitle(auth) + ylab("Title count")
+  print(p)
+}
+```
+
+
+### Cervantes popularity
+ 
+What is telling when comparing Cervantes on the continent and his popularity in the English-speaking world is that Galatea (Cervantes’s first published work) does very well on the continent, but is not published in English during the early modern period. At the same time it is very clear that Don Quixote is THE single work by any author in early modern Europe (including the English-speaking world).
+ 
+
+```{r shakespeare-cervantes, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, out.width="800px", fig.height=7, fig.width=8}
+df <- tabc %>% filter(author == "Cervantes") %>%
+        group_by(source, publication_decade, title) %>% tally()
+top.titles <- names(top(df, "title", 5))
+df <- df %>% filter(title %in% top.titles)
+df$source <- factor(df$source)
+df$title <- droplevels(df$title)
+
+pics <- list()
+cols <- c("red", "darkgreen", "blue", "black", "violet")
+names(cols) <- top.titles
+
+for (s in unique(df$source)) {
+
+  dfs <- filter(df, source == s)
+
+  p <- ggplot(dfs, aes(x = publication_decade, y = n, fill = title)) +
+       geom_bar(stat = "identity", position = "stack", color = "black")
+  p <- p + xlim(range(df$publication_decade))
+  p <- p + ylim(values = c(0, max(df %>% group_by(publication_decade) %>% tally() %>% select(n)) + 1))
+  p <- p + scale_fill_manual(values = cols[as.character(levels(dfs$title))])
+  p <- p + xlab("Publication decade")
+  p <- p + ylab("Title count (n)")  
+  pics[[s]] <- p
+
+}
+pics[["cerl"]] <- pics[["cerl"]] + ggtitle("Continental Europe")
+pics[["estc"]] <- pics[["estc"]] + ggtitle("Britain and North America")
+
+library(gridExtra)
+grid.arrange(pics[[1]], pics[[2]], nrow = 2)
+```
+
+
+### Comparison of popular titles
+ 
+On this timeline we see a very interesting contest. Don Quixote’s train-like rise throughout the early modern era is impressive indeed. Hamlet sees an interesting peak in English-speaking world in 1750s to be followed by the rise of the comedies and rapid sinking of the publishing of the Danish prince. Same thing happens to Romeo and Juliet shortly after. Macbeth on the other hand seems to follow a different, upward path towards the late eighteenth century. 
+
+
+```{r shakespeare-titles2, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, out.width="700px", fig.height=4, fig.width=8}
+df1 <- filter(tabs$Shakespeare, title %in% c("Hamlet", "Romeo and Juliet", "Macbeth", "Othello"))
+df2 <- filter(tabs$Cervantes, title %in% "Don Quixote")
+df <- rbind_all(list(df1, df2)) 
+
+# Calculate relative abundances within each decade
+dfs <- df %>% group_by(publication_decade, title) %>% tally()
+dfs <- dfs %>% spread(title, n, fill = 0)
+dfs[,-1] <- t(apply(dfs[, -1], 1, function(x) {x/sum(x)}))
+dfs <- gather(dfs, publication_decade)
+names(dfs) <- c("publication_decade", "title", "freq")
+dfs$title <- factor(dfs$title, levels = unique(dfs$title))
+
+dfs2 <- df %>% group_by(publication_decade, title) %>% tally()
+p <- ggplot(dfs2, aes(x = publication_decade, y = n, color = title)) +
+       geom_line() +
+       #geom_smooth(method = "loess") +       
+       geom_point() +       
+       xlab("Publication Decade") +
+       ylab("Title count (n)") +
+       scale_fill_grey() +
+       guides(color = guide_legend("Title")) 
+       # ggtitle("Comparison of popular titles")
+print(p)
+
+p <- ggplot(dfs, aes(x = publication_decade, y = 100*freq, fill = title)) +
+       geom_bar(stat = "identity", position = "stack", color = "black") +
+       xlab("Publication Decade") +
+       ylab("Relative title count (%)") +
+       scale_fill_grey() +
+       guides(fill = guide_legend("Title")) 
+       #ggtitle("Comparison of popular titles")
+# print(p)
+```
+
+
+### Shakespeare publisher timeline
+ 
+There exists great scholarship on Shakespeare’s copyrights in the eighteenth century by Terry Belanger. While we are well aware of the division of Shakespeare copyrights between different publishers and the use of printing congers, what we want to highlight here is the relevance of Tonson publishing house and the role played by John Bell towards the later eighteenth century in promoting Shakespeare in Britain (for Bell as ['bibliographic nightmare'](http://collation.folger.edu/2012/06/john-bell-bibliographic-nightmare/). The illustration is based on the ESTC catalogue, where we have manually cleaned up the publisher information, combining synonymous variants of the publisher names.
+
+
+```{r shakespeare-publisher, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, fig.width=8, fig.height=4, out.width="700px"}
+auth <- "Shakespeare"
+df <- tabc %>% filter(author == "Shakespeare" & source == "estc")
+top.publishers <- names(top(df, "publisher", 5))
+
+dfs <- df %>% group_by(publication_decade, publisher) %>%
+              filter(publisher %in% top.publishers) %>% tally()
+
+p <- ggplot(dfs, aes(x = publication_decade, y = n, fill = publisher)) +
+       geom_bar(stat = "identity", position = "stack", color = "black") +
+       xlab("Publication Decade") +
+       ylab("Title Count") +
+       scale_fill_grey() +
+       guides(fill = guide_legend("Publisher")) 
+       # ggtitle(paste(auth, ": publisher timelines", sep = ""))       
+
+print(p)
+```
+
+
+
+**NB! Notes on methodology**
+
+The trick to get this approach working is to harmonize the catalogued
+fields so we may trust the statistics that library catalogue data can
+provide us. For example, for this analysis most of our time was spent
+matching different entries of works in the ESTC and the HPB and
+removing hundreds of duplicate entries in the HPB data. We also took
+full advantage of our custom algorithms, implemented in the
+[bibliographica R
+package](https://github.com/rOpenGov/bibliographica/), to automatize
+this cleaning process for any library catalogue as far as
+possible. The idea is not that this “big data approach” relying on
+library catalogue data would be perfect in terms of including every
+single translation of Shakespeare and Don Quixote on the continent or
+early modern Britain. But when the harmonizing of the catalogued
+fields is done properly, the approach gives us trustworthy results
+about the publishing trends that we are interested in. Whereas the raw
+data is not (yet) openly available, the full preprocessing workflows
+for [ESTC](https://github.com/rOpenGov/estc/) and
+[CERL](https://github.com/rOpenGov/estc/) are available via Github, as
+well as the full source code of [this blog
+post](https://github.com/rOpenGov/ropengov.github.io/tree/site-development/_Rmdposts).
+

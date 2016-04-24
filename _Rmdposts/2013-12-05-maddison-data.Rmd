@@ -2,7 +2,8 @@
 layout: post
 title:  "Maddison project in R "
 date:   2013-12-05 18:53:45
-categories: general
+categories: R
+draft: true
 
 excerpt: "There is a growing trend of new methods for assessing economic data in R"
 
@@ -25,7 +26,7 @@ Below is a stepwise explanation on how to visualize the data.
 
 ### Load the data
 
-```{rmaddison1, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+```{r maddison1, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 library(gdata)
 url <- "http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx"
 dat <- read.xls(url, header=TRUE, skip=1, stringsAsFactors = FALSE)
@@ -36,7 +37,7 @@ dat <- read.xls(url, header=TRUE, skip=1, stringsAsFactors = FALSE)
 Excel-sheets usually require some processing in R. Below I'm removing row not needed and melting the data in long format, and convert in to numerical.
 
 
-```{rmaddison2, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+```{r maddison2, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 column.names <- as.character(dat[1,])
 column.names[1] <- "year"
 df.mad <- dat[-1,]
@@ -51,7 +52,7 @@ df.mad.l <- df.mad.l[!is.na(df.mad.l$value), ]
 
 My research emphasises in post-socialist space and therefore I will subset the data. In addition to post-socialist countries I'm including some Western countries, too.
 
-```{rmaddison3, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+```{r maddison3, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 cntry.list <- c("Czech Republic","Estonia","Hungary",
                "Bulgaria","Latvia","Lithuania","Poland",
                "Slovakia","Slovenia","Romania","Albania",
@@ -68,7 +69,7 @@ df.mad.l2 <- df.mad.l[df.mad.l$variable %in% cntry.list, ]
 
 Then I will group the countries in one sensible way.
 
-```{rmaddison4, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
+```{r maddison4, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 
 library(car)
 df.mad.l2$group[df.mad.l2$variable %in% c("Czech Republic","Estonia","Hungary",
@@ -87,7 +88,7 @@ df.mad.l2$group[df.mad.l2$variable %in% c("F. USSR")] <- "USSR"
 
 As I mentioned in the beginning the data extends for over 2000 years. My interest is more of contemporary nature, so I will subset data to cover only the last 160 years from 1850 to 2010. Also, I will add some major historical events during that period that have had an effect on economic growth, too.
 
-```{rmaddison5, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
+```{r maddison5, echo=TRUE, echo=TRUE, message=FALSE, warning=FALSE, fig.width=12, fig.height=8}
 library(ggplot2)
 ggplot(data=df.mad.l2[df.mad.l2$year > 1850, ],
        aes(x=year,y=value,group=variable,color=group)) +
