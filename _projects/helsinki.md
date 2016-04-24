@@ -1,9 +1,8 @@
 ---
 title: helsinki
-description: Helsinki open data R tools
-link: https://github.com/ropengov/helsinki
-github: https://github.com/ropengov/helsinki
-cran: http://cran.r-project.org/web/packages/helsinki/index.html
+description: Helsinki Open Data R Tools
+maintainer: Juuso Parkkinen <louhos@googlegroups.com>
+link: https://github.com/rOpenGov/helsinki
+github: https://github.com/rOpenGov/helsinki
 category: ropengov
-tutorial: true
 ---

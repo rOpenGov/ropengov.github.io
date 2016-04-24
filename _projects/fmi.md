@@ -1,10 +1,8 @@
 ---
 title: fmi
-description: Finnish Open Meteorological data
+description: Finnish Meteorological Institute open data API R client
 maintainer: Jussi Jousimo <jvj@iki.fi>
-link: https://github.com/rOpenGov/fmi
+link: https://github.com/ropengov/fmi
 github: https://github.com/rOpenGov/fmi
-bugreports: https://github.com/louhos/fmi/issues
 category: ropengov
-tutorial: true
 ---
