@@ -1,0 +1,243 @@
+---
+title: "Scientific journal subscription costs in Finland 2010-2015"
+author: "Leo Lahti"
+date: "2016-06-10 18:00:00"
+excerpt: "Freedom of Information"
+layout: post
+draft: false
+categories: R
+---
+
+
+```{r foi-init, message=FALSE, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+theme_set(theme_bw(20))
+# License fee data URL
+f <- "~/data/Tietopyynto/20160607\ Kustantajahintatiedot_koottu_v0.99.csv"
+# Read the data
+df <- read.csv(f, fileEncoding = "latin1")
+# Rename
+df = rename(df, Publisher = Kustantaja.Välittäjä)
+df = rename(df, Organization = Organisaation.nimi)
+df = rename(df, Organization.type = Organisaation.tyyppi)
+df = rename(df, Category = Aineistotyyppi)
+df = rename(df, Material = Aineisto)
+df = rename(df, Type = Hankintatapa)
+df = rename(df, Year = Vuosi)
+df = rename(df, Price = Hinta)
+
+# Translations
+df$Organization.type = gsub("Yliopisto", "University", df$Organization.type)
+df$Organization.type = gsub("Ammattikorkeakoulu", "Polytechnic", df$Organization.type)
+df$Organization.type = gsub("Tutkimuslaitos", "Research Institute", df$Organization.type)
+df$Organization.type = gsub("Muu", "Other", df$Organization.type)
+df$Organization.type = factor(df$Organization.type)
+
+df$Category = gsub("Kokotekstiaineisto", "Full text", df$Category)
+df$Category = gsub("Viitetietokanta", "Reference database", df$Category)
+df$Category = gsub("Hakuteos", "Reference book", df$Category)
+df$Category = gsub("Muu elektroninen palvelu", "Other electronic service", df$Category)
+df$Category = gsub("E-kirjapaketti", "E-books", df$Category)
+df$Category = gsub("Muu", "Other", df$Category)
+df$Category = gsub("Sanakirja", "Dictionary", df$Category)
+df$Category = factor(df$Category)
+```
+
+[Detailed information on journal subscription costs paid to individual
+publishers by the Finnish research institutions]() has been released
+by the Open Science Initiative of the Finnish Ministry of
+Education. With this, **Finland becomes to our knowledge the first
+country where annual subscription fees for all individual publishers
+and research institutions have been made available**, spanning the
+years 2010-2015. Similar information has been previously released for
+some, but not all publishers and research institutions in the UK and
+US; and related activities are ongoing in several countries (see the
+recent [blog post by Stuart
+Lawson](http://stuartlawson.org/2016/06/publicly-available-data-on-international-journal-subscription-costs)).
+
+Access to literature is fundamental to academic research but this has been challenged with the rapidly increasing prices of academic journals, which university libraries find increasingly difficult to fund. According to the [data from the US Association of Research Libraries](http://www.lib.washington.edu/scholpub/facts/economics) the academic journal subscription charges increased 4x faster than inflation in 1986-2007. The relative variation in prices is also considerable among the publishers  ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)). Limited access to detailed pricing information and agreement details are likely to result in suboptimal contracts ([Cockerill, 2006](https://olh.openlibhums.org/articles/10.16995/olh.72/#B7); [Shieber, 2009](https://olh.openlibhums.org/articles/10.16995/olh.72/#B66)). Improved access to subscription costs can hence be expected to lead to better deals and lower costs for the universities.
+
+Motivated by this, and following [Tim Gowers successful FOI request on
+the subscription costs for scientific journals in
+UK](http://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/),
+we made a similar request in Finland together with the [Open Knowledge
+Finland association and other Open Science
+advocates](https://www.facebook.com/groups/241398182642057/permalink/411482855633588). After
+the Finnish universities [turned down my FOI request in summer
+2014](https://github.com/okffi-science/2014-tietopyynto-lisenssimaksut),
+we appealed in court, which decided the case positive for us in August
+2015 (see a [separate blog post]()).
+
+Here I provide a brief preliminary analysis of the [data]() on journal
+subscription fees that was collected and released by the Ministry of
+Education Open Science Initiative in Finland. I have translated key
+terms from the Finnish data release to better serve the international
+audience. An augmented source code of this analysis is [maintained in
+Github](https://github.com/antagomir/temp/blob/master/20160610/foi.Rmd).
+
+
+
+## Overall subscription costs 2010-2015
+
+Finland paid in total `r round(sum(df$Price)/1e6, 1)` million EUR
+subscription and other fees on scientific publishing in 2010-2015. The
+average annual costs for in Finland were `r round(mean((df %>%
+group_by(Year) %>% summarise(Costs = sum(Price)/1e6))$Costs))` MEUR in
+2010-2015; this is one third of the annual subscription costs in
+Austria (70 MEUR; [Bauer et al.,
+2015](https://olh.openlibhums.org/articles/10.16995/olh.72/#B4)), and
+two thirds of the annual expenditure (31 MEUR) in [New
+Zealand](http://publicaddress.net/9549). Data for the top-10
+publishers in the UK 2010-2014 is available in [Lawson, Meghreblian &
+Brook,
+2015](https://olh.openlibhums.org/articles/10.16995/olh.72/#B45)
+([Table
+1](https://olh.openlibhums.org/articles/10.16995/olh.72)). During this
+period the UK paid altogether 4319 MEUR (rough estimate based on the
+exchange rate June 12, 2016) for the top-10 publishers. Finland paid
+61 MEUR for the same top-10 publishers in the same period, which is
+1.4% of the UK expenditure. The UK costs seem unexpectedly high
+compared to Finland, I wonder what is the explanation.
+
+The subscription fees are available by [agreement
+type](cost_by_type.csv), organization type, and [subscription
+category](cost_by_category.csv). Open access article processing
+charges (APCs) are not included in this data collection as far as I
+can see, although it would be interesting in its own right. It was
+recently reported by [Naukkarinen
+(2016)](https://avointiede.fi/documents/10864/12232/Avoimen+julkaisemisen+tuen+malli/73838e9b-7924-446c-9c7a-cc8f759919bb)
+that in 2014 [18% of the articles in Finnish universities were
+published as open
+access](https://l.facebook.com/l.php?u=https%3A%2F%2Favointiede.fi%2Fdocuments%2F10864%2F12232%2FAvoimen%2Bjulkaisemisen%2Btuen%2Bmalli%2F73838e9b-7924-446c-9c7a-cc8f759919bb&h=-AQFlKomT). It
+was also estimated that publishing all articles as Open Access would
+have cost 17 MEUR, whereas the subscription fees in 2014 were 22
+MEUR. This suggests that the transition to the Open Access model might
+be a good idea. Overall, there are roughly 35 000 peer-reviewed
+academic journals globally ([Ware & Mabe,
+2015](https://olh.openlibhums.org/articles/10.16995/olh.72/#B71));
+less than a third of these (11 000) are open access ([DOAJ,
+2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)).
+
+
+```{r foi-totalcosts, message=FALSE, echo=FALSE, fig.show="hold", out.width="430px", fig.width = 7, fig.height = 5}
+dfs = df %>% group_by(Category) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
+dfs$Category = factor(dfs$Category, levels = rev(as.character(dfs$Category)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+# Only consider the high-level categories
+dfss = dfs[-grep(";", dfs$Category),]
+p <- ggplot(dfss, aes(x = Category, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by category") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Category, y=35, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+```
+
+
+## Costs by publisher
+
+The Finnish data covers `r length(unique(df$Publisher))` individual publishers ([see annual costs by publisher](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv)). The figure indicates the total subscription fees paid to the top publishers 2010-2015. Over one third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare individual publishers on a per article or per citation basis based on this data set. It was recently estimated elsewhere, however, that Elsevier’s prices per citation are roughly 3x higher than with non-profit publishers; Emerald, Sage, and Taylor & Francis had roughly 10x higher prices ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)).
+
+```{r foi-totalcosts2b, message=FALSE, echo=FALSE, fig.width=10, fig.height=9}
+dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
+dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs[1:20,], aes(x = Publisher, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by publisher") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+
+dfs = df %>% group_by(Publisher) %>% summarise(n = n()) %>% arrange(desc(n))
+dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
+dfs$Percentage = round(100 * dfs$n/sum(dfs$n), 1)
+p <- ggplot(dfs[1:20,], aes(x = Publisher, y = n)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Subscriptions by publisher") + coord_flip() + xlab("") + ylab("Subscriptions (n)") + geom_text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+#print(p)
+
+dfs = df %>% group_by(Type) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
+dfs$Type = factor(dfs$Type, levels = rev(as.character(dfs$Type)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+```
+
+
+```{r foi-costperyear, message=FALSE, eval=TRUE, echo=FALSE, fig.show="hold", out.width="200px"}
+dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
+```
+
+The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2015 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). See a separate table for full [annual costs by publisher](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv) (the top-10 publishers shown below). 
+
+```{r foi-costbytime, message=FALSE, echo=FALSE, fig.width=16, fig.height=6, out.width="870px"}
+# Price, Year : all publishers
+# Growth percentage compared to previous year is shown
+dfs = df %>% group_by(Year) %>% summarise(Costs = sum(Price)/1e6) 
+p1 <- ggplot(dfs, aes(x = Year, y = Costs)) +
+       geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Total costs (Finland)") +
+       geom_text(data = dfs[-1,], aes(x = Year, y = 1.5,
+     label = paste(round(100 * diff(dfs$Costs)/dfs$Costs[-length(dfs$Costs)], 1), "%", sep = "")   ),
+     	   size = 6) +
+       scale_x_continuous(breaks = 2010:2015, labels = c(2010:2015)) + 
+       ylab("Costs (MEUR)")
+#print(p1)
+
+dfss = df %>% group_by(Publisher) %>% summarise(Costs = sum(Price, na.rm = TRUE)) %>% arrange(desc(Costs))
+top.publishers <- as.character(dfss$Publisher[1:10])
+dfs2 <- dplyr::filter(df, Publisher %in% top.publishers) %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(Year)
+dfs2$Publisher <- factor(dfs2$Publisher, levels = top.publishers)
+p2 <- ggplot(dfs2, aes(x = Year, y = Costs, color = Publisher)) +
+       geom_point() +
+       geom_line() +       
+       ggtitle("Cost development by publisher") +
+       ylab("Costs (MEUR)") 
+#print(p2)
+
+library(gridExtra)
+grid.arrange(p1, p2, widths=c(5, 9))
+
+
+dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
+dfs[is.na(dfs)] = 0
+dfs$Publisher = as.character(dfs$Publisher)
+dfs$Total = rowSums(dfs[, as.character(2010:2015)], na.rm = TRUE)
+dfs$Percentage = 100 * dfs$Total/sum(dfs$Total)
+dfs = dfs %>% arrange(desc(Percentage))
+dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
+names(dfs) = c("Publisher (costs in MEUR)", as.character(2010:2015), "Total", "%")
+for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
+kable(head(dfs, 10))
+```  
+
+<p></p>
+
+## Costs by organization
+
+```{r foi-totalcosts2c, message=FALSE, echo=FALSE}
+dfs = df %>% group_by(Organization.type) %>% summarise(Costs = 100*sum(Price)/sum(df$Price))
+```
+
+The Finnish data collection includes `r length(unique(df$Organization))` organizations ([see annual costs by organization](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year.csv)). The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "University", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2015 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure). The Table indicates the annual costs for the top organizations.
+
+```{r foi-totalcosts2d, message=FALSE, echo=FALSE, fig.show="hold", out.width="420px", fig.width = 10, fig.height = 9}
+dfs = df %>% group_by(Organization.type) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(Costs)
+dfs$Organization.type = factor(dfs$Organization.type, levels = as.character(dfs$Organization.type))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs, aes(x = Organization.type, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by organization type") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Organization.type, y=80, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+
+dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
+dfs$Organization = factor(dfs$Organization, levels = rev(as.character(dfs$Organization)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs[1:20,], aes(x = Organization, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by organization") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Organization, y=20, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+
+
+dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
+dfs[is.na(dfs)] = 0
+dfs$Organization = as.character(dfs$Organization)
+dfs$Total = rowSums(dfs[, as.character(2010:2015)], na.rm = TRUE)
+dfs$Percentage = 100 * dfs$Total/sum(dfs$Total)
+dfs = dfs %>% arrange(desc(Percentage))
+dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
+names(dfs) = c("Organization (costs in MEUR)", as.character(2010:2015), "Total", "%")
+for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
+kable(head(dfs, 10))
+```
+
+
+
+
