@@ -47,15 +47,16 @@ df$Category = factor(df$Category)
 ```
 
 [Detailed information on journal subscription costs paid to individual
-publishers by the Finnish research institutions]() has been released
-by the Open Science Initiative of the Finnish Ministry of
-Education. With this, **Finland becomes to our knowledge the first
-country where annual subscription fees for all individual publishers
-and research institutions have been made available**, spanning the
-years 2010-2015. Similar information has been previously released for
-some, but not all publishers and research institutions in the UK and
-US; and related activities are ongoing in several countries (see the
-recent [blog post by Stuart
+publishers by the Finnish research
+institutions](http://avointiede.fi/ajankohtaista/-/asset_publisher/UJglmibGKmbR/content/lapinakyvyytta-ja-avoimuutta-tieteelliseen-julkaisemiseen-tutkimusorganisaatioilta-vuosittain-miljoonia-euroja-suurille-kustantajille?_101_INSTANCE_UJglmibGKmbR_viewMode=view)
+has been released by the Open Science Initiative of the Finnish
+Ministry of Education. With this, **Finland becomes to our knowledge
+the first country where annual subscription fees for all individual
+publishers and all major research institutions have been made
+available**, spanning the years 2010-2015. Similar information has
+been previously released for some, but not all publishers and research
+institutions in the UK and US; and related activities are ongoing in
+several countries (see the recent [blog post by Stuart
 Lawson](http://stuartlawson.org/2016/06/publicly-available-data-on-international-journal-subscription-costs)).
 
 Access to literature is fundamental to academic research but this has been challenged with the rapidly increasing prices of academic journals, which university libraries find increasingly difficult to fund. According to the [data from the US Association of Research Libraries](http://www.lib.washington.edu/scholpub/facts/economics) the academic journal subscription charges increased 4x faster than inflation in 1986-2007. The relative variation in prices is also considerable among the publishers  ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)). Limited access to detailed pricing information and agreement details are likely to result in suboptimal contracts ([Cockerill, 2006](https://olh.openlibhums.org/articles/10.16995/olh.72/#B7); [Shieber, 2009](https://olh.openlibhums.org/articles/10.16995/olh.72/#B66)). Improved access to subscription costs can hence be expected to lead to better deals and lower costs for the universities. It can also facilitate transition to the Open Access (OA) publishing model.
@@ -69,21 +70,21 @@ advocates](https://www.facebook.com/groups/241398182642057/permalink/41148285563
 the Finnish universities [turned down my FOI request in summer
 2014](https://github.com/okffi-science/2014-tietopyynto-lisenssimaksut),
 we appealed in court, which decided the case positive for us in August
-2015 (see a [separate blog post]()).
+2015. For an English summary of this process, see a separate post in the [MostlyPhysics](http://www.mostlyphysics.net/blog/) blog.
 
-Here I provide a brief preliminary analysis of the [data]() on journal
+Here I provide a brief preliminary analysis of the [data](http://avointiede.fi/ajankohtaista/-/asset_publisher/UJglmibGKmbR/content/lapinakyvyytta-ja-avoimuutta-tieteelliseen-julkaisemiseen-tutkimusorganisaatioilta-vuosittain-miljoonia-euroja-suurille-kustantajille?_101_INSTANCE_UJglmibGKmbR_viewMode=view) on journal
 subscription fees that was collected and released by the Ministry of
 Education Open Science Initiative in Finland. I have translated key
 terms from the Finnish data release to better serve the international
 audience. An augmented source code of this analysis is [maintained in
-Github](https://github.com/antagomir/temp/blob/master/20160610/foi.Rmd).
+Github](https://github.com/rOpenGov/2016-Finland-SubscriptionCosts).
 
 
 
 ## Overall subscription costs 2010-2015
 
 Finland paid in total `r round(sum(df$Price)/1e6, 1)` million EUR
-subscription and other fees on scientific publishing in 2010-2015. The
+subscription and other fees on scientific publishing in 2010-2015. The overall breakup of the costs is available as a separate [table](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). The
 average annual costs for in Finland were `r round(mean((df %>%
 group_by(Year) %>% summarise(Costs = sum(Price)/1e6))$Costs))` MEUR in
 2010-2015; this is one third of the annual subscription costs in
@@ -137,8 +138,8 @@ to facilitate shift to OA, the costs of the subscription model must be
 made more transparent and money used for conventional subscription
 must be diverted to funding the costs of OA publishing.
 
-The subscription fees are available also by [agreement
-type](cost_by_type.csv), organization type, and [subscription
+The full data set details the subscription fees also by agreement
+type, organization type, and [subscription
 category](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html).
 
 
