@@ -139,8 +139,8 @@ dfs$Percentage = round(100 * dfs$n/sum(dfs$n), 1)
 p <- ggplot(dfs[1:20,], aes(x = Publisher, y = n)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Subscriptions by publisher") + coord_flip() + xlab("") + ylab("Subscriptions (n)") + geom_text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
 #print(p)
 
-dfs = df %>% group_by(Type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
-dfs$Type = factor(dfs$Type, levels = rev(as.character(dfs$Type)))
+dfs = df %>% group_by(Resource.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Resource.type = factor(dfs$Resource.type, levels = rev(as.character(dfs$Resource.type)))
 dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
 ```
 
