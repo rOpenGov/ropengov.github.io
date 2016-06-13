@@ -99,15 +99,14 @@ Brook,
 period the UK paid altogether 4319 MEUR (rough estimate based on the
 exchange rate June 12, 2016) for the top-10 publishers. Finland paid
 61 MEUR for the same top-10 publishers in the same period, which is
-1.4% of the UK expenditure. The costs in the other countries seem
-unexpectedly high compared to Finland, I wonder what is the
-explanation. Either Finland can negotiate considerably better deals,
-or, perhaps more likely, the figures from the different countries are not
-directly comparable but this will require further investigation.
+roughly 17% of the UK expenditure per capita (unexpectedly low?). The costs
+in the other countries seem unexpectedly high compared to Finland, I
+wonder what is the explanation. Either Finland can negotiate
+considerably better deals, or, perhaps more likely, the figures from
+the different countries are not directly comparable but this will
+require further investigation.
 
-The subscription fees are available by [agreement
-type](cost_by_type.csv), organization type, and [subscription
-category](cost_by_category.csv). Open access article processing
+Open access article processing
 charges (APCs) are not included in this data collection as far as I
 can see, although it would be interesting in its own right. It was
 recently reported by [Naukkarinen
@@ -124,17 +123,9 @@ academic journals globally ([Ware & Mabe,
 less than a third of these (11 000) are open access ([DOAJ,
 2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)). A common complaint regarding the (golden) OA model is the relatively high cost of the article processing charges, typically paid from primary research funding. With this funding model, money going OA is frequently seen as being taken away from other research activities, such as experiments or research personnell. In contrast, publication costs in the conventional subscription model are funded through university libraries with secret discloure agreements with the publishers and hence largely masked from the research community. In order to assess the true costs of scientific publishing and in order to facilitate shift to OA, the costs of the subscription model must be made more transparent and money used for conventional subscription must be diverted to funding the costs of OA publishing.
 
-
-
-```{r foi-totalcosts, message=FALSE, echo=FALSE, fig.show="hold", out.width="430px", fig.width = 7, fig.height = 5}
-dfs = df %>% group_by(Category) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
-dfs$Category = factor(dfs$Category, levels = rev(as.character(dfs$Category)))
-dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
-# Only consider the high-level categories
-dfss = dfs[-grep(";", dfs$Category),]
-p <- ggplot(dfss, aes(x = Category, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by category") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Category, y=35, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
-print(p)
-```
+The subscription fees are available also by [agreement
+type](cost_by_type.csv), organization type, and [subscription
+category](cost_by_category.csv).
 
 
 ## Costs by publisher
@@ -206,6 +197,41 @@ for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
 kable(head(dfs, 10))
 ```  
 
+
+```{r foi-timebypublisher2, message=FALSE, echo=FALSE}
+# Normalize the costs by 2010 to highlight relative increases
+dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year)
+dfs = dfs %>% spread(Year, Costs)
+dfs[, as.character(2010:2015)] = apply(as.matrix(dfs[, as.character(2010:2015)]), 2, function (x) {x/unlist(dfs[, "2010"])})
+dfs2 = dfs
+dfs2[, as.character(2010:2015)] = round(apply(as.matrix(dfs2[, as.character(2010:2015)]), 2, function (x) {x}),2)
+dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2015"]),]
+dfs2 = dfs2[rev(order(unlist(dfs2[, "2015"]))),]
+write.csv(dfs2, file = "table/cost_by_publisher_year_relative.csv", quote = F, row.names = F)
+dfs = melt(dfs)
+names(dfs) = c("Publisher", "Year", "Costs")
+dfs$Year = as.numeric(as.character(dfs$Year))
+```
+
+Let us compare the [relative increase in publisher costs](table/cost_by_publisher_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` publishers that did not have declared costs in 2010 or 2015 (see [here](table/cost_by_publisher_year.csv)) are excluded.
+
+```{r foi-timebypublisher2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
+# Just show publisher with the largest cost increases
+dfs$Costs[dfs$Costs == 0] = NA
+top <- as.character((subset(dfs, Year == 2015) %>% arrange(desc(Costs)))$Publisher)[1:10]
+dfs <- dfs %>% dplyr::filter(Publisher %in% top)
+# Order the factor levels for the figure
+dfs$Publisher <- factor(dfs$Publisher, levels = rev(as.character((subset(dfs, Year == 2015) %>% arrange(Costs))$Publisher)))
+p <- ggplot(dfs, aes(x = Year, y = Costs, color = Publisher)) +
+geom_point() +
+       geom_line() +       
+       ggtitle("Relative cost increase by publisher") +
+       ylab("Relative cost increase") +
+       scale_y_continuous(breaks = seq(1, max(dfs$Costs), 2))
+print(p)
+```
+
+
 <p></p>
 
 ## Costs by organization
@@ -242,6 +268,38 @@ for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
 kable(head(dfs, 10))
 ```
 
+```{r foi-timebyorganization2, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
+# Normalize the costs by 2010 to highlight relative increases
+dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year)
+dfs = dfs %>% spread(Year, Costs)
+dfs[, as.character(2010:2015)] = apply(as.matrix(dfs[, as.character(2010:2015)]), 2, function (x) {x/unlist(dfs[, "2010"])})
+dfs2 = dfs
+dfs2[, as.character(2010:2015)] = round(apply(as.matrix(dfs2[, as.character(2010:2015)]), 2, function (x) {x}),2)
+dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2015"]),]
+dfs2 = dfs2[rev(order(unlist(dfs2[, "2015"]))),]
+write.csv(dfs2, file = "table/cost_by_organization_year_relative.csv", quote = F, row.names = F)
+dfs = melt(dfs)
+names(dfs) = c("Organization", "Year", "Costs")
+dfs$Year = as.numeric(as.character(dfs$Year))
+```
 
+
+Finally, let us compare the [relative increase in costs across the institutions](table/cost_by_organization_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 organizations with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` organizations that did not have declared costs in 2010 or 2015 (see [here](table/cost_by_organization_year.csv)) are excluded.
+
+```{r foi-timebyorganization2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
+# Just show organization with the largest cost increases
+dfs$Costs[dfs$Costs == 0] = NA
+top <- as.character((subset(dfs, Year == 2015) %>% arrange(desc(Costs)))$Organization)[1:10]
+dfs <- dfs %>% dplyr::filter(Organization %in% top)
+# Order the factor levels for the figure
+dfs$Organization <- factor(dfs$Organization, levels = rev(as.character((subset(dfs, Year == 2015) %>% arrange(Costs))$Organization)))
+p <- ggplot(dfs, aes(x = Year, y = Costs, color = Organization)) +
+geom_point() +
+       geom_line() +       
+       ggtitle("Cost development by organization") +
+       ylab("Relative cost increase") +
+       scale_y_continuous(breaks = seq(1, max(dfs$Costs), .25))
+print(p)
+```
 
 
