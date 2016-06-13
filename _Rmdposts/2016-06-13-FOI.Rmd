@@ -58,9 +58,9 @@ US; and related activities are ongoing in several countries (see the
 recent [blog post by Stuart
 Lawson](http://stuartlawson.org/2016/06/publicly-available-data-on-international-journal-subscription-costs)).
 
-Access to literature is fundamental to academic research but this has been challenged with the rapidly increasing prices of academic journals, which university libraries find increasingly difficult to fund. According to the [data from the US Association of Research Libraries](http://www.lib.washington.edu/scholpub/facts/economics) the academic journal subscription charges increased 4x faster than inflation in 1986-2007. The relative variation in prices is also considerable among the publishers  ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)). Limited access to detailed pricing information and agreement details are likely to result in suboptimal contracts ([Cockerill, 2006](https://olh.openlibhums.org/articles/10.16995/olh.72/#B7); [Shieber, 2009](https://olh.openlibhums.org/articles/10.16995/olh.72/#B66)). Improved access to subscription costs can hence be expected to lead to better deals and lower costs for the universities.
+Access to literature is fundamental to academic research but this has been challenged with the rapidly increasing prices of academic journals, which university libraries find increasingly difficult to fund. According to the [data from the US Association of Research Libraries](http://www.lib.washington.edu/scholpub/facts/economics) the academic journal subscription charges increased 4x faster than inflation in 1986-2007. The relative variation in prices is also considerable among the publishers  ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)). Limited access to detailed pricing information and agreement details are likely to result in suboptimal contracts ([Cockerill, 2006](https://olh.openlibhums.org/articles/10.16995/olh.72/#B7); [Shieber, 2009](https://olh.openlibhums.org/articles/10.16995/olh.72/#B66)). Improved access to subscription costs can hence be expected to lead to better deals and lower costs for the universities. It can also facilitate transition to the Open Access (OA) publishing model.
 
-Motivated by this, and following [Tim Gowers successful FOI request on
+Motivated by all this, and following [Tim Gowers successful FOI request on
 the subscription costs for scientific journals in
 UK](http://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/),
 we made a similar request in Finland together with the [Open Knowledge
@@ -101,9 +101,9 @@ exchange rate June 12, 2016) for the top-10 publishers. Finland paid
 61 MEUR for the same top-10 publishers in the same period, which is
 1.4% of the UK expenditure. The costs in the other countries seem
 unexpectedly high compared to Finland, I wonder what is the
-explanation. It is possible that these figures from the different
-countries are not directly comparable but this will require further
-investigation.
+explanation. Either Finland can negotiate considerably better deals,
+or, perhaps more likely, the figures from the different countries are not
+directly comparable but this will require further investigation.
 
 The subscription fees are available by [agreement
 type](cost_by_type.csv), organization type, and [subscription
@@ -122,7 +122,8 @@ be a good idea. Overall, there are roughly 35 000 peer-reviewed
 academic journals globally ([Ware & Mabe,
 2015](https://olh.openlibhums.org/articles/10.16995/olh.72/#B71));
 less than a third of these (11 000) are open access ([DOAJ,
-2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)).
+2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)). A common complaint regarding the (golden) OA model is the relatively high cost of the article processing charges, typically paid from primary research funding. With this funding model, money going OA is frequently seen as being taken away from other research activities, such as experiments or research personnell. In contrast, publication costs in the conventional subscription model are funded through university libraries with secret discloure agreements with the publishers and hence largely masked from the research community. In order to assess the true costs of scientific publishing and in order to facilitate shift to OA, the costs of the subscription model must be made more transparent and money used for conventional subscription must be diverted to funding the costs of OA publishing.
+
 
 
 ```{r foi-totalcosts, message=FALSE, echo=FALSE, fig.show="hold", out.width="430px", fig.width = 7, fig.height = 5}
