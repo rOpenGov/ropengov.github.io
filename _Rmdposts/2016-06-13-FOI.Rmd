@@ -1,5 +1,5 @@
 ---
-title: "Scientific journal subscription costs in Finland 2010-2015"
+title: "Scientific journal subscription costs in Finland 2010-2015: a preliminary analysis"
 author: "Leo Lahti"
 date: "2016-06-10 18:00:00"
 excerpt: "Freedom of Information"
