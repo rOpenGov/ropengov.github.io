@@ -1,6 +1,6 @@
 ---
 title: bibliographica
-description: bibliograhica
+description: Toolkit for bibliograhic metadata catalogues
 maintainer: Leo Lahti <leo.lahti@iki.fi>
 link: http://github.com/ropengov/bibliographica
 github: https://github.com/rOpenGov/bibliographica
