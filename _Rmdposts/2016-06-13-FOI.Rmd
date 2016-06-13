@@ -99,8 +99,11 @@ Brook,
 period the UK paid altogether 4319 MEUR (rough estimate based on the
 exchange rate June 12, 2016) for the top-10 publishers. Finland paid
 61 MEUR for the same top-10 publishers in the same period, which is
-1.4% of the UK expenditure. The UK costs seem unexpectedly high
-compared to Finland, I wonder what is the explanation.
+1.4% of the UK expenditure. The costs in the other countries seem
+unexpectedly high compared to Finland, I wonder what is the
+explanation. It is possible that these figures from the different
+countries are not directly comparable but this will require further
+investigation.
 
 The subscription fees are available by [agreement
 type](cost_by_type.csv), organization type, and [subscription
