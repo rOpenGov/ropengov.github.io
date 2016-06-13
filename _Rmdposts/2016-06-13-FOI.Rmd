@@ -217,11 +217,6 @@ kable(head(dfs, 10))
 dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year)
 dfs = dfs %>% spread(Year, Costs)
 dfs[, as.character(2010:2015)] = apply(as.matrix(dfs[, as.character(2010:2015)]), 2, function (x) {x/unlist(dfs[, "2010"])})
-dfs2 = dfs
-dfs2[, as.character(2010:2015)] = round(apply(as.matrix(dfs2[, as.character(2010:2015)]), 2, function (x) {x}),2)
-dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2015"]),]
-dfs2 = dfs2[rev(order(unlist(dfs2[, "2015"]))),]
-write.csv(dfs2, file = "table/cost_by_publisher_year_relative.csv", quote = F, row.names = F)
 dfs = melt(dfs)
 names(dfs) = c("Publisher", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
@@ -287,11 +282,6 @@ kable(head(dfs, 10))
 dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Price, na.rm = TRUE)/1e6) %>% arrange(Year)
 dfs = dfs %>% spread(Year, Costs)
 dfs[, as.character(2010:2015)] = apply(as.matrix(dfs[, as.character(2010:2015)]), 2, function (x) {x/unlist(dfs[, "2010"])})
-dfs2 = dfs
-dfs2[, as.character(2010:2015)] = round(apply(as.matrix(dfs2[, as.character(2010:2015)]), 2, function (x) {x}),2)
-dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2015"]),]
-dfs2 = dfs2[rev(order(unlist(dfs2[, "2015"]))),]
-write.csv(dfs2, file = "table/cost_by_organization_year_relative.csv", quote = F, row.names = F)
 dfs = melt(dfs)
 names(dfs) = c("Organization", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
