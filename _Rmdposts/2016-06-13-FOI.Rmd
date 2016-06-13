@@ -139,12 +139,12 @@ must be diverted to funding the costs of OA publishing.
 
 The subscription fees are available also by [agreement
 type](cost_by_type.csv), organization type, and [subscription
-category](cost_by_category.csv).
+category](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html).
 
 
 ## Costs by publisher
 
-The Finnish data covers `r length(unique(df$Publisher))` individual publishers ([see annual costs by publisher](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv)). The figure indicates the total subscription fees paid to the top publishers 2010-2015. Over one third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare individual publishers on a per article or per citation basis based on this data set. It was recently estimated elsewhere, however, that Elsevier’s prices per citation are roughly 3x higher than with non-profit publishers; Emerald, Sage, and Taylor & Francis had roughly 10x higher prices ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)).
+The Finnish data covers `r length(unique(df$Publisher))` individual publishers ([see annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The figure indicates the total subscription fees paid to the top publishers 2010-2015. Over one third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare individual publishers on a per article or per citation basis based on this data set. It was recently estimated elsewhere, however, that Elsevier’s prices per citation are roughly 3x higher than with non-profit publishers; Emerald, Sage, and Taylor & Francis had roughly 10x higher prices ([Bergstrom et al. PNAS 2014](http://www.econ.ucsb.edu/~tedb/Journals/PNAS-2014-Bergstrom-1403006111.pdf)).
 
 ```{r foi-totalcosts2b, message=FALSE, echo=FALSE, fig.width=10, fig.height=9}
 dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
@@ -169,7 +169,7 @@ dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
 dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs))
 ```
 
-The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2015 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). See a separate table for full [annual costs by publisher](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv) (the top-10 publishers shown below). 
+The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2015 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). See a separate table for full [annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html) (the top-10 publishers shown below). 
 
 ```{r foi-costbytime, message=FALSE, echo=FALSE, fig.width=16, fig.height=6, out.width="870px"}
 # Price, Year : all publishers
@@ -222,7 +222,7 @@ names(dfs) = c("Publisher", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
 ```
 
-Let us compare the [relative increase in publisher costs](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` publishers that did not have declared costs in 2010 or 2015 (see [here](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv)) are excluded.
+Let us compare the [relative increase in publisher costs](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` publishers that did not have declared costs in 2010 or 2015 (see [here](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)) are excluded.
 
 ```{r foi-timebypublisher2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
 # Just show publisher with the largest cost increases
@@ -249,7 +249,7 @@ print(p)
 dfs = df %>% group_by(Organization.type) %>% summarise(Costs = 100*sum(Price)/sum(df$Price))
 ```
 
-The Finnish data collection includes `r length(unique(df$Organization))` organizations ([see annual costs by organization](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year.csv)). The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "University", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2015 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure). The Table indicates the annual costs for the top organizations.
+The Finnish data collection includes `r length(unique(df$Organization))` organizations ([see annual costs by organization](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "University", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2015 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure). The Table indicates the annual costs for the top organizations.
 
 ```{r foi-totalcosts2d, message=FALSE, echo=FALSE, fig.show="hold", out.width="420px", fig.width = 10, fig.height = 9}
 dfs = df %>% group_by(Organization.type) %>% summarise(Costs = sum(Price)/1e6) %>% arrange(Costs)
@@ -288,7 +288,7 @@ dfs$Year = as.numeric(as.character(dfs$Year))
 ```
 
 
-Finally, let us compare the [relative increase in costs across the institutions](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 organizations with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` organizations that did not have declared costs in 2010 or 2015 (see [here](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year.csv)) are excluded.
+Finally, let us compare the [relative increase in costs across the institutions](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). The costs are normalized to 1 in 2010, and the top 10 organizations with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` organizations that did not have declared costs in 2010 or 2015 (see [here](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)) are excluded.
 
 ```{r foi-timebyorganization2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
 # Just show organization with the largest cost increases
