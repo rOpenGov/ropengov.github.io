@@ -48,9 +48,9 @@ df$Category = factor(df$Category)
 
 [Detailed information on journal subscription costs paid to individual
 publishers by the Finnish research
-institutions](http://avointiede.fi/ajankohtaista/-/asset_publisher/UJglmibGKmbR/content/lapinakyvyytta-ja-avoimuutta-tieteelliseen-julkaisemiseen-tutkimusorganisaatioilta-vuosittain-miljoonia-euroja-suurille-kustantajille?_101_INSTANCE_UJglmibGKmbR_viewMode=view)
-has been released by the Open Science Initiative of the Finnish
-Ministry of Education. With this, **Finland becomes to our knowledge
+institutions](http://openscience.fi/-/transparency-and-openness-to-scientific-publishing-the-finnish-research-organisations-pay-millions-of-euros-annually-to-the-large-publishers) has been released by the Open Science Initiative of the Finnish Ministry of Education (ATT). The data set is available at the [ATT website](http://openscience.fi/publisher_costs).
+
+With this, **Finland becomes to our knowledge
 the first country where annual subscription fees for all individual
 publishers and all major research institutions have been made
 available**, spanning the years 2010-2015. Similar information has
