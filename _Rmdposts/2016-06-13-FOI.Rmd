@@ -16,7 +16,8 @@ library(reshape2)
 library(ggplot2)
 theme_set(theme_bw(20))
 # License fee data URL
-f <- "~/data/Tietopyynto/20160607\ Kustantajahintatiedot_koottu_v0.99.csv"
+# f <- "~/data/Tietopyynto/20160607\ Kustantajahintatiedot_koottu_v0.99.csv"
+f = "http://avaa.tdata.fi/documents/kuhiti/Kustantajahintatiedot_Koko_Aineisto.csv"
 # Read the data
 df <- read.csv(f, fileEncoding = "latin1")
 # Rename
