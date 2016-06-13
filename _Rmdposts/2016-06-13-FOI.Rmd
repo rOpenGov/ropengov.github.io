@@ -51,11 +51,12 @@ the Finnish universities [turned down my FOI request in summer
 we appealed in court, which decided the case positive for us in August
 2015. For an English summary of this process, see a separate post in the [MostlyPhysics](http://www.mostlyphysics.net/blog/) blog.
 
-Here I provide a brief preliminary analysis of the [data](http://avointiede.fi/ajankohtaista/-/asset_publisher/UJglmibGKmbR/content/lapinakyvyytta-ja-avoimuutta-tieteelliseen-julkaisemiseen-tutkimusorganisaatioilta-vuosittain-miljoonia-euroja-suurille-kustantajille?_101_INSTANCE_UJglmibGKmbR_viewMode=view) on journal
-subscription fees that was collected and released by the Ministry of
-Education Open Science Initiative in Finland. I have translated key
-terms from the Finnish data release to better serve the international
-audience. An augmented source code of this analysis is [maintained in
+Here I provide a brief preliminary analysis of the
+[data](http://avointiede.fi/ajankohtaista/-/asset_publisher/UJglmibGKmbR/content/lapinakyvyytta-ja-avoimuutta-tieteelliseen-julkaisemiseen-tutkimusorganisaatioilta-vuosittain-miljoonia-euroja-suurille-kustantajille?_101_INSTANCE_UJglmibGKmbR_viewMode=view)
+on journal subscription fees that was collected and released by the
+Ministry of Education Open Science Initiative in Finland. I have
+abbreviated some terms as detailed in the source code of
+this analysis is [maintained in
 Github](https://github.com/rOpenGov/2016-Finland-SubscriptionCosts).
 
 
