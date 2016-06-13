@@ -19,7 +19,7 @@ theme_set(theme_bw(20))
 # f <- "~/data/Tietopyynto/20160607\ Kustantajahintatiedot_koottu_v0.99.csv"
 f = "http://avaa.tdata.fi/documents/kuhiti/Kustantajahintatiedot_Koko_Aineisto.csv"
 # Read the data
-df <- read.csv(f, fileEncoding = "latin1")
+df <- read.csv(f, fileEncoding = "UTF-8")
 # Rename
 df = rename(df, Publisher = Kustantaja.Välittäjä)
 df = rename(df, Organization = Organisaation.nimi)
@@ -49,7 +49,7 @@ df$Category = factor(df$Category)
 
 [Detailed information on journal subscription costs paid to individual
 publishers by the Finnish research
-institutions](http://openscience.fi/-/transparency-and-openness-to-scientific-publishing-the-finnish-research-organisations-pay-millions-of-euros-annually-to-the-large-publishers) has been released by the Open Science Initiative of the Finnish Ministry of Education (ATT). The data set is available at the [ATT website](http://openscience.fi/publisher_costs).
+institutions](http://openscience.fi/-/transparency-and-openness-to-scientific-publishing-the-finnish-research-organisations-pay-millions-of-euros-annually-to-the-large-publishers) has been released by the Finnish Ministry of Education and Culture, and its Open Science and Research Initiative funded 2014–2017 ([Kustantajahintatiedot Suomessa 2010–2015](http://urn.fi/urn:nbn:fi:csc-kata20160609091336769027)). 
 
 With this, **Finland becomes to our knowledge
 the first country where annual subscription fees for all individual
