@@ -106,10 +106,12 @@ considerably better deals, or, perhaps more likely, the figures from
 the different countries are not directly comparable but this will
 require further investigation.
 
-Open access article processing
-charges (APCs) are not included in this data collection as far as I
-can see, although it would be interesting in its own right. It was
-recently reported by [Naukkarinen
+The data set covers all Finnish universities, major public
+institutions, and a number of special libraries, information services
+and other smaller institutions. Open access article processing charges
+(APCs) are not included in this data collection as far as I can see,
+although it would be interesting in its own right. It was recently
+reported by [Naukkarinen
 (2016)](https://avointiede.fi/documents/10864/12232/Avoimen+julkaisemisen+tuen+malli/73838e9b-7924-446c-9c7a-cc8f759919bb)
 that in 2014 [18% of the articles in Finnish universities were
 published as open
@@ -121,7 +123,19 @@ be a good idea. Overall, there are roughly 35 000 peer-reviewed
 academic journals globally ([Ware & Mabe,
 2015](https://olh.openlibhums.org/articles/10.16995/olh.72/#B71));
 less than a third of these (11 000) are open access ([DOAJ,
-2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)). A common complaint regarding the (golden) OA model is the relatively high cost of the article processing charges, typically paid from primary research funding. With this funding model, money going OA is frequently seen as being taken away from other research activities, such as experiments or research personnell. In contrast, publication costs in the conventional subscription model are funded through university libraries with secret discloure agreements with the publishers and hence largely masked from the research community. In order to assess the true costs of scientific publishing and in order to facilitate shift to OA, the costs of the subscription model must be made more transparent and money used for conventional subscription must be diverted to funding the costs of OA publishing.
+2016](https://olh.openlibhums.org/articles/10.16995/olh.72/#B12)). A
+common complaint regarding the (golden) OA model is the relatively
+high cost of the article processing charges, typically paid from
+primary research funding. With this funding model, money going OA is
+frequently seen as being taken away from other research activities,
+such as experiments or research personnell. In contrast, publication
+costs in the conventional subscription model are funded through
+university libraries with secret discloure agreements with the
+publishers and hence largely masked from the research community. In
+order to assess the true costs of scientific publishing and in order
+to facilitate shift to OA, the costs of the subscription model must be
+made more transparent and money used for conventional subscription
+must be diverted to funding the costs of OA publishing.
 
 The subscription fees are available also by [agreement
 type](cost_by_type.csv), organization type, and [subscription
@@ -213,7 +227,7 @@ names(dfs) = c("Publisher", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
 ```
 
-Let us compare the [relative increase in publisher costs](table/cost_by_publisher_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` publishers that did not have declared costs in 2010 or 2015 (see [here](table/cost_by_publisher_year.csv)) are excluded.
+Let us compare the [relative increase in publisher costs](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` publishers that did not have declared costs in 2010 or 2015 (see [here](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_publisher_year.csv)) are excluded.
 
 ```{r foi-timebypublisher2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
 # Just show publisher with the largest cost increases
@@ -284,7 +298,7 @@ dfs$Year = as.numeric(as.character(dfs$Year))
 ```
 
 
-Finally, let us compare the [relative increase in costs across the institutions](table/cost_by_organization_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 organizations with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` organizations that did not have declared costs in 2010 or 2015 (see [here](table/cost_by_organization_year.csv)) are excluded.
+Finally, let us compare the [relative increase in costs across the institutions](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year_relative.csv). The costs are normalized to 1 in 2010, and the top 10 organizations with the highest cost increase in 2010-2015 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2015)$Costs)))` organizations that did not have declared costs in 2010 or 2015 (see [here](https://github.com/antagomir/temp/blob/master/20160610/table/cost_by_organization_year.csv)) are excluded.
 
 ```{r foi-timebyorganization2b, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
 # Just show organization with the largest cost increases
