@@ -75,42 +75,13 @@ No real surprises here. Collected works and plays are of course an important sou
 What is telling when comparing Cervantes on the continent and his popularity in the English-speaking world is that Galatea (Cervantes’s first published work) does very well on the continent, but is not published in English during the early modern period. At the same time it is very clear that Don Quixote is THE single work by any author in early modern Europe (including the English-speaking world).
  
 
-
-{% highlight text %}
-## Error: All select() inputs must resolve to integer column positions.
-## The following do not:
-## *  n
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in pics[["cerl"]] + ggtitle("Continental Europe"): non-numeric argument to binary operator
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in pics[["estc"]] + ggtitle("Britain and North America"): non-numeric argument to binary operator
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Error in pics[[1]]: subscript out of bounds
-{% endhighlight %}
+<img src="/figs/2016-04-23-Shakespeare/shakespeare-cervantes-1.png" title="center" alt="center" width="800px" />
 
 
 ### Comparison of popular titles
  
 On this timeline we see a very interesting contest. Don Quixote’s train-like rise throughout the early modern era is impressive indeed. Hamlet sees an interesting peak in English-speaking world in 1750s to be followed by the rise of the comedies and rapid sinking of the publishing of the Danish prince. Same thing happens to Romeo and Juliet shortly after. Macbeth on the other hand seems to follow a different, upward path towards the late eighteenth century. 
 
-
-
-{% highlight text %}
-## Error: Each variable must have a unique name.
-## Problem variables: 'publication_decade'
-{% endhighlight %}
 
 <img src="/figs/2016-04-23-Shakespeare/shakespeare-titles2-1.png" title="center" alt="center" width="700px" />
 

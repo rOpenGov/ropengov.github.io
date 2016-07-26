@@ -157,7 +157,7 @@ for (s in unique(df$source)) {
   p <- ggplot(dfs, aes(x = publication_decade, y = n, fill = title)) +
        geom_bar(stat = "identity", position = "stack", color = "black")
   p <- p + xlim(range(df$publication_decade))
-  p <- p + ylim(values = c(0, max(df %>% group_by(publication_decade) %>% tally() %>% select(n)) + 1))
+  p <- p + ylim(values = c(0, max(df %>% group_by(publication_decade) %>% tally() %>% select(nn)) + 1))
   p <- p + scale_fill_manual(values = cols[as.character(levels(dfs$title))])
   p <- p + xlab("Publication decade")
   p <- p + ylab("Title count (n)")  
@@ -180,13 +180,16 @@ On this timeline we see a very interesting contest. Don Quixote’s train-like r
 ```{r shakespeare-titles2, echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE, out.width="700px", fig.height=4, fig.width=8}
 df1 <- filter(tabs$Shakespeare, title %in% c("Hamlet", "Romeo and Juliet", "Macbeth", "Othello"))
 df2 <- filter(tabs$Cervantes, title %in% "Don Quixote")
-df <- rbind_all(list(df1, df2)) 
+df <- bind_rows(list(df1, df2)) 
 
 # Calculate relative abundances within each decade
 dfs <- df %>% group_by(publication_decade, title) %>% tally()
 dfs <- dfs %>% spread(title, n, fill = 0)
 dfs[,-1] <- t(apply(dfs[, -1], 1, function(x) {x/sum(x)}))
-dfs <- gather(dfs, publication_decade)
+
+library(reshape2)
+dfs <- melt(dfs, "publication_decade")
+#dfs <- gather(dfs, publication_decade)
 names(dfs) <- c("publication_decade", "title", "freq")
 dfs$title <- factor(dfs$title, levels = unique(dfs$title))
 
