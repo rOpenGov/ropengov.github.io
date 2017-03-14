@@ -1,6 +1,8 @@
 ---
 title: "Shakespeare! Cervantes! 400! A statistical analysis of the early modern printing of the Bard and Don Quixote"
-author: "Leo Lahti and Mikko Tolonen"
+author:
+  name: Leo Lahti and Mikko Tolonen
+  image: leo.jpg
 date: "2016-04-23 12:00:00"
 excerpt: Shakespeare 400 years !
 layout: post
