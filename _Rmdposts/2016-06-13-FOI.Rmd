@@ -19,8 +19,9 @@ library(ggplot2)
 theme_set(theme_bw(20))
 # License fee data URL
 # f <- "~/data/Tietopyynto/20160607\ Kustantajahintatiedot_koottu_v0.99.csv"
-f = "http://avaa.tdata.fi/documents/kuhiti/Publisher_Costs_FI_Full_Data.csv"
+# wget("http://avaa.tdata.fi/documents/kuhiti/Publisher_Costs_FI_Full_Data.csv")
 # Read the data
+f <- "Publisher_Costs_FI_Full_Data.csv"
 df <- read.csv(f, fileEncoding = "UTF-8")
 # Rename
 df = rename(df, Publisher = Publisher.Supplier)
