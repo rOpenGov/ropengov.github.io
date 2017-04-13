@@ -1,6 +1,6 @@
 ---
 title: "eurostat package published in R Journal"
-excerpt: "eurosta preprint"
+excerpt: "eurostat preprint"
 author:
   name: Leo Lahti
   image: leo.jpg
