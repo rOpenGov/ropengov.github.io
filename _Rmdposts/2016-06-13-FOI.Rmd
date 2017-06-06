@@ -24,8 +24,8 @@ theme_set(theme_bw(20))
 f <- "Publisher_Costs_FI_Full_Data.csv"
 df <- read.csv(f, fileEncoding = "UTF-8")
 # Rename
-df = rename(df, Publisher = Publisher.Supplier)
-df = rename(df, Organization = Organization.name)
+df <- rename(df, Publisher = Publisher.Supplier)
+df <- rename(df, Organization = Organization.name)
 ```
 
 [Detailed information on journal subscription costs paid to individual
