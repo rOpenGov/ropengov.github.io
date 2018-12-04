@@ -45,7 +45,7 @@ Finland is possibly the only country that has systematically released subscripti
 ## Overall subscription costs 2010-2017
 
 ```{r foi-tables, message=FALSE, warning=FALSE, echo=FALSE, fig.show="hold", out.width="430px", fig.width = 7, fig.height = 5}
-dfs = df %>% group_by(Resource.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs <- df %>% group_by(Resource.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
 dfs$Resource.type = factor(dfs$Resource.type, levels = rev(as.character(dfs$Resource.type)))
 dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs, na.rm = TRUE), 1)
 names(dfs) = c("Resource.type", "Total (MEUR)", "Percent (%)")
@@ -127,26 +127,25 @@ category](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html).
 Overall, the Finnish data covers `r length(unique(df$Publisher))` unique publishers ([see annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The figure indicates the total subscription fees paid to the top publishers 2010-2017. One third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare average journal prices among individual publishers based on this data.
 
 ```{r foi-totalcosts2b, message=FALSE, echo=FALSE, fig.width = 10, fig.height = 9}
-dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs <- df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
 dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
 dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
 p <- ggplot(dfs[1:20,], aes(x = Publisher, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by publisher") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
 print(p)
 
-dfs = df %>% group_by(Publisher) %>% summarise(n = n()) %>% arrange(desc(n))
-dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
-dfs$Percentage = round(100 * dfs$n/sum(dfs$n), 1)
-p <- ggplot(dfs[1:20,], aes(x = Publisher, y = n)) +
-        geom_bar(stat = "identity", fill = "lightgray", color = "black") +
-	ggtitle("Subscriptions by publisher") +
-	coord_flip() + xlab("") + ylab("Subscriptions (n)") + geom_
-	text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""),
-	     hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+#dfs <- df %>% group_by(Publisher) %>% summarise(n = n()) %>% arrange(desc(n))
+#dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
+#dfs$Percentage = round(100 * dfs$n/sum(dfs$n), 1)
+#p <- ggplot(dfs[1:20,], aes(x = Publisher, y = n)) +
+#        geom_bar(stat = "identity", fill = "lightgray", color = "black") +#
+#	ggtitle("Subscriptions by publisher") +
+#	coord_flip() + xlab("") + ylab("Subscriptions (n)") + 
+#	text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""),
+#	     hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
 #print(p)
-
-dfs = df %>% group_by(Way.of.acquisition) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
-dfs$Way.of.acquisition = factor(dfs$Way.of.acquisition, levels = rev(as.character(dfs$Way.of.acquisition)))
-dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+#dfs = df %>% group_by(Way.of.acquisition) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+#dfs$Way.of.acquisition = factor(dfs$Way.of.acquisition, levels = rev(as.character(dfs$Way.of.acquisition)))
+#dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
 ```
 
 
