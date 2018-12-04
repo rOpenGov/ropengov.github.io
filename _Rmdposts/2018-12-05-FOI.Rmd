@@ -1,0 +1,307 @@
+
+---
+title: "Cost of academic publishing in Finland 2010-2017"
+author:
+  name: Leo Lahti
+  image: leo.jpg
+date: 2018-12-05 12:53:45
+layout: post
+draft: false
+categories: R
+---
+
+## Subscription costs to scientific publishers in Finland 2010-2017
+
+
+```{r foi-init, message=FALSE, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(reshape2)
+library(ggplot2)
+theme_set(theme_bw(20))
+
+# License fee data URL
+f <- "http://avaa.tdata.fi/documents/kuhiti/Kustantajahintatiedot_Koko_Aineisto.csv"
+
+# Read the data
+df <- read.csv(f, fileEncoding = "UTF-8")
+
+# Rename
+df <- rename(df, Organization = Organisaation.nimi)
+df <- rename(df, Organization.type = Organisaation.tyyppi)
+df <- rename(df, Publisher = Kustantaja.Välittäjä)
+df <- rename(df, Year = Vuosi)
+df <- rename(df, Cost = Hinta)
+df <- rename(df, Resource = Aineisto)
+df <- rename(df, Resource.type = Aineistotyyppi)
+df <- rename(df, Way.of.acquisition = Hankintatapa)
+```
+
+This post provides a brief overview of the subscription prices paid by Finnish research institutions to academic publishers in 2010-2017.
+
+Finland is possibly the only country that has systematically released subscription prices that research libraries pay to academic publishers [as open data](https://avointiede.fi/fi/avoimet-julkaisut/kustantajahintatietoja). The data is available for all major research institutions in Finland. Recently, an updated data set for 2010–2017 was made openly available at [avointiede.fi](https://avointiede.fi/fi/avoimet-julkaisut/kustantajahintatietoja). In addition, [full text agreements](https://www.kansalliskirjasto.fi/extra/finelib_julkinen/) with many publishers have been [made available](http://finelib.fi/negotiations/agreements/). The subscription price data was initially provided by Finnish Ministry of Education and Culture, and its Open Science and Research Initiative funded 2014–2017, after a successful Freedom of Information request by the Finnish Open Science community, as summarized [elsewhere](https://www.mostlyphysics.net/blog/2016/6/13/finland-takes-leading-role-in-the-openness-of-academic-journal-pricing). This post updates our [earlier analysis](http://ropengov.github.io/r/2016/06/10/FOI/). For source code, see [main.R](https://github.com/rOpenGov/Finland-Subscription-Costs). 
+
+
+## Overall subscription costs 2010-2017
+
+```{r foi-tables, message=FALSE, warning=FALSE, echo=FALSE, fig.show="hold", out.width="430px", fig.width = 7, fig.height = 5}
+dfs = df %>% group_by(Resource.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Resource.type = factor(dfs$Resource.type, levels = rev(as.character(dfs$Resource.type)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs, na.rm = TRUE), 1)
+names(dfs) = c("Resource.type", "Total (MEUR)", "Percent (%)")
+write.csv(dfs, file = "table/cost_by_category.csv", quote = F, row.names = F)
+
+dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
+dfs[is.na(dfs)] = 0
+dfs$Organization = as.character(dfs$Organization)
+dfs$Total = rowSums(dfs[, as.character(2010:2017)], na.rm = TRUE)
+dfs$Percentage = 100 * dfs$Total/sum(dfs$Total)
+dfs = dfs %>% arrange(desc(Percentage))
+dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
+names(dfs) = c("Organization (costs in MEUR)", as.character(2010:2017), "Total", "%")
+for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
+write.csv(dfs, file = "table/cost_by_organization_year.csv", quote = F, row.names = F)
+
+dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
+dfs[is.na(dfs)] = 0
+dfs$Publisher = as.character(dfs$Publisher)
+dfs$Total = rowSums(dfs[, as.character(2010:2017)], na.rm = TRUE)
+dfs$Percentage = 100 * dfs$Total/sum(dfs$Total)
+dfs = dfs %>% arrange(desc(Percentage))
+dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
+dfs$Publisher = substr(dfs$Publisher, 1, 80)
+names(dfs) = c("Publisher (costs in MEUR)", as.character(2010:2017), "Total", "%")
+for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
+write.csv(dfs, file = "table/cost_by_publisher_year.csv", quote = F, row.names = F)
+
+
+dfs = df %>% group_by(Way.of.acquisition) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Way.of.acquisition = factor(dfs$Way.of.acquisition, levels = rev(as.character(dfs$Way.of.acquisition)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+names(dfs) = c("Way.of.acquisition", "Total (MEUR)", "Percent (%)")
+write.csv(dfs, file = "table/cost_by_type.csv", quote = F, row.names = F)
+
+# Top-10 Publisher costs in the UK 2010-2014.
+# CSV from https://olh.openlibhums.org/articles/10.16995/olh.72/
+# Source: https://olh.openlibhums.org/articles/10.16995/olh.72/#B45
+uk = read.csv("https://olh.openlibhums.org/articles/10.16995/olh.72/download/table/T1?type=csv", row.names = 1)[1:10,]
+# Harmonize publisher names with the Finnish data set
+rownames(uk) = gsub("Oxford University Press", "Oxford University Press (OUP)", rownames(uk))
+rownames(uk) = gsub("Royal Society of Chemistry", "Royal Society of Chemistry (RSC)", rownames(uk))
+rownames(uk) = gsub("Institute of Physics Publishing", "Institute of Physics (IOP)", rownames(uk))
+rownames(uk) = gsub("Sage", "SAGE Publications", rownames(uk))
+rnams = rownames(uk); cnams = colnames(uk)
+# UK costs for top-10 publishers, converted to EUR based on the source on 12.6.2016
+uk = apply(uk,2,function(x){as.numeric(gsub("£", "", gsub(",", "", as.character(x))))}) / 0.0998374
+rownames(uk) = rnams
+colnames(uk) = gsub("^X", "", cnams)
+uk = melt(uk)
+colnames(uk) = c("Publisher", "Year", "Costs")
+uk$Country = "UK"
+# FI costs for top-10 publishers (in EUR)
+fi = df %>% filter(Year %in% 2010:2014 & Publisher %in% uk$Publisher) %>% group_by(Publisher, Year) %>% summarise(Costs = sum(Cost, na.rm = T))
+fi$Country = "Finland"
+# Combine FI & UK data 2010-2014
+d = bind_rows(uk, fi)
+d$Publisher = droplevels(factor(d$Publisher))
+d$Country = factor(d$Country, levels = unique(d$Country))
+d$Costs = d$Costs/1e6 # MEUR
+dd <- d %>% group_by(Country) %>% summarise(Costs = sum(Costs))
+```
+
+Based on the data collected by the Ministry of Education, Finland paid in total
+`r round(sum(df$Cost)/1e6, 1)` million EUR subscription and other
+fees on scientific publishing in 2010-2017. The average annual costs for in Finland were `r round(mean((df %>% group_by(Year) %>% summarise(Costs = sum(Cost)/1e6))$Costs))` MEUR.
+
+Data for the top-10 publishers in the UK 2010-2014 is available in [Lawson, Meghreblian & Brook, 2017](https://olh.openlibhums.org/articles/10.16995/olh.72/#B45) ([Table 1](https://olh.openlibhums.org/articles/10.16995/olh.72)). During this period the UK paid altogether `r round(subset(dd, Country == "UK")$Costs)` MEUR (rough estimate based on the exchange rate June 12, 2016) for the top-10 publishers. Finland paid `r round(subset(dd, Country == "Finland")$Costs)` MEUR for the same top-10 publishers in 2010-2014. This is  `r round(100 * (subset(dd, Country == "Finland")$Costs/5488600) / (subset(dd, Country == "UK")$Costs/65092896), 1)`% of the UK expenditure _per capita_. It could be that the data is not directly comparable but this will require further investigation. 
+
+
+Information for Finland is available by [agreement
+type](table/cost_by_type.csv), organization type, and [subscription
+category](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html).
+
+
+
+### Costs by publisher
+
+Overall, the Finnish data covers `r length(unique(df$Publisher))` unique publishers ([see annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The figure indicates the total subscription fees paid to the top publishers 2010-2017. One third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare average journal prices among individual publishers based on this data.
+
+```{r foi-totalcosts2b, message=FALSE, echo=FALSE, fig.width = 10, fig.height = 9}
+dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs[1:20,], aes(x = Publisher, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by publisher") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+
+dfs = df %>% group_by(Publisher) %>% summarise(n = n()) %>% arrange(desc(n))
+dfs$Publisher = factor(dfs$Publisher, levels = rev(as.character(dfs$Publisher)))
+dfs$Percentage = round(100 * dfs$n/sum(dfs$n), 1)
+p <- ggplot(dfs[1:20,], aes(x = Publisher, y = n)) +
+        geom_bar(stat = "identity", fill = "lightgray", color = "black") +
+	ggtitle("Subscriptions by publisher") +
+	coord_flip() + xlab("") + ylab("Subscriptions (n)") + geom_
+	text(aes(x=Publisher, y=32, label=paste(Percentage, "%", sep = ""),
+	     hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+#print(p)
+
+dfs = df %>% group_by(Way.of.acquisition) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Way.of.acquisition = factor(dfs$Way.of.acquisition, levels = rev(as.character(dfs$Way.of.acquisition)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+```
+
+
+```{r foi-costperyear, message=FALSE, eval=TRUE, echo=FALSE, fig.show="hold", out.width="200px"}
+dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+```
+
+The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2017 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). See a separate table for full [annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). 
+
+```{r foi-costbytime, message=FALSE, echo=FALSE, fig.width=17, fig.height=6, out.width="860px"}
+# Cost, Year : all publishers
+# Growth percentage compared to previous year is shown
+dfs = df %>% group_by(Year) %>% summarise(Costs = sum(Cost)/1e6) 
+p1 <- ggplot(dfs, aes(x = Year, y = Costs)) +
+       geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Total annual costs") +
+       geom_text(data = dfs[-1,], aes(x = Year, y = 1.5,
+        label = paste(round(100 * diff(dfs$Costs)/dfs$Costs[-length(dfs$Costs)], 1), "%", sep = "")   ),
+     	size = 5, angle = 90, hjust = 0) +
+       scale_x_continuous(breaks = 2010:2017, labels = c(2010:2017)) + 
+       ylab("Costs (MEUR)")
+
+dfss = df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost, na.rm = TRUE)) %>% arrange(desc(Costs))
+top.publishers <- as.character(dfss$Publisher[1:10])
+dfs2 <- dplyr::filter(df, Publisher %in% top.publishers) %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(Year)
+dfs2$Publisher <- factor(dfs2$Publisher, levels = top.publishers)
+p2 <- ggplot(dfs2, aes(x = Year, y = Costs, color = Publisher)) +
+       geom_point() +
+       geom_line() +       
+       ggtitle("Cost by publisher 2010-2017") +
+       scale_x_continuous(breaks = 2010:2017, labels = c(2010:2017)) +
+       ylab("Costs (MEUR)") 
+
+library(gridExtra)
+grid.arrange(p1, p2, widths=c(5, 9))
+```
+
+
+```{r foi-timebypublisher2, message=FALSE, echo=FALSE, fig.width=20, fig.heigth=10}
+# Normalize the costs by 2010 to highlight relative increases
+dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year)
+dfs = dfs %>% spread(Year, Costs)
+dfs[, as.character(2010:2017)] = apply(as.matrix(dfs[, as.character(2010:2017)]), 2, function (x) {x/unlist(dfs[, "2010"])})
+dfs2 = dfs
+dfs2[, as.character(2010:2017)] = round(apply(as.matrix(dfs2[, as.character(2010:2017)]), 2, function (x) {x}),2)
+dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2017"]),]
+dfs2 = dfs2[rev(order(unlist(dfs2[, "2017"]))),]
+write.csv(dfs2, file = "table/cost_by_publisher_year_relative.csv", quote = F, row.names = F)
+dfs = melt(dfs)
+names(dfs) = c("Publisher", "Year", "Costs")
+dfs$Year = as.numeric(as.character(dfs$Year))
+```
+
+Let us compare the [relative increase in publisher costs](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2017 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2017)$Costs)))` publishers that did not have declared costs in 2010 or 2017 (see [here](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)) are excluded.
+
+```{r foi-timebypublisher2b, message=FALSE, echo=FALSE, warning=FALSE, fig.width=14, fig.heigth=3}
+# Just show publisher with the largest cost increases
+dfs$Costs[dfs$Costs == 0] = NA
+top <- as.character((subset(dfs, Year == 2017) %>% arrange(desc(Costs)))$Publisher)[1:10]
+dfs <- dfs %>% dplyr::filter(Publisher %in% top)
+# Order the factor levels for the figure
+dfs$Publisher <- factor(dfs$Publisher, levels = rev(as.character((subset(dfs, Year == 2017) %>% arrange(Costs))$Publisher)))
+p <- ggplot(dfs, aes(x = Year, y = Costs, color = Publisher)) +
+geom_point() +
+       geom_line() +       
+       ggtitle("Relative cost increase by publisher") +
+       ylab("Relative cost increase (%)") +
+       scale_y_continuous(breaks = seq(5, max(dfs$Costs, na.rm = TRUE), 5))
+print(p)
+```
+
+
+
+### Costs by organization
+
+```{r foi-totalcosts2c, message=FALSE, echo=FALSE}
+dfs <- df %>% group_by(Organization.type) %>% summarise(Costs = 100*sum(Cost)/sum(df$Cost))
+```
+
+The Finnish data collection includes `r length(unique(df$Organization))` organizations ([see annual costs by organization](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "Yliopisto", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2017 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure).
+
+```{r foi-totalcosts2d, message=FALSE, echo=FALSE, fig.show="hold", out.width="420px", fig.width = 10, fig.height = 9}
+dfs = df %>% group_by(Organization.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(Costs)
+dfs$Organization.type = factor(dfs$Organization.type, levels = as.character(dfs$Organization.type))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs, aes(x = Organization.type, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by organization type") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Organization.type, y=80, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+
+dfs <- df %>% group_by(Organization) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+dfs$Organization = factor(dfs$Organization, levels = rev(as.character(dfs$Organization)))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+p <- ggplot(dfs[1:20,], aes(x = Organization, y = Costs)) + geom_bar(stat = "identity", fill = "lightgray", color = "black") + ggtitle("Costs by organization") + coord_flip() + xlab("") + ylab("Total Costs (MEUR)") + geom_text(aes(x=Organization, y=20, label=paste(Percentage, "%", sep = ""), hjust=ifelse(sign(Percentage)>0, 0, 0)), position = position_dodge(width=1), size = 7)
+print(p)
+```
+
+```{r foi-timebyorganization2, message=FALSE, echo=FALSE, fig.width=14, fig.heigth=3}
+# Normalize the costs by 2010 to highlight relative increases
+dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year)
+dfs = dfs %>% spread(Year, Costs)
+dfs[, as.character(2010:2017)] = apply(as.matrix(dfs[, as.character(2010:2017)]), 2, function (x) {x/unlist(dfs[, "2010"])})
+dfs2 = dfs
+dfs2[, as.character(2010:2017)] = round(apply(as.matrix(dfs2[, as.character(2010:2017)]), 2, function (x) {x}),2)
+dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2017"]),]
+dfs2 = dfs2[rev(order(unlist(dfs2[, "2017"]))),]
+write.csv(dfs2, file = "table/cost_by_organization_year_relative.csv", quote = F, row.names = F)
+dfs = melt(dfs)
+names(dfs) = c("Organization", "Year", "Costs")
+dfs$Year = as.numeric(as.character(dfs$Year))
+```
+
+Finally, let us compare the relative share of costs per
+institution. The top organizations with the highest total costs are
+shown.
+
+
+```{r foi-timebyorganization2c, message=FALSE, echo=FALSE, warning=FALSE, fig.width=14, fig.heigth=3}
+# Top organizations by total cost
+dfs <- df %>% group_by(Organization) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
+top <- as.character(dfs$Organization[1:10])
+
+dfs <- df
+dfs$Organization <- as.character(dfs$Organization)
+dfs$Organization[which(!dfs$Organization %in% top)] <- "Other"
+levels <- rev(c(rev(top), "Other"))
+dfs$Organization <- factor(dfs$Organization, levels)
+dfs0 <- dfs
+
+# Time line for relative costs per organization
+dfs <- dfs0 %>% 
+              group_by(Organization, Year) %>%
+	      summarise(Costs = sum(Cost)/1e6) %>%
+              group_by(Year) %>%	      
+	      mutate(Costs_relative = Costs/sum(Costs)) %>%
+	      arrange(desc(Costs))
+dfs$Organization = factor(dfs$Organization, levels = rev(as.character(unique(dfs$Organization))))
+dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
+dfs$Costs[dfs$Costs == 0] <- NA
+
+# Just check the top organizations
+dfs <- dfs %>% filter(Organization %in% levels)
+dfs$Organization <- droplevels(dfs$Organization)
+dfs$Organization <- factor(dfs$Organization, levels = levels)
+
+p1 <- ggplot(dfs, aes(x = Year, y = Costs_relative, color = Organization)) +
+       labs(title = "Relative share of total costs per organization", y = "Cost share (%)") +
+       geom_point() +
+       geom_line() +
+       #scale_y_continuous(breaks = seq(2, max(dfs$Costs, na.rm = TRUE), 2))
+       scale_y_continuous(labels = scales::percent) +
+       scale_x_continuous(breaks = 2010:2017, labels = c(2010:2017))        
+print(p1)
+
+
+#p2 <- ggplot(dfs, aes(x = Year, y = Costs_relative, fill = Organization)) +
+#       labs(title = "Relative share of the costs per organization", y = "Cost share (%)") +
+#       geom_bar(stat = "identity", position = "stack") +
+#       scale_y_continuous(labels = scales::percent)   
+#print(p2)
+```
