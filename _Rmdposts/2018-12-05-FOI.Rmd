@@ -116,15 +116,14 @@ fees on scientific publishing in 2010-2017. The average annual costs for in Finl
 Data for the top-10 publishers in the UK 2010-2014 is available in [Lawson, Meghreblian & Brook, 2017](https://olh.openlibhums.org/articles/10.16995/olh.72/#B45) ([Table 1](https://olh.openlibhums.org/articles/10.16995/olh.72)). During this period the UK paid altogether `r round(subset(dd, Country == "UK")$Costs)` MEUR (rough estimate based on the exchange rate June 12, 2016) for the top-10 publishers. Finland paid `r round(subset(dd, Country == "Finland")$Costs)` MEUR for the same top-10 publishers in 2010-2014. This is  `r round(100 * (subset(dd, Country == "Finland")$Costs/5488600) / (subset(dd, Country == "UK")$Costs/65092896), 1)`% of the UK expenditure _per capita_. It could be that the data is not directly comparable but this will require further investigation. 
 
 
-Information for Finland is available by [agreement
-type](table/cost_by_type.csv), organization type, and [subscription
-category](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html).
+Information for Finland is available by agreement type, organization
+type, and subscription category.
 
 
 
 ### Costs by publisher
 
-Overall, the Finnish data covers `r length(unique(df$Publisher))` unique publishers ([see annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The figure indicates the total subscription fees paid to the top publishers 2010-2017. One third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare average journal prices among individual publishers based on this data.
+Overall, the Finnish data covers `r length(unique(df$Publisher))` unique publishers. The figure indicates the total subscription fees paid to the top publishers 2010-2017. One third of the total costs go to Elsevier, which has been often [criticized](https://gowers.wordpress.com/2014/04/24/elsevier-journals-some-facts/) for its huge [profit margins](http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0127502). The costs are given per bundle, so we cannot compare average journal prices among individual publishers based on this data.
 
 ```{r foi-totalcosts2b, message=FALSE, echo=FALSE, fig.width = 10, fig.height = 9}
 dfs <- df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
@@ -153,7 +152,7 @@ print(p)
 dfs = df %>% group_by(Publisher) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
 ```
 
-The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2017 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). See a separate table for full [annual costs by publisher](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). 
+The total costs paid to scientific publishers by Finland have increased roughly 10% per year in 2010-2017 (annual increase is indicated in the left figure). The top-10 publishers correspond to `r round(100 * sum(dfs[["Costs"]][1:10])/sum(dfs[["Costs"]]))`% of the overall costs (right figure). 
 
 ```{r foi-costbytime, message=FALSE, echo=FALSE, fig.width=17, fig.height=6, out.width="860px"}
 # Cost, Year : all publishers
@@ -198,7 +197,7 @@ names(dfs) = c("Publisher", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
 ```
 
-Let us compare the [relative increase in publisher costs](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html). The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2017 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2017)$Costs)))` publishers that did not have declared costs in 2010 or 2017 (see [here](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)) are excluded.
+Let us compare the relative increase in publisher costs. The costs are normalized to 1 in 2010, and the top 10 publishers with the highest cost increase in 2010-2017 are shown. The `r sum(!(!is.na(subset(dfs, Year == 2010)$Costs) & !is.na(subset(dfs, Year == 2017)$Costs)))` publishers that did not have declared costs in 2010 or 2017 are excluded.
 
 ```{r foi-timebypublisher2b, message=FALSE, echo=FALSE, warning=FALSE, fig.width=14, fig.heigth=3}
 # Just show publisher with the largest cost increases
@@ -224,7 +223,7 @@ print(p)
 dfs <- df %>% group_by(Organization.type) %>% summarise(Costs = 100*sum(Cost)/sum(df$Cost))
 ```
 
-The Finnish data collection includes `r length(unique(df$Organization))` organizations ([see annual costs by organization](http://data.okf.fi/ropengov/20160613-FOI/dashboard.html)). The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "Yliopisto", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2017 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure).
+The Finnish data collection includes `r length(unique(df$Organization))` organizations. The universities ('yliopisto') are responsible of `r as.numeric(round(dfs[dfs$Organization.type == "Yliopisto", "Costs"],1))`% of all costs (left figure); University of Helsinki had the highest total costs in 2010-2017 (`r round(as.numeric((dfs = df %>% group_by(Organization) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs)))[1, "Costs"]),1)` MEUR; top institutions shown in the right figure).
 
 ```{r foi-totalcosts2d, message=FALSE, echo=FALSE, fig.show="hold", out.width="420px", fig.width = 10, fig.height = 9}
 dfs = df %>% group_by(Organization.type) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(Costs)
