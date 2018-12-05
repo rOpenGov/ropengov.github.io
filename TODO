@@ -1,0 +1,14 @@
+- Automate project listing and site updates as cron jobs in OKFFI
+  server (or similar)
+
+- Wherever possible, read the packages from the local copies on the
+  server where the batch jobs are run. This will reduce network
+  traffic: instead of downloading and parsing package zip files we can
+  just update the package directories via git pull and operate on the
+  local copies.
+
+- Parse projects from both rOpenGov Github organization account and
+  _projects/ folder. This way we can include projects that are not
+  under rOpenGov account. Or should we in the longer term only include
+  projects that are under rOpenGov account?
+
