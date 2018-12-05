@@ -49,7 +49,7 @@ dfs <- df %>% group_by(Resource.type) %>% summarise(Costs = sum(Cost)/1e6) %>% a
 dfs$Resource.type = factor(dfs$Resource.type, levels = rev(as.character(dfs$Resource.type)))
 dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs, na.rm = TRUE), 1)
 names(dfs) = c("Resource.type", "Total (MEUR)", "Percent (%)")
-write.csv(dfs, file = "table/cost_by_category.csv", quote = F, row.names = F)
+#write.csv(dfs, file = "table/cost_by_category.csv", quote = F, row.names = F)
 
 dfs <- df %>% group_by(Year, Organization) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
 dfs[is.na(dfs)] = 0
@@ -60,7 +60,7 @@ dfs = dfs %>% arrange(desc(Percentage))
 dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
 names(dfs) = c("Organization (costs in MEUR)", as.character(2010:2017), "Total", "%")
 for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
-write.csv(dfs, file = "table/cost_by_organization_year.csv", quote = F, row.names = F)
+#write.csv(dfs, file = "table/cost_by_organization_year.csv", quote = F, row.names = F)
 
 dfs <- df %>% group_by(Year, Publisher) %>% summarise(Costs = sum(Cost, na.rm = TRUE)/1e6) %>% arrange(Year) %>% spread(Year, Costs)
 dfs[is.na(dfs)] = 0
@@ -72,14 +72,14 @@ dfs = rbind(c("Total", colSums(dfs[, -1])), dfs)
 dfs$Publisher = substr(dfs$Publisher, 1, 80)
 names(dfs) = c("Publisher (costs in MEUR)", as.character(2010:2017), "Total", "%")
 for (i in 2:ncol(dfs)) {dfs[,i] = round(as.numeric(unlist(dfs[,i])),2)}
-write.csv(dfs, file = "table/cost_by_publisher_year.csv", quote = F, row.names = F)
+#write.csv(dfs, file = "table/cost_by_publisher_year.csv", quote = F, row.names = F)
 
 
 dfs = df %>% group_by(Way.of.acquisition) %>% summarise(Costs = sum(Cost)/1e6) %>% arrange(desc(Costs))
 dfs$Way.of.acquisition = factor(dfs$Way.of.acquisition, levels = rev(as.character(dfs$Way.of.acquisition)))
 dfs$Percentage = round(100 * dfs$Costs/sum(dfs$Costs), 1)
 names(dfs) = c("Way.of.acquisition", "Total (MEUR)", "Percent (%)")
-write.csv(dfs, file = "table/cost_by_type.csv", quote = F, row.names = F)
+#write.csv(dfs, file = "table/cost_by_type.csv", quote = F, row.names = F)
 
 # Top-10 Publisher costs in the UK 2010-2014.
 # CSV from https://olh.openlibhums.org/articles/10.16995/olh.72/
@@ -191,7 +191,7 @@ dfs2 = dfs
 dfs2[, as.character(2010:2017)] = round(apply(as.matrix(dfs2[, as.character(2010:2017)]), 2, function (x) {x}),2)
 dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2017"]),]
 dfs2 = dfs2[rev(order(unlist(dfs2[, "2017"]))),]
-write.csv(dfs2, file = "table/cost_by_publisher_year_relative.csv", quote = F, row.names = F)
+#write.csv(dfs2, file = "table/cost_by_publisher_year_relative.csv", quote = F, row.names = F)
 dfs = melt(dfs)
 names(dfs) = c("Publisher", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
@@ -248,7 +248,7 @@ dfs2 = dfs
 dfs2[, as.character(2010:2017)] = round(apply(as.matrix(dfs2[, as.character(2010:2017)]), 2, function (x) {x}),2)
 dfs2 = dfs2[!is.na(dfs2[, "2010"]) & !is.na(dfs2[, "2017"]),]
 dfs2 = dfs2[rev(order(unlist(dfs2[, "2017"]))),]
-write.csv(dfs2, file = "table/cost_by_organization_year_relative.csv", quote = F, row.names = F)
+#write.csv(dfs2, file = "table/cost_by_organization_year_relative.csv", quote = F, row.names = F)
 dfs = melt(dfs)
 names(dfs) = c("Organization", "Year", "Costs")
 dfs$Year = as.numeric(as.character(dfs$Year))
