@@ -46,9 +46,7 @@ library(sweidnumbr)
 
 
 {% highlight text %}
-## sweidnumbr: R tools to handle swedish identity numbers.
-## Copyright (C) 2014 Mans Magnusson, Erik Bulow
-## https://github.com/rOpenGov/sweidnumbr
+## Error in library(sweidnumbr): there is no package called 'sweidnumbr'
 {% endhighlight %}
 
 
@@ -59,18 +57,9 @@ knitr::kable(tail(fake_pins,10))
 
 
 
-|   |pin           |name                  |
-|:--|:-------------|:---------------------|
-|53 |19471130-3022 |TWIST, LIS            |
-|54 |19440311-1131 |NOBLESSE, RAGNAR JOHN |
-|55 |20000805-0523 |NILSSON, CHOK         |
-|56 |19240622-2286 |CADBURY, LOVISA       |
-|57 |19020517-1798 |PLOPP, AUGUST         |
-|58 |20050111-1123 |MINT, MARIA ADA       |
-|59 |19370215-1590 |NILSSON, BARRY        |
-|60 |19970430-3023 |BERG, ANTO            |
-|61 |20031010-1023 |CENTER, PALL          |
-|62 |20010218-1823 |CACAO, EDA            |
+{% highlight text %}
+## Error in tail(fake_pins, 10): object 'fake_pins' not found
+{% endhighlight %}
 
 So far, pin is just a standard character vector but let's change that to benefit from all of `sweidnumbr`'s features:
 
@@ -81,8 +70,7 @@ pin <- as.pin(fake_pins$pin)
 
 
 {% highlight text %}
-## Assumption: 
-## pin of format YYMMDDNNNC is assumed to be less than 100 years old.
+## Error in as.pin(fake_pins$pin): could not find function "as.pin"
 {% endhighlight %}
 
 
@@ -94,7 +82,7 @@ str(pin)
 
 
 {% highlight text %}
-## Classes 'pin', 'character'  chr [1:62] "191212121212" "201212121212" "191212121212" "201212121212" ...
+## Error in str(pin): object 'pin' not found
 {% endhighlight %}
 
 
@@ -108,7 +96,7 @@ hist(pin_age(pin), 20, col = "lightgreen", main = "Age distribution")
 
 
 {% highlight text %}
-## The age has been calculated at 2015-08-20.
+## Error in pin_age(pin): could not find function "pin_age"
 {% endhighlight %}
 
 
@@ -117,7 +105,13 @@ hist(pin_age(pin), 20, col = "lightgreen", main = "Age distribution")
 pie(table(pin_sex(pin)), main = "Sex distribution")
 {% endhighlight %}
 
-![center](/figs/2015-08-20-sweidnumber/unnamed-chunk-3-1.png) 
+
+
+{% highlight text %}
+## Error in pin_sex(pin): could not find function "pin_sex"
+{% endhighlight %}
+
+
 
 {% highlight r %}
 pin_birthplace(pin[1:8])
@@ -126,11 +120,7 @@ pin_birthplace(pin[1:8])
 
 
 {% highlight text %}
-## [1] Stockholms län              Born after 31 december 1989
-## [3] Stockholms län              Born after 31 december 1989
-## [5] Born after 31 december 1989 Stockholm stad             
-## [7] Stockholms län              Born after 31 december 1989
-## 28 Levels: Stockholm stad Stockholms län Uppsala län ... Born after 31 december 1989
+## Error in pin_birthplace(pin[1:8]): could not find function "pin_birthplace"
 {% endhighlight %}
  
  
@@ -147,15 +137,7 @@ pin_birthplace(pin[1:8])
 
 
 {% highlight text %}
-## Assumption: 
-## pin of format YYMMDDNNNC is assumed to be less than 100 years old.
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## [1] "191212121212" "201212121212" "201212121212" "191212121212"
-## Personal identity number(s)
+## Error in as.pin(c("191212121212", "1212121212", "121212-1212", "121212+1212")): could not find function "as.pin"
 {% endhighlight %}
 
 It also checks that the numbers follow the correct pin syntax:
@@ -167,14 +149,7 @@ as.pin("181212121212") # Pins were introduced in 1946 and only for people not de
 
 
 {% highlight text %}
-## Warning in as.pin.character("181212121212"): Erroneous pin(s) (set to NA).
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## [1] NA
-## Personal identity number(s)
+## Error in as.pin("181212121212"): could not find function "as.pin"
 {% endhighlight %}
 
 
@@ -186,7 +161,7 @@ pin_ctrl("191212121211") # The last digit is a control number that is checked ag
 
 
 {% highlight text %}
-## [1] FALSE
+## Error in pin_ctrl("191212121211"): could not find function "pin_ctrl"
 {% endhighlight %}
 
 
@@ -198,13 +173,7 @@ luhn_algo("191212121211") # The correct control number can be calculated by the 
 
 
 {% highlight text %}
-## 'multiplier' set to: c(0, 0, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## [1] 2
+## Error in luhn_algo("191212121211"): could not find function "luhn_algo"
 {% endhighlight %}
 
 

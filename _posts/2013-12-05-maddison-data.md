@@ -29,8 +29,25 @@ Below is a stepwise explanation on how to visualize the data.
 
 {% highlight r %}
 library(gdata)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in library(gdata): there is no package called 'gdata'
+{% endhighlight %}
+
+
+
+{% highlight r %}
 url <- "http://www.ggdc.net/maddison/maddison-project/data/mpd_2013-01.xlsx"
 dat <- read.xls(url, header=TRUE, skip=1, stringsAsFactors = FALSE)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in read.xls(url, header = TRUE, skip = 1, stringsAsFactors = FALSE): could not find function "read.xls"
 {% endhighlight %}
 
 ### Manipulating the data
@@ -41,13 +58,85 @@ Excel-sheets usually require some processing in R. Below I'm removing row not ne
 
 {% highlight r %}
 column.names <- as.character(dat[1,])
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'dat' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 column.names[1] <- "year"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in column.names[1] <- "year": object 'column.names' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad <- dat[-1,]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'dat' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 names(df.mad) <- column.names
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'column.names' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 library(reshape2)
 df.mad.l <- melt(df.mad, id.vars="year")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in melt(df.mad, id.vars = "year"): object 'df.mad' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l$value <- as.numeric(df.mad.l$value)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'df.mad.l' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l <- df.mad.l[!is.na(df.mad.l$value), ]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'df.mad.l' not found
 {% endhighlight %}
 
 ### Subset the data
@@ -67,7 +156,24 @@ cntry.list <- c("Czech Republic","Estonia","Hungary",
                "F. USSR","USA","Japan","Finland","Sweden")
 library(stringr)
 df.mad.l$variable <-str_trim(df.mad.l$variable, side = "both")
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in stri_trim_both(string): object 'df.mad.l' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l2 <- df.mad.l[df.mad.l$variable %in% cntry.list, ]
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'df.mad.l' not found
 {% endhighlight %}
 
 Then I will group the countries in one sensible way.
@@ -89,13 +195,63 @@ library(car)
 df.mad.l2$group[df.mad.l2$variable %in% c("Czech Republic","Estonia","Hungary",
                                           "Bulgaria","Latvia","Lithuania","Poland",
                                           "Slovakia","Slovenia","Romania","Bulgaria")] <- "CEE"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in df.mad.l2$group[df.mad.l2$variable %in% c("Czech Republic", "Estonia", : object 'df.mad.l2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l2$group[df.mad.l2$variable %in% c("Albania","Bosnia","Croatia","Macedonia",
                                           "Montenegro","Kosovo","Serbia")] <- "Balkan"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in df.mad.l2$group[df.mad.l2$variable %in% c("Albania", "Bosnia", : object 'df.mad.l2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l2$group[df.mad.l2$variable %in% c("Armenia","Azerbaijan","Belarus","Georgia","Kazakhstan",
                                           "Kyrgyzstan","Moldova","Mongolia","Russia",
                                           "Tajikistan","Ukraine","Uzbekistan")] <- "CIS"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in df.mad.l2$group[df.mad.l2$variable %in% c("Armenia", "Azerbaijan", : object 'df.mad.l2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l2$group[df.mad.l2$variable %in% c("USA","Japan","Finland","Sweden")] <- "WEST"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in df.mad.l2$group[df.mad.l2$variable %in% c("USA", "Japan", "Finland", : object 'df.mad.l2' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 df.mad.l2$group[df.mad.l2$variable %in% c("F. USSR")] <- "USSR"
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in df.mad.l2$group[df.mad.l2$variable %in% c("F. USSR")] <- "USSR": object 'df.mad.l2' not found
 {% endhighlight %}
 
 ### Plotting the data from 1850 to 2010
@@ -123,7 +279,11 @@ ggplot(data=df.mad.l2[df.mad.l2$year > 1850, ],
   theme(legend.position="top")
 {% endhighlight %}
 
-![center](/figs/2013-12-05-maddison-data/maddison5-1.png) 
+
+
+{% highlight text %}
+## Error in ggplot(data = df.mad.l2[df.mad.l2$year > 1850, ], aes(x = year, : object 'df.mad.l2' not found
+{% endhighlight %}
 
 
 
