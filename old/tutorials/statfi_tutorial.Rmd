@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>statfi vignette &mdash; rOpenGov</title>
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/images/logo.png"/>
+  <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+  <meta name="title" content="statfi vignette ">
+  <link rel="canonical" href="http://ropengov.github.io/tutorials/statfi_tutorial.Rmd">
+   
+         
+  <meta property="og:title" content="statfi vignette "/>
+  <meta property="og:url" content="http://ropengov.github.io/tutorials/statfi_tutorial.Rmd"/>
+  
+  
+  <meta property="og:site_name" content="rOpenGov">     
+</head>
+<body>
+  
+  <section class="site-nav">
+  <header>
+      <nav id="navigation">
+          <a class="brand" href="/">
+              <img src="/images/logo.png" alt="rOpenGov">
+          </a>
+          <a href="/" class="home">Blog</a>
+          
+          <a href="http://ropengov.github.io/projects">Projects</a>
+          <a href="http://ropengov.github.io/about">About</a>
+          <a href="http://ropengov.github.io/contribute">Contribute</a>          
+      </nav>
+      
+  </header>
+  </section>
+
+  <article class="container">
+
+  <div class="span11">
+  <div class="row">
+
+  <header class="jumbotron subhead" id="overview"> 
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=statfi&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=statfi&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
+
+     <h1> <i class="fa fa-book"></i>  statfi <small>v0.9.83</small> </h1>
+  </header>
+    
+  </div>
+  <!-- <br> -->
+
+  <div class"row"> <h2> <em> Statistics Finland (Tilastokeskus) Open Data R Tools </em> </h2>
+
+  <!-- <h3><i class="ss-icon" style="color:#ebeef6;">&#x2139;</i>&nbsp;&nbsp;This is the vignette in the statfi package</h3> -->
+  <br>
+
+  <center><a href="https://github.com/ropengov/statfi/" style="color:#ffffff" target="_blank"> <button class="btn btn-success btn-large" style="display: block; width: 75%;"><i class="icon-white icon-download"></i>Download from GitHub</button></a></center>
+  <br>
+  <!-- <hr class="soften"> -->
+  </div>
+  <div class="span11">
+  Statistics Finland (Tilastokeskus) R tools
+===========
+
+This R package provides tools to access open data from [Statistics
+Finland](http://www.stat.fi/tup/tilastotietokannat/index_fi.html),
+including about 3000 data sets from [Statistics
+Finland](http://www.stat.fi/org/lainsaadanto/avoin_data.html). 
+
+This R package is part of the [rOpenGov](http://ropengov.github.io)
+project.
+
+
+## Installation
+
+Release version for general use:
+
+```{r install, eval=FALSE}
+install.packages("statfi")
+library(statfi)
+```
+
+Development version (potentially unstable):
+
+```{r install2, eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_github("statfi", "ropengov")
+library(statfi)
+```
+
+
+## Available data sets
+
+The listings of [Statistics Finland (StatFi) open
+data](http://www.stat.fi/org/lainsaadanto/avoin_data.html) are
+available for browsing in PCAxis, CSV and XML format. These include
+the following data collections:
+
+ * StatFi [PCAxis](http://pxweb2.stat.fi/database/StatFin/databasetree_fi.asp) [CSV](http://pxweb2.stat.fi/database/StatFin/StatFin_rap_csv.csv) [XML](http://pxweb2.stat.fi/database/StatFin/StatFin_rap_xml.csv)  
+ * Eurostat [PCAxis](http://pxweb2.stat.fi/Database/Eurostat/databasetree_fi.asp) [CSV](http://pxweb2.stat.fi/database/StatFin/StatFin_rap.csv)  
+ * International statistics [PC Axis](http://pxweb2.stat.fi/Database/Kansainvalisen_tiedon_tietokanta/databasetree_fi.asp)
+
+In summary, browse these listings to find the URL for your data set of
+interest. Then use the get_statfi function to download the data in
+R. For examples, see below.
+
+### Listing the data sets in R
+
+Download statfi open data listings in R as follows:
+
+```{r tilastokeskus-1, warning=FALSE, message=FALSE}
+# Load the library
+library(statfi)
+
+# Statistics Finland open data listing
+datasets.statfi <- list_statfi_files()
+
+# Descriptions of the first entries
+head(datasets.statfi$DESCRIPTION)
+
+# Investigate the first entry in StatFi data
+print(datasets.statfi[1,])
+```
+
+This provides the list of statfi data sets. For other international
+open statistics available via Statfi, [browse the data sets
+manually](http://pxweb2.stat.fi/Database/Kansainvalisen_tiedon_tietokanta/databasetree_fi.asp)
+to find the URL for your dataset of interest. For Eurostat data, we
+recommend the [eurostat](http://github.com/ropengov/eurostat) R
+package.
+
+
+## Retrieving the data
+
+Retrieve data from Statfi by defining URL of the data set. For the
+listing of available data sets and their corresponding URLs, see
+above.
+
+```{r tilastokeskus-2, warning=FALSE, message=FALSE}
+library(statfi)
+
+# Define URL (see list_statfi_files() or browse manually as described above)
+url <- "http://pxweb2.stat.fi/Database/StatFin/tul/tvt/2009/120_tvt_2009_2011-02-18_tau_112_fi.px"
+
+# Download the data
+df <- get_statfi(url)
+df[1:3,]
+```
+
+### <a name="statfi"></a>Statistics Finland (municipality information)
+
+Source: [Tilastokeskus](http://pxweb2.stat.fi/Database/Kuntien%20perustiedot/Kuntien%20perustiedot/Kuntaportaali.px)
+
+```{r municipalityStatFi, message=FALSE, warning=FALSE, eval=TRUE}
+# Download Statfi municipality data
+municipality.info.statfi <- get_municipality_info_statfi()
+
+# List available information fields for municipalities
+names(municipality.info.statfi)
+```
+
+
+
+## Licensing and Citations
+
+### Citing the Data
+
+Regarding the data, kindly cite [Statfi](http://www.statfi.fi/). We
+are grateful to Statistics Finland open data personnell for their
+support during the R package development.
+
+### Citing the R package
+
+This work can be freely used, modified and distributed under the
+[Two-clause FreeBSD
+license](http://en.wikipedia.org/wiki/BSD\_licenses). Kindly cite the
+R package as 'Leo Lahti, Juuso Parkkinen ja Joona Lehtomäki (C)
+2010-2014. statfi R package. URL: http://ropengov.github.io/statfi'.
+
+
+### Session info
+
+This tutorial was created with
+
+```{r sessioninfo, message=FALSE, warning=FALSE}
+sessionInfo()
+```
+
+  </div>
+
+  </article>
+
+  <footer class="site-footer">
+      <div class="container">
+          &copy; 2018 
+          
+          <nav>
+              <a href="ropengov.github.io">rOpenGov</a> &middot;
+              <a href="/">Blog</a> &middot;
+              
+              
+          </nav>
+          
+          <nav class="social">
+              
+              <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+              
+                  
+              <a href="/feed.xml" title="RSS Feed">
+                  <i class="icon icon-rss black"></i>
+              </a>
+          </nav>
+          <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+      </div>
+  </footer>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+
+  </body>
+</html>

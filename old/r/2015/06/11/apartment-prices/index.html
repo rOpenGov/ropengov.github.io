@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A hierarchical model of Finnish apartment prices &mdash; rOpenGov</title>
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="/assets/main.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+    <meta name="title" content="A hierarchical model of Finnish apartment prices ">
+    <link rel="canonical" href="http://ropengov.github.io/r/2015/06/11/apartment-prices/">
+    
+    
+    <meta property="og:title" content="A hierarchical model of Finnish apartment prices "/>
+    <meta property="og:url" content="http://ropengov.github.io/r/2015/06/11/apartment-prices/"/>
+    
+    <!--
+    <meta property="og:description" content="Probabilistic programming approach to understand regional trends in apartment prices in Finland"/>
+    <meta name="description" content="Probabilistic programming approach to understand regional trends in apartment prices in Finland"/>
+    -->
+    <meta property="og:site_name" content="rOpenGov">
+
+    <!-- moved here 5.11.2014 - Juuso -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+
+</head>
+<body>
+
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="rOpenGov">
+            </a>
+            <a href="/" class="home">Blog</a>
+            
+            <a href="http://ropengov.github.io/projects">Projects</a>
+            <a href="http://ropengov.github.io/about">About</a>
+            <a href="http://ropengov.github.io/contribute">Contribute</a>
+        </nav>
+        
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="Janne Sinkkonen" target="_blank">Janne Sinkkonen</a> &mdash;
+                <time pubdate datetime="2015-11-June" title="June 11, 2015">June 11, 2015</time>
+            </div>
+            <h1 class="title">A hierarchical model of Finnish apartment prices</h1>
+            
+        </header>
+
+        <section>
+            <!-- for latex/mathjax equations -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<p>Basing on open data from <a href="http://www.stat.fi/index_en.html">Statistics Finland</a>, we at <a href="http://reaktor.com/datascience">Reaktor</a> modelled Finnish apartment prices and their trends on zip-code level, in the years 2005–2014. Estimates from the model are available as an <a href="http://kannattaakokauppa.fi/#/en/">interactive visualization</a>.</p>
+
+<h2 id="why-do-statistical-modeling">Why do (statistical) modeling?</h2>
+
+<p>The original price data consists of local (geometric) mean sales prices per year. The number of sales is available as well. If there are less than six sales, the mean price is censored.</p>
+
+<p>Partly missing data and noise from low number of transactions make it hard to evaluate local price levels, let alone their changes, except on the most urban areas.</p>
+
+<p>Yearly numbers of transactions for a few random zip codes are depicted on the left below. Censored slots are with red. On the right, all year-zip slots are ordered on the x-axis by their available number of sales data. 17.5% of slots are censored, and about half of the mean prices are either missing or based on less than 30 transactions.</p>
+
+<p><img src="https://raw.githubusercontent.com/reaktor/Neliohinnat/master/figs/harvuus-en.png" alt="Data are sparse" /></p>
+
+<p>Mean price of 6–30 sales <em>is not a reliable estimate of the local mean</em>, and deriving trends from so few sales is not going to be successful. (Still, it is repeatedly tried: There have been several top and bottom lists of apartment prices and their development published in the Finnish media lately. The media estimates are based on this raw data.)</p>
+
+<p>A statistical model has a concept of a <em>price level behind individual sales</em>. 
+It can then make a distinction between systematic variation of the underlying price level over time and place, and <em>random</em> variation that is not explainable within the model. This is in contrast to looking at raw data without a model; then all variation is taken at face value.</p>
+
+<p>When the model is <em>estimated</em>, it produces the underlying price level as its output. Of course, because the model cannot explain all variation in data, the price level estimates will also have a random component: Instead of a fixed value, we get a probability distribution. Means, trends, confidence intervals, etc., can be computed from these <em>posterior distributions</em>. Provided the model is sensible, these estimates of underlying price trends are more informative than the raw data. Uncertainty of the estimates also reveals when data is not enough to draw any conclusions.</p>
+
+<p>Some properties of zip code areas, like population density, will correlate strongly with apartment prices. Such properties, if known and included in the model, allow us to <em>generalize</em> over zip codes: estimates of price level become available even on places where the data is sparse or there is no data at all. Of course, uncertainty will then be higher, and the model will tell us that.</p>
+
+<p>Adjacency of the areas, or their hierarchy, can be used in the similar way to allow generalization between close-by areas. Once topography or hierarchy is parameterized to the model, it can see correlations between areas that are close to each other, or within the same larger area in the hierarchy. It will then generalize over areas, which helps especially when an area has few observations by itself.</p>
+
+<p>Note that as with demogrpahic covariates, no strict assumptions about geographic dependency are coded into the model. Rather, including these auxiliary parts allows the model to use dependency where it exists.</p>
+
+<p>Below, the map on the left shows raw mean prices over the whole period 2005–2014. White areas are without any available data. Map on the right shows the (mean) price level estimated from a model.</p>
+
+<p><img src="https://raw.githubusercontent.com/reaktor/Neliohinnat/master/figs/raw-vs-model-en.png" alt="Mean prices and model estimates from Espoo" /></p>
+
+<p>Below, yearly mean prices and estimates of the underlying price level are depicted for some zip codes at Espoo, part of the capital area of Finland. Shading around the lines indicate uncertainty of the estimates. Even within this relatively urban region, estimates from some areas are quite noisy: 02150 or Otaniemi, 02240 or Friisilä, 02330 or Kattilalaakso, etc. Some areas have no sales at all. (But they may not have apartments either. The model does not know whether apartments exist.)</p>
+
+<p><img src="https://raw.githubusercontent.com/reaktor/Neliohinnat/master/figs/espoota-en.png" alt="Espoo curves" /></p>
+
+<p>The model can be used for forecasting, but future prices or trends will have large uncertainty, even larger than indicated by the model. The current model has quadratic shape for the temporal dependency. It was chosen to fit the data of the last decade and to give an idea of past price development that is easy to summarise. There is no reason why future changes in economy and policy would follow the same pattern.  Althought relative development of areas is more accurately predicted than absolute price levels or trends, <em>the model is at its best at describing past development of apartment prices, especially their spatial differences. There is no guarantee future will follow the same pattern</em>.</p>
+
+<p>The model, data, and environment are described in more detail below.</p>
+
+<h2 id="environment-and-data">Environment and data</h2>
+
+<p>We used <a href="http://www.r-project.org">R</a> for almost all data manipulation, modeling and visualizations. Model itself was estimated with <a href="http://mc-stan.org">Stan</a>. Source code for the project, except for the web site, is available in our <a href="https://github.com/reaktor/Neliohinnat">GitHub repo</a>.</p>
+
+<p>The libraries <a href="http://cran.r-project.org/web/packages/pxweb/index.html">pxweb</a> and <a href="https://github.com/ropengov/gisfin">gisfin</a> make it easy to get <a href="http://www.stat.fi/til/ashi/index.html">apartment prices</a> and other data from the public API’s. The libraries are developed in the  <a href="http://louhos.github.io/">Louhos</a> and <a href="http://ropengov.github.io/">Ropengov</a> projects. Zip code areas are from <a href="http://www.palomaki.info/apps/pnro/">Duukkis</a>. Scripts used for downloading data and manipulating it are available in our <a href="https://github.com/reaktor/Neliohinnat">repo</a>.</p>
+
+<h2 id="map">Map</h2>
+
+<p>Zip code polygons are available at least through the <a href="http://www.stat.fi/tup/rajapintapalvelut/paavo.html">Paavo API</a> and from <a href="http://www.palomaki.info/apps/pnro/">Duukkis</a>. Finland’s archipelago is extensive and complex, so zip codes extend well onto the Baltic sea.  Paavo offers two versions of the polygons, with or without the sea area. The zip code areas with sea can be intersected with the sea shore line, giving us a quite beautiful Finnish zip code map. The problem is its size: over 20MB in the GeoJSON format. We ended up using the polygons from Duukkis: They are a good compromise between size and accuracy.</p>
+
+<p>The set of zip codes varied a little bit from source to source, so some zip codes areas may be missing from the visualizations. A few small areas have no population, or the information about population is missing. These polygons are without a price estimate and appear as grey on the maps.</p>
+
+<p>Note that the model produces price and trend estimates even for areas with no apartments: just the relative position of the zip code and the local population density are enough for computing the estimate.</p>
+
+<h2 id="model">Model</h2>
+
+<p>Of the past sales, the model has yearly (geometric) average per location, and the associated number of sales, if these are not censored (<script type="math/tex">% <![CDATA[
+n<6 %]]></script>). The latter scales the variance of the mean as an estimator of the population mean. Population mean is here the hypothetical mean of all potential <em>apartment sales</em> on the areas. Of course all apartments are not sold at the same rate, so mean is biased towards prices of the apartments that are sold more often.</p>
+
+<p>Sparseness of the data is a problem especially for estimates of temporal price changes, and also for comparison of areas. Predictive covariates for the zip code areas are therefore valuable. A quite extensive set of demographic variables is available in the <a href="http://www.stat.fi/tup/rajapintapalvelut/paavo.html">Paavo data</a>, but of these the model so far has only the population density included. It is probably the most predictive of the covariates, although not necessarily causal from the economics point of view.</p>
+
+<p>Spatial structure is included as a zip code prefix hierarchy. For example 02940 is within the Uusima district (0), city of Espoo (02), and northern Espoo (029). The hierarchy allows the model to see similarity within these and other equivalent nested areas. Real spatial continuity in the form of a Markov field or a latent gaussian field would be an alternative, but it would be much harder to estimate with the chosen tools, and may not be better on modelling administrative areas that <em>are</em> nested, after all.</p>
+
+<p>Temporal change of prices is as interesting as their overall level. The model could have a separate price level for each year, but continuity over time would then be lost, and there would be no predictions. Also the relationships between price trends and covariates (population density) and between trends and spatial or hierarchical structure would be hard to define, for there would be no unique trend. These reasons and simplicity favor a simple temporal parameterization, as the current quadratic model. Combining hierarchy and covariates with a more flexible temporal model, like a gaussian process, is an interesting research question.</p>
+
+<p>In total, there are three parameters on the zip code level affecting log-scale prices: price level, its trend, and change of trend. On the next geographic hierarchy level three other parameters appear: the influences of (logarithmic) population density on price, trend and its change. These six parameters, three plus their interactions with population density, appear also on upper hierarchy levels. On each hierarchy level, the model has multinormal priors for the three or six parameters, and hyperpriors for the variance and covariance of the multinormal distribution. The covariances bind different parameters together, so that for example price level helps the estimation of price trend, or the influence of population density.</p>
+
+<p>In summary, the lowest level of the model for the log prices is</p>
+
+<script type="math/tex; mode=display">\log h_{it} = 
+       \beta_{i1} + \beta_{i2} t + \beta_{i3} t^2 + \beta_{i’4}d_i + \beta_{i’5}d_i\,t + \beta_{i’6}d_i\,t^2,</script>
+
+<script type="math/tex; mode=display">\log y_{it} \sim 
+\textrm{t}\,\left(\log h_{it}, \, \sqrt{\sigma^2_y + \frac{\sigma^2_w}{n_{it}}}, \, \nu\right)\,,</script>
+
+<p>where <script type="math/tex">i</script> refers to the zip code area, <script type="math/tex">t</script> is time, <script type="math/tex">\beta</script> are coefficients specific to the zip code <script type="math/tex">i</script>, <script type="math/tex">i’</script> is the first prefix hierarchy level of the zip code (population density parameters are constant within each <script type="math/tex">i’</script>-area), <script type="math/tex">t()</script> is the t-distribution, <script type="math/tex">\sigma_y</script> is standard deviation of the underlying (log) price levels over years, <script type="math/tex">\sigma_w</script> standar deviation of the prices within the measurement unit (year <script type="math/tex">\times</script> zip), and <script type="math/tex">\nu</script> the degrees of freedom of the residual t-distribution. Note that the linear model is for log-scale prices. The complete model is best described  by the <a href="https://github.com/reaktor/Neliohinnat/blob/master/source/m4.stan">source code</a>.</p>
+
+<p>Estimate for <script type="math/tex">\nu</script> is around 6.5, that is, residuals are with a bit heavier tails than normal. From the covariance parameters (<em>Omega</em> in the source) one sees that price level and trend correlate at the lowest level (<script type="math/tex">r</script>=0,28), as do trend change and price level (<script type="math/tex">r</script>=0,43). So price differences between areas have been growing during the last ten years, probably due to urbanisation, a global trend.</p>
+
+<p>Plotting area-wise prices and its changes against population density, one sees the expected correlation: remote areas are loosing in the sense of price, trend <em>and</em> trend change.</p>
+
+<p><img src="https://raw.githubusercontent.com/reaktor/Neliohinnat/master/figs/tiheys-korrelaatiot-en.png" alt="Correlation of population density and price trends" /></p>
+
+<p>The model has been written and estimated with the probabilistic programming language Stan (<a href="http://mc-stan.org/">http://mc-stan.org/</a>). Stan produces a Monte Carlo estimation algorithm from a generative model description.</p>
+
+<h2 id="possible-improvements">Possible improvements</h2>
+
+<p>The model could have more demographic covariates. Dealers have reminded us about the predictivity of the sales volume. Obviously, the number of sales is not in a predictive role in the current model.</p>
+
+<p>Apartment vary by their size, age, etc., but this heterogeneity is not taken into account. Trends are biased towards apartments that are sold more often. Some public data is available where sales are separated by size and age of the condos, but these data are even more sparse than the aggregate data used here.</p>
+
+<p>On the Finnish equivalent of this blog, Herra Huu suggested whitened parameterization, which may help with estimation.</p>
+
+            
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button"  data-text="A hierarchical model of Finnish apartment prices" data-related="ropengov">Tweet</a>
+    </div>
+    
+    
+    <div>
+        <div class="fb-like" data-width="150" data-layout="button_count" data-action="like" data-show-faces="true" data-send="false"></div>
+    </div>
+    
+    
+    <div>
+        <div class="g-plusone" data-size="medium"></div>
+    </div>
+    
+    
+    
+    <div>
+        <a href="http://news.ycombinator.com/submit" class="hn-share-button">Vote on HN</a>
+    </div>
+    
+</div>
+
+        </section>
+
+        <footer>
+            <address>
+               
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">Janne Sinkkonen</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+        <section>
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ropengov'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+        </section>
+        
+    </div>
+</article>
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2018
+
+        <nav>
+            <a href="ropengov.github.io">rOpenGov</a> &middot;
+            <a href="/">Blog</a> &middot;
+            
+            
+        </nav>
+
+        <nav class="social">
+            
+            <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+            
+            
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+        <p>Check also <a href="http://www.r-bloggers.com">R-bloggers.com</a></p>
+    </div>
+</footer>
+
+<!-- moved inside header 5.11.2014 - Juuso
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+-->
+
+</body>
+</html>

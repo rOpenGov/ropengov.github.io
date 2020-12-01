@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fmi and FMI observation stations &mdash; rOpenGov</title>
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="/assets/main.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/logo.png"/>
+    <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+    <meta name="title" content="fmi and FMI observation stations ">
+    <link rel="canonical" href="http://ropengov.github.io/general/2014/12/30/fmi-stations/">
+    
+    
+    <meta property="og:title" content="fmi and FMI observation stations "/>
+    <meta property="og:url" content="http://ropengov.github.io/general/2014/12/30/fmi-stations/"/>
+    
+    <!--
+    <meta property="og:description" content="Using fmi package to access FMI weather observation stations data"/>
+    <meta name="description" content="Using fmi package to access FMI weather observation stations data"/>
+    -->
+    <meta property="og:site_name" content="rOpenGov">
+
+    <!-- moved here 5.11.2014 - Juuso -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+
+</head>
+<body>
+
+<section class="site-nav">
+    <header>
+        <nav id="navigation">
+            <a class="brand" href="/">
+                <img src="/images/logo.png" alt="rOpenGov">
+            </a>
+            <a href="/" class="home">Blog</a>
+            
+            <a href="http://ropengov.github.io/projects">Projects</a>
+            <a href="http://ropengov.github.io/about">About</a>
+            <a href="http://ropengov.github.io/contribute">Contribute</a>
+        </nav>
+        
+    </header>
+</section>
+
+
+<article>
+
+    <div class="container">
+        <header>
+            <div class="meta">
+                By <address><a rel="author" href="" title="Joona Lehtomäki" target="_blank">Joona Lehtomäki</a> &mdash;
+                <time pubdate datetime="2014-30-December" title="December 30, 2014">December 30, 2014</time>
+            </div>
+            <h1 class="title">fmi and FMI observation stations</h1>
+            
+        </header>
+
+        <section>
+            <h2 id="preface">Preface</h2>
+
+<p>This demo blog post uses a very developmental version of <code>fmi</code>. To run the demo
+on your own computer, you will have to do the following:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># fmi depends on rwfs</span>
+install_github<span class="p">(</span><span class="s">&quot;ropengov/rwfs&quot;</span><span class="p">)</span>
+install_github<span class="p">(</span><span class="s">&quot;ropengov/fmi&quot;</span><span class="p">)</span></code></pre></figure>
+
+<h2 id="accessing-fmi-weather-station-data-using-package-fmi">Accessing FMI weather station data using package fmi</h2>
+
+<p>As explained in the <a href="https://ropengov.github.io/general/2014/09/30/fmi/">previous post</a>, 
+package <a href="https://github.com/rOpenGov/fmi"><code>fmi</code></a> brings various kinds of data
+from the Finnish Meteorological Institute’s (FMI) open API to R. The work on the
+package is still very much in progress, but when I got asked if it’s 
+possible to get location (i.e. wheather station) specific precipitation and 
+temperature data for a specific time period, I decided to take <code>fmi</code> for a spin.</p>
+
+<p>FMI deserves compliments for the implemenetation of an open API, but the 
+documentation of some of the API parameters has left room for improvement. 
+For some lively discussion (in Finnish), see <a href="https://www.facebook.com/groups/fi.okfn/permalink/10152804124115628/">here</a>.
+Fortunately, method <a href="https://github.com/rOpenGov/fmi/blob/master/vignettes/fmi_tutorial.md#automated-request">getDailyWeather()</a> in <code>fmi</code> returns the necessary 
+measurements (precipitation and temperature) as is, so no need to figure out the
+specific parameter values for the request. A 
+<a href="http://data.fmi.fi/fmi-apikey/cdc84a28-60b7-44c3-ad5d-442d34edc435/meta?observableProperty=observation&amp;param=rrday,tday,snow,tmin,tmax&amp;language=eng">little more digging</a> 
+does reveal, however, more information for example on the units used to record the
+measurements. Hand picking the information from the XML reveals the following
+table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Label</th>
+      <th>Base phenomenon</th>
+      <th>Unit</th>
+      <th>Stat function</th>
+      <th>Agg time period</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rrday</td>
+      <td>Precipitation amount</td>
+      <td>Amount of precipitation</td>
+      <td>mm</td>
+      <td>acc</td>
+      <td>PT24H</td>
+    </tr>
+    <tr>
+      <td>snow</td>
+      <td>Snow depth</td>
+      <td>Snow cover</td>
+      <td>cm</td>
+      <td>instant</td>
+      <td>PT1M</td>
+    </tr>
+    <tr>
+      <td>tday</td>
+      <td>Air temperature</td>
+      <td>Temperature</td>
+      <td>degC</td>
+      <td>avg</td>
+      <td>P1D</td>
+    </tr>
+    <tr>
+      <td>tmax</td>
+      <td>Maximum temperature</td>
+      <td>Temperature</td>
+      <td>degC</td>
+      <td>max</td>
+      <td>PT24H</td>
+    </tr>
+    <tr>
+      <td>tmin</td>
+      <td>Minimum temperature</td>
+      <td>Temperature</td>
+      <td>degC</td>
+      <td>min</td>
+      <td>PT24H</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So far so good, <code>rrday</code> and <code>tday</code> should do the trick. However, we still need
+to be able to query a specific weather station, for which we need some sort of
+an identifier. The location we’re interested is Kiutaköngäs in Kuusamo, a rather
+spectacular section of rapids in the river Oulanka located right next to the 
+<a href="https://en.wikipedia.org/wiki/Oulanka_National_Park">Oulanka national park</a>:</p>
+
+<p><img src="http://static.panoramio.com/photos/large/1735117.jpg" alt="Kiutaköngäs" /></p>
+
+<p>It turns out (not by coincidence) that FMI has an active observation station 
+located at Kiutaköngäs. It may be possible to get a full list of weather 
+stations throught the FMI API itself, but so far <code>fmi</code> does not know anything 
+about it. In the meanwhile, I scraped 
+<a href="http://en.ilmatieteenlaitos.fi/observation-stations">a table of observation stations</a> 
+from the FMI web site, and created a utility function <code>fmi_weather_stations()</code> 
+in <code>fmi</code>. The function returns a dataframe of all active observation stations:</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##                               Nimi FMISID LPNN   WMO    Lat    Lon Korkeus    Ryhmät Alkaen
+## 1                   Alajärvi Möksy 101533 3314  2787  63,09  24,26     170 Sääasemat   1996
+## 2                   Antarktis Aboa 112275 9950 89014 -73,05 -13,38     497 Sääasemat   2003
+## 3          Asikkala Pulkkilanharju 101185 1434  2727  61,27  25,52      80 Sääasemat   1991
+## 4 Enontekiö Kilpisjärvi kyläkeskus 102016 9003  2801  69,05  20,79     480 Sääasemat   1983
+## 5      Enontekiö Kilpisjärvi Saana 102017 9004  2701  69,04  20,85    1002 Sääasemat   1991
+## 6             Enontekiö lentoasema 101976 8208  2802  68,36  23,43     306 Sääasemat   1999</code></pre></figure>
+
+<p>Using column <code>FMISID</code> seems promising, and with a little skimming through the
+table, we can locate the correct station:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>kiutakongas.station <span class="o">&lt;-</span> stations<span class="p">[</span><span class="m">99</span><span class="p">,]</span>
+kiutakongas.station</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##                   Nimi FMISID LPNN  WMO   Lat   Lon Korkeus    Ryhmät Alkaen
+## 99 Kuusamo Kiutaköngäs 101887 6802 2811 66,37 29,31     165 Sääasemat   1966</code></pre></figure>
+
+<p>The convience methods in <code>fmi</code> took a little adjusting, but afterwards it is
+possible to use <code>FMISID</code> in the query paramaters. Following the <code>fmi</code> tutorial,
+it is now possible to do the following. <strong>NOTE!</strong> You will need to provide
+<a href="http://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services">your own apiKey</a> first:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>apiKey <span class="o">&lt;-</span> <span class="s">&quot;ENTER YOUR API KEY HERE&quot;</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Set the correct FMISID</span>
+fmisid.kiuta <span class="o">&lt;-</span> kiutakongas.station<span class="o">$</span>FMISID
+
+request <span class="o">&lt;-</span> FMIWFSRequest<span class="o">$</span>new<span class="p">(</span>apiKey<span class="o">=</span>apiKey<span class="p">)</span>
+  
+request<span class="o">$</span>setParameters<span class="p">(</span>request<span class="o">=</span><span class="s">&quot;getFeature&quot;</span><span class="p">,</span>
+                      storedquery_id<span class="o">=</span><span class="s">&quot;fmi::observations::weather::daily::timevaluepair&quot;</span><span class="p">,</span>
+                      parameters<span class="o">=</span><span class="s">&quot;rrday,snow,tday,tmin,tmax&quot;</span><span class="p">)</span>
+  
+client <span class="o">&lt;-</span> FMIWFSClient<span class="o">$</span>new<span class="p">(</span>request<span class="o">=</span>request<span class="p">)</span>
+  
+response <span class="o">&lt;-</span> client<span class="o">$</span>getDailyWeather<span class="p">(</span>startDateTime<span class="o">=</span><span class="s">&quot;2014-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+                                   endDateTime<span class="o">=</span><span class="s">&quot;2014-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+                                   fmisid<span class="o">=</span>fmisid.kiuta<span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## OGR data source with driver: GML 
+## Source: &quot;/tmp/Rtmp7qUcRy/filee1636d3f243&quot;, layer: &quot;PointTimeSeriesObservation&quot;
+## with 5 features and 13 fields
+## Feature type: wkbPoint with 2 dimensions</code></pre></figure>
+
+<p>Obviously we are usually interested in time periods longer than one day. In
+addition, massaging the data returned by <code>getDailyWeather()</code> still takes a
+little manual work. Wrapping this manual work into an utility function:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># dplyr FTW!</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+
+get_weather_data <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>apiKey<span class="p">,</span> startDateTime<span class="p">,</span> endDateTime<span class="p">,</span> fmisid<span class="p">)</span> <span class="p">{</span>
+
+  request <span class="o">&lt;-</span> FMIWFSRequest<span class="o">$</span>new<span class="p">(</span>apiKey<span class="o">=</span>apiKey<span class="p">)</span>
+  
+  request<span class="o">$</span>setParameters<span class="p">(</span>request<span class="o">=</span><span class="s">&quot;getFeature&quot;</span><span class="p">,</span>
+                        storedquery_id<span class="o">=</span><span class="s">&quot;fmi::observations::weather::daily::timevaluepair&quot;</span><span class="p">,</span>
+                        parameters<span class="o">=</span><span class="s">&quot;rrday,snow,tday,tmin,tmax&quot;</span><span class="p">)</span>
+  
+  client <span class="o">&lt;-</span> FMIWFSClient<span class="o">$</span>new<span class="p">(</span>request<span class="o">=</span>request<span class="p">)</span>
+  response <span class="o">&lt;-</span> client<span class="o">$</span>getDailyWeather<span class="p">(</span>startDateTime<span class="o">=</span>startDateTime<span class="p">,</span>
+                                     endDateTime<span class="o">=</span>endDateTime<span class="p">,</span>
+                                     fmisid<span class="o">=</span>fmisid<span class="p">)</span>
+  dat <span class="o">&lt;-</span> <span class="kp">as.data.frame</span><span class="p">(</span>response<span class="p">)</span>
+  
+  <span class="c1"># Manual splicing and dicing</span>
+  <span class="c1"># 1. Get just the time, variable, and measurement</span>
+  <span class="c1"># 2. Replace NaNs in the response with NAs and convert measurement to numeric</span>
+  <span class="c1"># 3. Coerce time strings to Dates</span>
+  measurements <span class="o">&lt;-</span> dat <span class="o">%&gt;%</span>
+    select<span class="p">(</span>time<span class="p">,</span> variable<span class="p">,</span> measurement<span class="p">)</span> <span class="o">%&gt;%</span>
+    mutate<span class="p">(</span>measurement<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span><span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>measurement<span class="p">),</span> <span class="kc">NA</span><span class="p">,</span> measurement<span class="p">)))</span> <span class="o">%&gt;%</span>
+    mutate<span class="p">(</span>time<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span>time<span class="p">))</span>
+  
+  <span class="kr">return</span><span class="p">(</span>measurements<span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Using the function above simplifies querying. For demonstration, let’s
+get data for the whole year 2012:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>startDateTime <span class="o">&lt;-</span> <span class="s">&quot;2012-01-01&quot;</span>
+endDateTime <span class="o">&lt;-</span> <span class="s">&quot;2012-12-31&quot;</span>
+
+kiuta.2012 <span class="o">&lt;-</span> get_weather_data<span class="p">(</span>apiKey<span class="p">,</span> startDateTime<span class="p">,</span> endDateTime<span class="p">,</span> fmisid.kiuta<span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## OGR data source with driver: GML 
+## Source: &quot;/tmp/Rtmp7qUcRy/filee167651b46d&quot;, layer: &quot;PointTimeSeriesObservation&quot;
+## with 5 features and 743 fields
+## Feature type: wkbPoint with 2 dimensions</code></pre></figure>
+
+<p>Let’s take a look at the measurement data (first 2 days):</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kp">head</span><span class="p">(</span>kiuta.2012<span class="p">,</span> <span class="m">10</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##          time variable measurement
+## 1  2012-01-01    rrday        -1.0
+## 2  2012-01-01     snow        50.0
+## 3  2012-01-01     tday        -6.0
+## 4  2012-01-01     tmin        -9.8
+## 5  2012-01-01     tmax        -3.6
+## 6  2012-01-02    rrday         0.5
+## 7  2012-01-02     snow        47.0
+## 8  2012-01-02     tday        -7.9
+## 9  2012-01-02     tmin        -9.8
+## 10 2012-01-02     tmax        -6.7</code></pre></figure>
+
+<p>The measurements may contain NAs and values -1, which I suspect may also have
+something to do with missing values but can’t say for sure.</p>
+
+<p>For comparison’s sake, let’s also get some data from Kaisaniemi (Helsinki)
+observation station:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>fmisid.kaisa <span class="o">&lt;-</span> stations<span class="p">[</span><span class="m">24</span><span class="p">,]</span><span class="o">$</span>FMISID
+
+kaisa.2012 <span class="o">&lt;-</span> get_weather_data<span class="p">(</span>apiKey<span class="p">,</span> startDateTime<span class="p">,</span> endDateTime<span class="p">,</span> fmisid.kaisa<span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## OGR data source with driver: GML 
+## Source: &quot;/tmp/Rtmp7qUcRy/filee16190c6a38&quot;, layer: &quot;PointTimeSeriesObservation&quot;
+## with 5 features and 743 fields
+## Feature type: wkbPoint with 2 dimensions</code></pre></figure>
+
+<h3 id="plotting">Plotting</h3>
+
+<p>Let’s inspect the data by some plotting. First, however, some more data
+processing:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>kiuta.2012<span class="o">$</span>location <span class="o">&lt;-</span> <span class="s">&quot;Kuusamo, Kiutaköngäs&quot;</span>
+
+kaisa.2012<span class="o">$</span>location <span class="o">&lt;-</span> <span class="s">&quot;Helsinki, Kaisaniemi&quot;</span>
+
+dat <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">(</span>kiuta.2012<span class="p">,</span> kaisa.2012<span class="p">)</span></code></pre></figure>
+
+<p>First, lets plot the minimum (<code>tmin</code>), average (<code>tday</code>) and maximum (<code>tmax</code>) 
+temperature per day over year 2012. Plotting below uses 
+<a href="/figs/2014-12-30-fmi-stations/theme.R">a custom theme</a> for <code>ggplot2</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>dplyr<span class="o">::</span>filter<span class="p">(</span>dat<span class="p">,</span> variable <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;tday&quot;</span><span class="p">,</span> <span class="s">&quot;tmax&quot;</span><span class="p">,</span> <span class="s">&quot;tmin&quot;</span><span class="p">)),</span> aes<span class="p">(</span>x<span class="o">=</span>time<span class="p">,</span> y<span class="o">=</span>measurement<span class="p">,</span> color<span class="o">=</span>variable<span class="p">))</span>
+p <span class="o">+</span> geom_line<span class="p">()</span> <span class="o">+</span> facet_wrap<span class="p">(</span><span class="o">~</span> location<span class="p">,</span> ncol<span class="o">=</span><span class="m">1</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&quot;Temperature (C)\n&quot;</span><span class="p">)</span> <span class="o">+</span>
+  xlab<span class="p">(</span><span class="s">&quot;\nDate&quot;</span><span class="p">)</span> <span class="o">+</span> custom.theme</code></pre></figure>
+
+<p><img src="/figs/2014-12-30-fmi-stations/plot-temperature-1.png" alt="plot of chunk plot-temperature" /></p>
+
+<p>While we’re at it, let’s also plot the snowdepth:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>p <span class="o">&lt;-</span> ggplot<span class="p">(</span>dplyr<span class="o">::</span>filter<span class="p">(</span>dat<span class="p">,</span> variable <span class="o">==</span> <span class="s">&quot;snow&quot;</span><span class="p">),</span> aes<span class="p">(</span>x<span class="o">=</span>time<span class="p">,</span> y<span class="o">=</span>measurement<span class="p">,</span> color<span class="o">=</span>location<span class="p">))</span>
+p <span class="o">+</span> geom_line<span class="p">(</span>size<span class="o">=</span><span class="m">1</span><span class="p">)</span> <span class="o">+</span> xlab<span class="p">(</span><span class="s">&quot;\nDate&quot;</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&quot;Snowdepth (cm)\n&quot;</span><span class="p">)</span> <span class="o">+</span> custom.theme</code></pre></figure>
+
+<p><img src="/figs/2014-12-30-fmi-stations/plot-snowdepth-1.png" alt="plot of chunk plot-snowdepth" /></p>
+
+<p>Finally, let’s take a look at precipitation measurement values and their means:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>p <span class="o">&lt;-</span> ggplot<span class="p">(</span>dplyr<span class="o">::</span>filter<span class="p">(</span>dat<span class="p">,</span> variable <span class="o">==</span> <span class="s">&quot;rrday&quot;</span><span class="p">),</span> aes<span class="p">(</span>x<span class="o">=</span>time<span class="p">,</span> y<span class="o">=</span>measurement<span class="p">,</span> color<span class="o">=</span>location<span class="p">))</span>
+p <span class="o">+</span> geom_point<span class="p">(</span>alpha<span class="o">=</span><span class="m">1</span><span class="o">/</span><span class="m">3</span><span class="p">)</span> <span class="o">+</span> stat_smooth<span class="p">(</span>method<span class="o">=</span><span class="s">&quot;loess&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">1</span><span class="p">)</span> <span class="o">+</span> xlab<span class="p">(</span><span class="s">&quot;\nDate&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  ylab<span class="p">(</span><span class="s">&quot;Precipitation (mm)\n&quot;</span><span class="p">)</span> <span class="o">+</span> custom.theme</code></pre></figure>
+
+<p><img src="/figs/2014-12-30-fmi-stations/plot-precipitation-1.png" alt="plot of chunk plot-precipitation" /></p>
+
+<p>That’s it, a small demo on how to use <code>fmi</code> package for fetching observation
+station specific data.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sessionInfo<span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## R version 3.1.1 (2014-07-10)
+## Platform: x86_64-suse-linux-gnu (64-bit)
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8      LC_NUMERIC=C              LC_TIME=en_US.utf8        LC_COLLATE=en_US.utf8    
+##  [5] LC_MONETARY=en_US.utf8    LC_MESSAGES=en_US.utf8    LC_PAPER=en_US.utf8       LC_NAME=C                
+##  [9] LC_ADDRESS=C              LC_TELEPHONE=C            LC_MEASUREMENT=en_US.utf8 LC_IDENTIFICATION=C      
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitr_1.8      reshape2_1.4.1 ggplot2_1.0.0  dplyr_0.3.0.2  fmi_0.1.12     R6_2.0.1       devtools_1.6.1
+## 
+## loaded via a namespace (and not attached):
+##  [1] assertthat_0.1   colorspace_1.2-4 DBI_0.3.1        digest_0.6.7     evaluate_0.5.5   formatR_1.0     
+##  [7] gtable_0.1.2     htmltools_0.2.6  labeling_0.3     lattice_0.20-29  lazyeval_0.1.9   magrittr_1.5    
+## [13] MASS_7.3-33      munsell_0.4.2    parallel_3.1.1   plyr_1.8.1       proto_0.3-10     raster_2.3-12   
+## [19] Rcpp_0.11.3      rgdal_0.9-1      rmarkdown_0.4.2  rwfs_0.1.12      scales_0.2.4     sp_1.0-16       
+## [25] stringr_0.6.2    tools_3.1.1</code></pre></figure>
+
+
+            
+<div class="social">
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button"  data-text="fmi and FMI observation stations" data-related="ropengov">Tweet</a>
+    </div>
+    
+    
+    <div>
+        <div class="fb-like" data-width="150" data-layout="button_count" data-action="like" data-show-faces="true" data-send="false"></div>
+    </div>
+    
+    
+    <div>
+        <div class="g-plusone" data-size="medium"></div>
+    </div>
+    
+    
+    
+    <div>
+        <a href="http://news.ycombinator.com/submit" class="hn-share-button">Vote on HN</a>
+    </div>
+    
+</div>
+
+        </section>
+
+        <footer>
+            <address>
+               <img src="/images/joona.jpg">
+                <p>Written by <strong><a rel="author" href="https://twitter.com/" title="" target="_blank">Joona Lehtomäki</a></strong><br>
+                <span class="muted"></span>
+                </p>
+            </address>
+
+        </footer>
+
+        
+        <section>
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ropengov'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+        </section>
+        
+    </div>
+</article>
+
+<footer class="site-footer">
+    <div class="container">
+        &copy; 2018
+
+        <nav>
+            <a href="ropengov.github.io">rOpenGov</a> &middot;
+            <a href="/">Blog</a> &middot;
+            
+            
+        </nav>
+
+        <nav class="social">
+            
+            <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+            
+            
+            <a href="/feed.xml" title="RSS Feed">
+                <i class="icon icon-rss black"></i>
+            </a>
+        </nav>
+        <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+        <p>Check also <a href="http://www.r-bloggers.com">R-bloggers.com</a></p>
+    </div>
+</footer>
+
+<!-- moved inside header 5.11.2014 - Juuso
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+-->
+
+</body>
+</html>

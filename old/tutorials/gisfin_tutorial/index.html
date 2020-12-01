@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gisfin vignette &mdash; rOpenGov</title>
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet" type="text/css">
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/images/logo.png"/>
+  <link href="/feed.xml" rel="alternate" type="application/rss+xml" title="rOpenGov" />
+  <meta name="title" content="gisfin vignette ">
+  <link rel="canonical" href="http://ropengov.github.io/tutorials/gisfin_tutorial/">
+   
+         
+  <meta property="og:title" content="gisfin vignette "/>
+  <meta property="og:url" content="http://ropengov.github.io/tutorials/gisfin_tutorial/"/>
+  
+  
+  <meta property="og:site_name" content="rOpenGov">     
+</head>
+<body>
+  
+  <section class="site-nav">
+  <header>
+      <nav id="navigation">
+          <a class="brand" href="/">
+              <img src="/images/logo.png" alt="rOpenGov">
+          </a>
+          <a href="/" class="home">Blog</a>
+          
+          <a href="http://ropengov.github.io/projects">Projects</a>
+          <a href="http://ropengov.github.io/about">About</a>
+          <a href="http://ropengov.github.io/contribute">Contribute</a>          
+      </nav>
+      
+  </header>
+  </section>
+
+  <article class="container">
+
+  <div class="span11">
+  <div class="row">
+
+  <header class="jumbotron subhead" id="overview"> 
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=gisfin&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>
+     <iframe src="http://ghbtns.com/github-btn.html?user=ropengov&repo=gisfin&type=fork&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30" align="right"></iframe>      
+
+     <h1> <i class="fa fa-book"></i>  gisfin <small>v0.9.16</small> </h1>
+  </header>
+    
+  </div>
+  <!-- <br> -->
+
+  <div class"row"> <h2> <em> R tools for reading open geographical data in Finland. </em> </h2>
+
+  <!-- <h3><i class="ss-icon" style="color:#ebeef6;">&#x2139;</i>&nbsp;&nbsp;This is the vignette in the gisfin package</h3> -->
+  <br>
+
+  <center><a href="https://github.com/ropengov/gisfin/" style="color:#ffffff" target="_blank"> <button class="btn btn-success btn-large" style="display: block; width: 75%;"><i class="icon-white icon-download"></i>Download from GitHub</button></a></center>
+  <br>
+  <!-- <hr class="soften"> -->
+  </div>
+  <div class="span11">
+  <h1 id="gisfin---tutorial">gisfin - tutorial</h1>
+
+<p>This R package provides tools to access open spatial data in Finland
+as part of the <a href="http://ropengov.github.io">rOpenGov</a> project.</p>
+
+<p>For contact information and source code, see the 
+<a href="https://github.com/rOpenGov/gisfin">github page</a></p>
+
+<h2 id="available-data-sources">Available data sources</h2>
+
+<p><a href="#aluejakokartat">Helsinki region district maps</a> (Helsingin seudun 
+aluejakokartat)</p>
+
+<ul>
+  <li>Aluejakokartat: kunta, pien-, suur-, tilastoalueet (Helsinki region district 
+maps)</li>
+  <li>Äänestysaluejako: (Helsinki region election district maps)</li>
+  <li>Source: <a href="http://ptp.hel.fi/avoindata/">Helsingin kaupungin Kiinteistövirasto (HKK)</a></li>
+</ul>
+
+<p><a href="#hel-spatial">Helsinki spatial data</a> (Helsingin seudun avoimia 
+paikkatietoaineistoja)</p>
+
+<ul>
+  <li>Seutukartta (Helsinki Region Maps)</li>
+  <li>Helsingin piirijako (District Division of the City of Helsinki)</li>
+  <li>Seudullinen osoiteluettelo (Regional Address List)</li>
+  <li>Helsingin osoiteluettelo (Register of Addresses of the City of Helsinki)</li>
+  <li>Rakennusrekisterin ote (Helsinki building registry)</li>
+  <li>Source: <a href="http://ptp.hel.fi/avoindata/">Helsingin kaupungin Kiinteistövirasto (HKK)</a></li>
+</ul>
+
+<p><a href="#maanmittauslaitos">National Land Survey data</a> (Maanmittauslaitoksen avointa 
+dataa)</p>
+
+<ul>
+  <li>Yleiskartat: kunta-, maakuntarajat (municipality and province borders)</li>
+  <li>Source: <a href="http://www.maanmittauslaitos.fi/avoindata">Maanmittauslaitos (MML)</a></li>
+</ul>
+
+<p><a href="#geocoding">Geocoding</a></p>
+
+<ul>
+  <li><a href="http://data.okf.fi/console/">OKF.fi Geocoding API Test Console</a></li>
+  <li><a href="http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy">OpenStreetMap Nominatim</a></li>
+  <li><a href="http://code.google.com/apis/maps/documentation/geocoding/">Google</a></li>
+</ul>
+
+<p><a href="#ip">IP address geographic coordinates</a></p>
+
+<ul>
+  <li><a href="http://www.datasciencetoolkit.org/">Data Science Toolkit</a></li>
+</ul>
+
+<p><a href="#geostatfi">Statistics Finland geospatial data</a> (Tilastokeskuksen paikkatietoaineistoja)</p>
+
+<ul>
+  <li>Väestöruutuaineisto (Population grid)</li>
+  <li>Tuotanto- ja teollisuuslaitokset (Production and industrial facilities)</li>
+  <li>Oppilaitokset (Educational institutions)</li>
+  <li>Tieliikenneonnettomuudet (Road accidents)</li>
+  <li>Source: <a href="http://www.stat.fi/tup/rajapintapalvelut/index_en.html">Statistics Finland</a></li>
+</ul>
+
+<p>List of potential data sources to be added to the package can be found 
+<a href="https://github.com/rOpenGov/gisfin/blob/master/vignettes/todo-datasets.md">here</a>.</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="requirements">Requirements</h3>
+
+<p>The gisfin package uses the 
+<a href="http://cran.r-project.org/web/packages/rgdal/index.html">rgdal</a> package, which 
+depends on <a href="http://www.gdal.org/">GDAL</a> (Geospatial Data Abstraction Library). 
+Some rgdal installation tips for various platforms are listed below. If you 
+encounter problems, please contact us by email: louhos@googlegroups.com.</p>
+
+<h4 id="windows">Windows</h4>
+
+<p>Install binaries from <a href="http://cran.r-project.org/web/packages/rgdal/index.html">CRAN</a></p>
+
+<h4 id="osx">OSX</h4>
+
+<p>It is preferable to NOT use the <a href="http://cran.r-project.org/web/packages/rgdal/index.html">CRAN binaries</a>. Instead, you should check <a href="http://www.kyngchaos.com/software/frameworks">KyngChaos Wiki</a>
+and install the latest GDAL Complete (v. 1.11 in July 2014) and then install the 
+corresponding rgdal package from the same page (v. 0.8.16 in July 2014).</p>
+
+<h4 id="linux">Linux</h4>
+
+<p>Install the following packages through your distribution’s package manager</p>
+
+<p><strong>Ubuntu/Debian</strong></p>
+
+<pre><code>sudo apt-get -y install libgdal1-dev libproj-dev
+</code></pre>
+
+<p><strong>Fedora</strong></p>
+
+<pre><code>sudo yum -y install gdal-devel proj-devel
+</code></pre>
+
+<p><strong>openSUSE</strong></p>
+
+<pre><code>sudo zypper --non-interactive in libgdal-devel libproj-devel
+</code></pre>
+
+<h3 id="installing-the-package">Installing the package</h3>
+
+<p>Release version for general users:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>install.packages<span class="p">(</span><span class="s">&quot;gisfin&quot;</span><span class="p">)</span></code></pre></figure>
+
+<p>Development version for developers:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>install.packages<span class="p">(</span><span class="s">&quot;devtools&quot;</span><span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>devtools<span class="p">)</span>
+install_github<span class="p">(</span><span class="s">&quot;gisfin&quot;</span><span class="p">,</span> <span class="s">&quot;ropengov&quot;</span><span class="p">)</span></code></pre></figure>
+
+<p>Load package.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span>gisfin<span class="p">)</span></code></pre></figure>
+
+<hr />
+
+<h2 id="helsinki-region-district-maps"><a name="aluejakokartat"></a>Helsinki region district maps</h2>
+
+<p>Helsinki region district maps (Helsingin seudun aluejakokartat) from 
+<a href="http://ptp.hel.fi/avoindata/">Helsingin kaupungin Kiinteistövirasto (HKK)</a>.</p>
+
+<p>List available maps with <code>get_helsinki_aluejakokartat()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>get_helsinki_aluejakokartat<span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## [1] &quot;kunta&quot;             &quot;pienalue&quot;          &quot;pienalue_piste&quot;   
+## [4] &quot;suuralue&quot;          &quot;suuralue_piste&quot;    &quot;tilastoalue&quot;      
+## [7] &quot;tilastoalue_piste&quot; &quot;aanestysalue&quot;</code></pre></figure>
+
+<p>Below the ‘suuralue’ districts is used for plotting examples with <code>spplot()</code> and 
+<a href="http://ggplot2.org/">ggplot2</a>. The other district types can be plotted 
+similarly.</p>
+
+<h3 id="plot-with-spplot">Plot with spplot</h3>
+
+<p>Retrieve ‘suuralue’ spatial object with <code>get_helsinki_aluejakokartat()</code> and plot 
+with <code>spplot()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sp.suuralue <span class="o">&lt;-</span> get_helsinki_aluejakokartat<span class="p">(</span>map.specifier<span class="o">=</span><span class="s">&quot;suuralue&quot;</span><span class="p">)</span>
+spplot<span class="p">(</span>sp.suuralue<span class="p">,</span> zcol<span class="o">=</span><span class="s">&quot;Name&quot;</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/hkk-suuralue1-1.png" alt="plot of chunk hkk-suuralue1" /></p>
+
+<p>Function <code>generate_map_colours()</code> allows nice region colouring separable 
+adjacent regions. This is used here with the <code>rainbow()</code> colour scale to plot 
+the regions with <code>spplot()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sp.suuralue<span class="o">@</span>data<span class="o">$</span>COL <span class="o">&lt;-</span> <span class="kp">factor</span><span class="p">(</span>generate_map_colours<span class="p">(</span>sp<span class="o">=</span>sp.suuralue<span class="p">))</span>
+spplot<span class="p">(</span>sp.suuralue<span class="p">,</span> zcol<span class="o">=</span><span class="s">&quot;COL&quot;</span><span class="p">,</span> 
+       col.regions<span class="o">=</span>rainbow<span class="p">(</span><span class="kp">length</span><span class="p">(</span><span class="kp">levels</span><span class="p">(</span>sp.suuralue<span class="o">@</span>data<span class="o">$</span>COL<span class="p">))),</span> 
+       colorkey<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/hkk-suuralue2-1.png" alt="plot of chunk hkk-suuralue2" /></p>
+
+<h3 id="plot-with-ggplot2">Plot with ggplot2</h3>
+
+<p>Use the ‘sp.suuralue’ retrieved above, and retrieve also the center points of 
+the districts. Use <code>sp2df()</code> function to tranform the spatial objects into data 
+frames. Plot with <a href="http://ggplot2.org/">ggplot2</a>, using blank map theme with 
+<code>get_theme_map()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Retrieve center points</span>
+sp.suuralue.piste <span class="o">&lt;-</span> get_helsinki_aluejakokartat<span class="p">(</span>map.specifier<span class="o">=</span><span class="s">&quot;suuralue_piste&quot;</span><span class="p">)</span>
+<span class="c1"># Get data frames</span>
+df.suuralue <span class="o">&lt;-</span> sp2df<span class="p">(</span>sp.suuralue<span class="p">,</span> <span class="s">&quot;Name&quot;</span><span class="p">)</span>
+df.suuralue.piste <span class="o">&lt;-</span> sp2df<span class="p">(</span>sp.suuralue.piste<span class="p">,</span> <span class="s">&quot;Name&quot;</span><span class="p">)</span>
+<span class="c1"># Set map theme</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+theme_set<span class="p">(</span>get_theme_map<span class="p">())</span>
+<span class="c1"># Plot regions, add labels using the points data</span>
+ggplot<span class="p">(</span>df.suuralue<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>long<span class="p">,</span> y<span class="o">=</span>lat<span class="p">))</span> <span class="o">+</span> geom_polygon<span class="p">(</span>aes<span class="p">(</span>fill<span class="o">=</span>COL<span class="p">,</span> 
+                                                           group<span class="o">=</span>Name<span class="p">))</span> <span class="o">+</span> 
+  geom_text<span class="p">(</span>data<span class="o">=</span>df.suuralue.piste<span class="p">,</span> aes<span class="p">(</span>label<span class="o">=</span>Name<span class="p">))</span> <span class="o">+</span> 
+  theme<span class="p">(</span>legend.position<span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/hkk-suuralue3-1.png" alt="plot of chunk hkk-suuralue3" /></p>
+
+<h3 id="plot-election-districts">Plot election districts</h3>
+
+<p>Retrieve and plot äänetysaluejako (election districts) with 
+<code>get_helsinki_aluejakokartat()</code> and <code>spplot()</code>, use colours to separate 
+municipalities.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sp.aanestys <span class="o">&lt;-</span> get_helsinki_aluejakokartat<span class="p">(</span>map.specifier<span class="o">=</span><span class="s">&quot;aanestysalue&quot;</span><span class="p">)</span>
+spplot<span class="p">(</span>sp.aanestys<span class="p">,</span> zcol<span class="o">=</span><span class="s">&quot;KUNTA&quot;</span><span class="p">,</span> 
+       col.regions<span class="o">=</span>rainbow<span class="p">(</span><span class="kp">length</span><span class="p">(</span><span class="kp">levels</span><span class="p">(</span>sp.aanestys<span class="o">@</span>data<span class="o">$</span>KUNTA<span class="p">))),</span> 
+       colorkey<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/hkk-aanestysalue-1.png" alt="plot of chunk hkk-aanestysalue" /></p>
+
+<hr />
+
+<h2 id="helsinki-spatial-data"><a name="hel-spatial"></a>Helsinki spatial data</h2>
+
+<p>Other Helsinki region spatial data from 
+<a href="http://ptp.hel.fi/avoindata/">Helsingin Kaupungin Kiinteistövirasto (HKK)</a>.</p>
+
+<p>List available spatial data with <code>get_helsinki_spatial()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>get_helsinki_spatial<span class="p">()</span></code></pre></figure>
+
+<p>Retrieve municipality map for the larger Helsinki region with 
+<code>get_helsinki_spatial()</code> and transform coordinates with <code>sp::spTransform()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sp.piiri <span class="o">&lt;-</span> get_helsinki_spatial<span class="p">(</span>map.type<span class="o">=</span><span class="s">&quot;piirijako&quot;</span><span class="p">,</span> 
+                                 map.specifier<span class="o">=</span><span class="s">&quot;ALUEJAKO_PERUSPIIRI&quot;</span><span class="p">)</span>
+<span class="c1"># Check current coordinates</span>
+sp.piiri<span class="o">@</span>proj4string
+<span class="c1"># Transform coordinates to WGS84</span>
+sp.piiri <span class="o">&lt;-</span> sp<span class="o">::</span>spTransform<span class="p">(</span>sp.piiri<span class="p">,</span> CRS<span class="p">(</span><span class="s">&quot;+proj=longlat +datum=WGS84&quot;</span><span class="p">))</span></code></pre></figure>
+
+<hr />
+
+<h2 id="national-land-survey-finland"><a name="maanmittauslaitos"></a>National Land Survey Finland</h2>
+
+<p>Spatial data from <a href="http://www.maanmittauslaitos.fi/en/opendata">National Land Survey Finland</a> 
+(Maanmittauslaitos, MML). These data are preprocessed into RData format, see 
+details <a href="https://github.com/avoindata/mml">here</a>.</p>
+
+<p>List available data sets with <code>list_mml_datasets()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>list_mml_datasets<span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## $`1_milj_Shape_etrs_shape`
+##  [1] &quot;AVI1_l&quot;   &quot;AVI1_p&quot;   &quot;airport&quot;  &quot;asemat&quot;   &quot;cityp&quot;    &quot;coast_l&quot; 
+##  [7] &quot;coast_p&quot;  &quot;dcont_l&quot;  &quot;dcont_p&quot;  &quot;forest&quot;   &quot;hcont_l&quot;  &quot;hcont_p&quot; 
+## [13] &quot;hpoint&quot;   &quot;kunta1_l&quot; &quot;kunta1_p&quot; &quot;lake_l&quot;   &quot;lake_p&quot;   &quot;maaku1_l&quot;
+## [19] &quot;maaku1_p&quot; &quot;namep&quot;    &quot;pelto&quot;    &quot;railway&quot;  &quot;river&quot;    &quot;rivera_l&quot;
+## [25] &quot;rivera_p&quot; &quot;road&quot;     &quot;suot&quot;     &quot;taajama&quot; 
+## 
+## $`4_5_milj_shape_etrs-tm35fin`
+##  [1] &quot;AVI1_l&quot;   &quot;AVI1_p&quot;   &quot;AVI4_l&quot;   &quot;AVI4_p&quot;   &quot;airport&quot;  &quot;asemat&quot;  
+##  [7] &quot;cityp&quot;    &quot;coast&quot;    &quot;coast_l&quot;  &quot;coast_p&quot;  &quot;dcont_l&quot;  &quot;dcont_p&quot; 
+## [13] &quot;forest&quot;   &quot;hcont_l&quot;  &quot;hcont_p&quot;  &quot;hpoint&quot;   &quot;kunta1_l&quot; &quot;kunta1_p&quot;
+## [19] &quot;kunta4_l&quot; &quot;kunta4_p&quot; &quot;lake&quot;     &quot;lake_l&quot;   &quot;lake_p&quot;   &quot;maaku1_l&quot;
+## [25] &quot;maaku1_p&quot; &quot;maaku4_l&quot; &quot;maaku4_p&quot; &quot;namep&quot;    &quot;pelto&quot;    &quot;railway&quot; 
+## [31] &quot;rajamuu&quot;  &quot;river&quot;    &quot;rivera_l&quot; &quot;rivera_p&quot; &quot;road&quot;     &quot;suot&quot;    
+## [37] &quot;taajama&quot; 
+## 
+## $`2012`
+## character(0)
+## 
+## $`Maastotietokanta-tiesto1`
+## [1] &quot;N61_v&quot;
+## 
+## $`Maastotietokanta-tiesto2`
+## [1] &quot;N62_p&quot; &quot;N62_s&quot; &quot;N62_t&quot; &quot;N62_v&quot;
+## 
+## $`Yleiskartta-1000`
+##  [1] &quot;AmpumaRaja&quot;             &quot;HallintoAlue&quot;          
+##  [3] &quot;HallintoAlue_DataFrame&quot; &quot;HallintoalueRaja&quot;      
+##  [5] &quot;KaasuJohto&quot;             &quot;KarttanimiPiste500&quot;    
+##  [7] &quot;KarttanimiPiste1000&quot;    &quot;KorkeusAlue&quot;           
+##  [9] &quot;KorkeusViiva500&quot;        &quot;KorkeusViiva1000&quot;      
+## [11] &quot;LentokenttaPiste&quot;       &quot;LiikenneAlue&quot;          
+## [13] &quot;MaaAlue&quot;                &quot;Maasto1Reuna&quot;          
+## [15] &quot;Maasto2Alue&quot;            &quot;MetsaRaja&quot;             
+## [17] &quot;PeltoAlue&quot;              &quot;RautatieViiva&quot;         
+## [19] &quot;SahkoLinja&quot;             &quot;SuojaAlue&quot;             
+## [21] &quot;SuojametsaRaja&quot;         &quot;SuojeluAlue&quot;           
+## [23] &quot;TaajamaAlue&quot;            &quot;TaajamaPiste&quot;          
+## [25] &quot;TieViiva&quot;               &quot;VesiAlue&quot;              
+## [27] &quot;VesiViiva&quot;             
+## 
+## $`Yleiskartta-4500`
+##  [1] &quot;HallintoAlue&quot;        &quot;HallintoalueRaja&quot;    &quot;KarttanimiPiste2000&quot;
+##  [4] &quot;KarttanimiPiste4500&quot; &quot;KarttanimiPiste8000&quot; &quot;KorkeusAlue&quot;        
+##  [7] &quot;KorkeusViiva&quot;        &quot;Maasto1Reuna&quot;        &quot;RautatieViiva&quot;      
+## [10] &quot;TaajamaPiste2000&quot;    &quot;TaajamaPiste4500&quot;    &quot;TaajamaPiste8000&quot;   
+## [13] &quot;TieViiva2000&quot;        &quot;TieViiva4500&quot;        &quot;TieViiva8000&quot;       
+## [16] &quot;VesiAlue&quot;            &quot;VesiViiva2000&quot;       &quot;VesiViiva4500&quot;      
+## [19] &quot;VesiViiva8000&quot;</code></pre></figure>
+
+<p>Retrieve regional borders for Finland with <code>get_mml()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Get a specific map</span>
+sp.mml <span class="o">&lt;-</span> get_mml<span class="p">(</span>map.id<span class="o">=</span><span class="s">&quot;Yleiskartta-4500&quot;</span><span class="p">,</span> data.id<span class="o">=</span><span class="s">&quot;HallintoAlue&quot;</span><span class="p">)</span>
+<span class="c1"># Investigate available variables in this map</span>
+<span class="kp">head</span><span class="p">(</span><span class="kp">as.data.frame</span><span class="p">(</span>sp.mml<span class="p">))</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##   Kohderyhma Kohdeluokk Enklaavi AVI Maakunta Kunta
+## 0         71      84200        1   1       01   078
+## 1         71      84200        1   1       01   149
+## 2         71      84200        1   7       21   318
+## 3         71      84200        1   1       01   710
+## 4         71      84200        1   1       01   235
+## 5         71      84200        1   7       21   062
+##                            AVI_ni1
+## 0 Etelä-Suomen aluehallintovirasto
+## 1 Etelä-Suomen aluehallintovirasto
+## 2       Ahvenanmaan valtionvirasto
+## 3 Etelä-Suomen aluehallintovirasto
+## 4 Etelä-Suomen aluehallintovirasto
+## 5       Ahvenanmaan valtionvirasto
+##                                    AVI_ni2            Maaku_ni1
+## 0 Regionförvaltningsverket i Södra Finland              Uusimaa
+## 1 Regionförvaltningsverket i Södra Finland              Uusimaa
+## 2              Statens ämbetsverk på Åland Ahvenanmaan maakunta
+## 3 Regionförvaltningsverket i Södra Finland              Uusimaa
+## 4 Regionförvaltningsverket i Södra Finland              Uusimaa
+## 5              Statens ämbetsverk på Åland Ahvenanmaan maakunta
+##          Maaku_ni2  Kunta_ni1 Kunta_ni2 Kieli_ni1 Kieli_ni2
+## 0           Nyland      Hanko     Hangö     Suomi    Ruotsi
+## 1           Nyland       Ingå     Inkoo    Ruotsi     Suomi
+## 2 Landskapet Åland      Kökar       N_A    Ruotsi       N_A
+## 3           Nyland   Raseborg Raasepori    Ruotsi     Suomi
+## 4           Nyland Kauniainen Grankulla     Suomi    Ruotsi
+## 5 Landskapet Åland      Föglö       N_A    Ruotsi       N_A
+##                             AVI.FI Kieli.FI          Maakunta.FI
+## 0 Etelä-Suomen aluehallintovirasto    Suomi              Uusimaa
+## 1 Etelä-Suomen aluehallintovirasto   Ruotsi              Uusimaa
+## 2       Ahvenanmaan valtionvirasto   Ruotsi Ahvenanmaan maakunta
+## 3 Etelä-Suomen aluehallintovirasto   Ruotsi              Uusimaa
+## 4 Etelä-Suomen aluehallintovirasto    Suomi              Uusimaa
+## 5       Ahvenanmaan valtionvirasto   Ruotsi Ahvenanmaan maakunta
+##     Kunta.FI
+## 0      Hanko
+## 1      Inkoo
+## 2      Kökar
+## 3  Raasepori
+## 4 Kauniainen
+## 5      Föglö</code></pre></figure>
+
+<p>Plot municipalities (kunnat) with <code>spplot()</code>, using colours from 
+<code>generate_map_colours()</code>.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="c1"># Get region colouring for municipalities</span>
+sp.mml<span class="o">@</span>data<span class="o">$</span>COL <span class="o">&lt;-</span> <span class="kp">factor</span><span class="p">(</span>generate_map_colours<span class="p">(</span>sp.mml<span class="p">))</span>
+<span class="c1"># Plot the shape file, colour municipalities</span>
+spplot<span class="p">(</span>sp.mml<span class="p">,</span> zcol<span class="o">=</span><span class="s">&quot;COL&quot;</span><span class="p">,</span> col.regions<span class="o">=</span>rainbow<span class="p">(</span><span class="kp">length</span><span class="p">(</span><span class="kp">levels</span><span class="p">(</span>sp.mml<span class="o">@</span>data<span class="o">$</span>COL<span class="p">))),</span> 
+       colorkey<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/MML_municipality-1.png" alt="plot of chunk MML_municipality" /></p>
+
+<hr />
+
+<h2 id="geocoding"><a name="geocoding"></a>Geocoding</h2>
+
+<p>Get geocodes for given location (address etc.) using one of the available 
+services. Please read carefully the usage policies for the different services:</p>
+
+<ul>
+  <li><a href="http://data.okf.fi/console/">OKF.fi Geocoding API Test Console</a></li>
+  <li><a href="http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy">OpenStreetMap Nominatim</a></li>
+  <li><a href="http://code.google.com/apis/maps/documentation/geocoding/">Google</a></li>
+</ul>
+
+<p>The function <code>get_geocode()</code> returns both latitude and longitude for the first 
+hit, and the raw output (varies depending on the service used).</p>
+
+<p>Warning! The geocode results may vary between sources, use with care!</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>gc1 <span class="o">&lt;-</span> get_geocode<span class="p">(</span><span class="s">&quot;Mannerheimintie 100, Helsinki&quot;</span><span class="p">,</span> service<span class="o">=</span><span class="s">&quot;okf&quot;</span><span class="p">)</span>
+<span class="kp">unlist</span><span class="p">(</span>gc1<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##      lat      lon 
+## 60.18856 24.91736</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>gc2 <span class="o">&lt;-</span> get_geocode<span class="p">(</span><span class="s">&quot;Mannerheimintie 100, Helsinki&quot;</span><span class="p">,</span> service<span class="o">=</span><span class="s">&quot;openstreetmap&quot;</span><span class="p">)</span>
+<span class="kp">unlist</span><span class="p">(</span>gc2<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##      lat      lon 
+## 60.16924 24.93968</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>gc3 <span class="o">&lt;-</span> get_geocode<span class="p">(</span><span class="s">&quot;Mannerheimintie 100, Helsinki&quot;</span><span class="p">,</span> service<span class="o">=</span><span class="s">&quot;google&quot;</span><span class="p">)</span>
+<span class="kp">unlist</span><span class="p">(</span>gc3<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##      lat      lon 
+## 60.18892 24.91747</code></pre></figure>
+
+<hr />
+
+<h2 id="ip-location"><a name="ip"></a>IP Location</h2>
+
+<p>Geographic coordinates for a given IP-address from
+<a href="http://www.datasciencetoolkit.org/">Data Science Toolkit</a>:</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>ip_location<span class="p">(</span><span class="s">&quot;137.224.252.10&quot;</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## [1] &quot;51.9667015075684&quot; &quot;5.66669988632202&quot;</code></pre></figure>
+
+<hr />
+
+<h2 id="statistics-finland-geospatial-data"><a name="geostatfi"></a>Statistics Finland geospatial data</h2>
+
+<p>Geospatial data provided by 
+<a href="http://www.stat.fi/tup/rajapintapalvelut/inspire_en.html">Statistics Finland</a>.</p>
+
+<p>Retrieve a list of the available data sets for population density. In case the 
+service is unreachable, <code>character(0)</code> is returned.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>client <span class="o">&lt;-</span> GeoStatFiWFSClient<span class="p">()</span>
+layers <span class="o">&lt;-</span> client<span class="o">$</span>listPopulationLayers<span class="p">()</span>
+<span class="kr">if</span> <span class="p">(</span><span class="kp">length</span><span class="p">(</span>layers<span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> layers</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>##  [1] &quot;vaestoruutu:vaki2005_1km&quot;    &quot;vaestoruutu:vaki2005_1km_kp&quot;
+##  [3] &quot;vaestoruutu:vaki2010_1km&quot;    &quot;vaestoruutu:vaki2010_1km_kp&quot;
+##  [5] &quot;vaestoruutu:vaki2011_1km&quot;    &quot;vaestoruutu:vaki2011_1km_kp&quot;
+##  [7] &quot;vaestoruutu:vaki2012_1km&quot;    &quot;vaestoruutu:vaki2012_1km_kp&quot;
+##  [9] &quot;vaestoruutu:vaki2013_1km&quot;    &quot;vaestoruutu:vaki2013_1km_kp&quot;
+## [11] &quot;vaestoruutu:vaki2005_5km&quot;    &quot;vaestoruutu:vaki2010_5km&quot;   
+## [13] &quot;vaestoruutu:vaki2011_5km&quot;    &quot;vaestoruutu:vaki2012_5km&quot;   
+## [15] &quot;vaestoruutu:vaki2013_5km&quot;</code></pre></figure>
+
+<p>Get population density in year 2005 on a 5 km x 5 km grid, convert to 
+RasterStack object and plot.</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>population <span class="o">&lt;-</span> client<span class="o">$</span>getPopulation<span class="p">(</span>layers<span class="p">[</span><span class="m">11</span><span class="p">])</span>
+<span class="kr">if</span> <span class="p">(</span><span class="kp">length</span><span class="p">(</span>population<span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+  x <span class="o">&lt;-</span> sp<span class="o">::</span>SpatialPixelsDataFrame<span class="p">(</span>coordinates<span class="p">(</span>population<span class="p">),</span> population<span class="o">@</span>data<span class="p">,</span> proj4string<span class="o">=</span>population<span class="o">@</span>proj4string<span class="p">)</span>
+  population <span class="o">&lt;-</span> raster<span class="o">::</span>stack<span class="p">(</span>x<span class="p">)</span>
+  plot<span class="p">(</span>population<span class="p">[[</span><span class="s">&quot;vaesto&quot;</span><span class="p">]])</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><img src="../../figs/gisfin_tutorial/population-density-plot-1.png" alt="plot of chunk population-density-plot" /></p>
+
+<hr />
+
+<h3 id="citation">Citation</h3>
+
+<p><strong>Citing the data:</strong> See <code>help()</code> to get citation information for each data 
+source individually.</p>
+
+<p><strong>Citing the R package:</strong></p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>citation<span class="p">(</span><span class="s">&quot;gisfin&quot;</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>Kindly cite the gisfin R package as follows:
+
+  (C) Juuso Parkkinen, Leo Lahti, Joona Lehtomaki, Janne Aukia and
+  Jussi Jousimo 2014. gisfin R package
+
+A BibTeX entry for LaTeX users is
+
+  @Misc{,
+    title = {gisfin R package},
+    author = {Juuso Parkkinen and Leo Lahti and Joona Lehtomaki and Janne Aukia and Jussi Jousimo},
+    year = {2014},
+  }
+
+Many thanks for all contributors! For more info, see:
+https://github.com/rOpenGov/gisfin</code></pre></figure>
+
+<h3 id="session-info">Session info</h3>
+
+<p>This vignette was created with</p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span>sessionInfo<span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text"><span></span>## R version 3.1.2 (2014-10-31)
+## Platform: x86_64-apple-darwin13.4.0 (64-bit)
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] methods   stats     graphics  grDevices utils     datasets  base     
+## 
+## other attached packages:
+##  [1] ggplot2_1.0.0   rgeos_0.3-4     maptools_0.8-30 gisfin_0.9.16  
+##  [5] rgdal_0.8-16    raster_2.3-12   sp_1.0-15       fmi_0.1.11     
+##  [9] R6_2.0          knitr_1.8      
+## 
+## loaded via a namespace (and not attached):
+##  [1] boot_1.3-13      coda_0.16-1      colorspace_1.2-4 deldir_0.1-6    
+##  [5] digest_0.6.4     evaluate_0.5.5   foreign_0.8-61   formatR_1.0     
+##  [9] grid_3.1.2       gtable_0.1.2     labeling_0.3     lattice_0.20-29 
+## [13] LearnBayes_2.15  MASS_7.3-35      Matrix_1.1-4     munsell_0.4.2   
+## [17] nlme_3.1-118     parallel_3.1.2   plyr_1.8.1       proto_0.3-10    
+## [21] Rcpp_0.11.3      RCurl_1.95-4.3   reshape2_1.4     rjson_0.2.14    
+## [25] rwfs_0.1.11      scales_0.2.4     spdep_0.5-77     splines_3.1.2   
+## [29] stringr_0.6.2    tools_3.1.2      XML_3.98-1.1</code></pre></figure>
+
+
+  </div>
+
+  </article>
+
+  <footer class="site-footer">
+      <div class="container">
+          &copy; 2018 
+          
+          <nav>
+              <a href="ropengov.github.io">rOpenGov</a> &middot;
+              <a href="/">Blog</a> &middot;
+              
+              
+          </nav>
+          
+          <nav class="social">
+              
+              <a href="https://twitter.com/ropengov" title="Follow on Twitter" target="_blank"><i class="icon icon-twitter black"></i></a>
+              
+                  
+              <a href="/feed.xml" title="RSS Feed">
+                  <i class="icon icon-rss black"></i>
+              </a>
+          </nav>
+          <p>Incorporated theme by <a href="https://sendtoinc.com">Inc</a></p>
+      </div>
+  </footer>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/main.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=253595308025739";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script>
+    (function(d, t) {
+        var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        g.src = '//hnbutton.appspot.com/static/hn.min.js';
+        s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44262937-1', 'http://ropengov.github.io');
+  ga('send', 'pageview');
+</script>
+
+
+
+  </body>
+</html>
